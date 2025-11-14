@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Grid2 } from "@mui/material";
-import {InternetSwitchDemo} from './componentDemos';
+import { Box } from "@mui/material";
+import { InternetSwitchDemo } from './componentDemos';
+import DialogExampleDemo from './componentDemos/DialogExampleDemo';
+import Demos from './demoHelpers/Demos';
+import Demo from './demoHelpers/Demo';
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(window.innerHeight - 64);
@@ -8,18 +11,24 @@ function App() {
     setMaxWindowHeight(window.innerHeight - 64);
   }, []);
 
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowResize);
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        };
-    }, [handleWindowResize]);
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowResize);
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, [handleWindowResize]);
 
-    return <Grid2 container spacing={2} sx={{ maxHeight: maxWindowHeight }}>
-      <Grid2 size={12} item sx={{p:2}}>
-          <InternetSwitchDemo/>
-      </Grid2>
-  </Grid2>
+  return <Box sx={{ maxHeight: maxWindowHeight }}>
+    <Demos>
+      <Demo title="InternetSwitch">
+        <InternetSwitchDemo />
+      </Demo>
+      <Demo title="Dialog">
+        <DialogExampleDemo />
+      </Demo>
+    </Demos>
+  </Box>
+
 }
 
 export default App;

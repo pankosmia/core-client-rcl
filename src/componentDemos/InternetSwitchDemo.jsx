@@ -23,15 +23,12 @@ function InternetSwitchDemo() {
         }
     };
 
-    return <>
-        <h1>InternetSwitch</h1>
-        <InternetSwitch
+    return <InternetSwitch
             enableInternet={enableInternet}
             handleInternetToggleClick={handleInternetToggleClick}
             internetDialogOpen={internetDialogOpen}
             setInternetDialogOpen={setInternetDialogOpen}
         />
-    </>
 }
 
 export default InternetSwitchDemo;
