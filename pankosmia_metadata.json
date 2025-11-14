@@ -1,0 +1,18 @@
+{
+  "id": "core-client-rcl",
+  "require": {
+    "net": false,
+    "debug": false
+  },
+  "i18n": {
+    "title": {
+      "en": "Pankosmia RCL (really)"
+    },
+    "summary": {
+      "en": "A React Component Language pour Pankosmia"
+    },
+    "stub_content": {
+      "en": "Content goes here"
+    }
+  }
+}
