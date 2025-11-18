@@ -1,5 +1,5 @@
 import DrawerComponent from '../rcl/DrawerComponent';
-import {useContext, useState, useEffect} from "react";
+import {useContext, useState, useEffect, useRef} from "react";
 import {debugContext, getJson} from "pithekos-lib";
 
 
@@ -9,6 +9,26 @@ function DrawerDemo() {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const [menuItems, setMenuItems] = useState([]);
     const [showAdvanced, setShowAdvanced] = useState(true);
+    const [drawerWidth, setDrawerWidth] = useState('auto');
+    const [widthLocked, setWidthLocked] = useState(false);
+    const measurementRef = useRef(null);
+
+    useEffect(() => {
+        let timeoutId;
+        if (drawerIsOpen && !widthLocked) {
+          timeoutId = setTimeout(() => {
+            if (measurementRef.current) {
+              const width = measurementRef.current.clientWidth;
+              
+              if (width > 0) {
+                setDrawerWidth(`${width}px`); 
+                setWidthLocked(true);
+              }
+            }
+          }, 50);
+          return () => clearTimeout(timeoutId);
+        }
+      }, [drawerIsOpen, widthLocked]);
 
     useEffect(
         () => {
@@ -37,19 +57,15 @@ function DrawerDemo() {
             );
     };
 
-    console.log(menuItems);
-
     return <DrawerComponent
-            /* enableInternet={enableInternet}
-            handleInternetToggleClick={handleInternetToggleClick}
-            internetDialogOpen={internetDialogOpen}
-            setInternetDialogOpen={setInternetDialogOpen} */
             drawerIsOpen={drawerIsOpen}
             setDrawerIsOpen={setDrawerIsOpen}
             menuItems={menuItems}
             toggleDebug={toggleDebug}
             showAdvanced={showAdvanced}
             setShowAdvanced={setShowAdvanced}
+            drawerWidth={drawerWidth}
+            measurementRef={measurementRef}
         />
 }
 

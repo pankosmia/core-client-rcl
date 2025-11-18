@@ -17,7 +17,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import {i18nContext, netContext, debugContext, doI18n} from "pithekos-lib";
 
 
-export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItems, toggleDebug, showAdvanced, setShowAdvanced}) {
+export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItems, toggleDebug, showAdvanced, setShowAdvanced, drawerWidth, measurementRef }) {
 
     const {i18nRef} = useContext(i18nContext);
     const {enabledRef} = useContext(netContext);
@@ -29,7 +29,9 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                 <MenuIcon />
             </IconButton>
             <Drawer
-                open={drawerIsOpen} onClose={() => setDrawerIsOpen(false)}
+                open={drawerIsOpen} 
+                onClose={() => setDrawerIsOpen(false)} 
+                slotProps={{ paper: { sx: { width: drawerWidth, overflow: 'hidden' } } }}
             >
                 <Box sx={{width: "100%", minHeight: '98vh', m: 0, p: 0}} role="presentation">                         
                     <List sx={{ height: '100%', width: '100%' }}>
@@ -77,9 +79,9 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                                         <ListItemText primary={doI18n("pages:core-settings:title", i18nRef.current)}/>
                                     </ListItemButton> 
                                 </ListItem>
-                                <ListItem disablePadding >
-                                    <ListItemButton onClick={() => setShowAdvanced(a => !a)} >
-                                        <ListItemText primary={doI18n(`components:header:advanced`, i18nRef.current)}/>
+                                <ListItem sx={{width: drawerWidth}} disablePadding>
+                                    <ListItemButton onClick={() => setShowAdvanced(a => !a)}>
+                                        <ListItemText primary={doI18n(`components:header:advanced`, i18nRef.current)} />
                                         {showAdvanced ? <ExpandLess /> : <ExpandMore />}
                                     </ListItemButton>
                                 </ListItem>
@@ -95,6 +97,27 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                                         </ListItemButton>
                                     </List>
                                 </Collapse>
+                                <Box
+                                    ref={measurementRef}
+                                    sx={{
+                                        visibility: 'hidden', 
+                                        position: 'absolute', 
+                                        whiteSpace: 'nowrap',
+                                        top: 0,
+                                        left: 0,
+                                    }}
+                                >
+                                    <List component="div" disablePadding>
+                                        <ListItemButton onClick={toggleDebug} sx={{ pl:4 }}>
+                                            <ListItemText primary={doI18n(`components:header:experimental_mode`, i18nRef.current)} />
+                                            <Switch
+                                                edge="end"
+                                                onChange={toggleDebug}
+                                                checked={debugRef.current}
+                                            />
+                                        </ListItemButton>
+                                    </List>
+                                </Box>
                             </Box>
                         </Stack>
                     </List>
