@@ -4,6 +4,7 @@ import { InternetSwitchDemo } from './componentDemos';
 import DialogExampleDemo from './componentDemos/DialogExampleDemo';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
+import DrawerDemo from './componentDemos/DrawerDemo';
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(window.innerHeight - 64);
@@ -25,6 +26,9 @@ function App() {
       </Demo>
       <Demo title="Dialog">
         <DialogExampleDemo />
+      </Demo>
+      <Demo title="Drawer">
+        <DrawerDemo />
       </Demo>
     </Demos>
   </Box>
