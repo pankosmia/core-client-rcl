@@ -1,8 +1,9 @@
 {
-  "name": "core-client-rcl",
-  "version": "0.0.1",
-  "private": true,
+  "name": "pankosmia-rcl",
+  "version": "0.0.3",
+  "private": false,
   "homepage": "/clients/core-client-rcl",
+  "main": "src/rcl/index.js",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -27,6 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:vite": "vite build",
+    "build:package": "vite build",
     "dev": "vite"
   },
   "eslintConfig": {

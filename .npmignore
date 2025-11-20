@@ -1,0 +1,11 @@
+.*/
+/node_modules
+/public
+/src/demoHelpers
+/src/componentDemos
+/src/App.jsx
+/src/index.css
+/src/index.jsx
+/src/index.html
+index.html
+pankosmia_metadata.json

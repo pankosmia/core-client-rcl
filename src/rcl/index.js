@@ -1,7 +1,11 @@
 import InternetSwitch from './InternetSwitch';
-import DialogExample from './DialogExample';
-import Draw
+import PanDialog from './PanDialog';
+import DrawerComponent from "./DrawerComponent";
 
-export {
-    InternetSwitch, DialogExample
-}
+const exports = {
+    InternetSwitch,
+    PanDialog,
+    DrawerComponent
+};
+
+export default exports;
