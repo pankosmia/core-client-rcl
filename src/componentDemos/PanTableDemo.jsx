@@ -34,14 +34,20 @@ function PanTableDemo() {
         {
             field: 'author',
             headerName: doI18n("pages:content:row_author", i18nRef.current),
+            numeric: false,
+            disablePadding: false,
         },
         {
             field: 'date',
             headerName: doI18n("pages:content:row_date", i18nRef.current),
+            numeric: true,
+            disablePadding: false,
         },
         {
             field: 'message',
             headerName: doI18n("pages:content:row_message", i18nRef.current),
+            numeric: true,
+            disablePadding: false,
         }
     ];
 
