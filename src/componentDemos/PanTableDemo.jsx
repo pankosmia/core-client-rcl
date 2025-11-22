@@ -1,10 +1,17 @@
 import PanTable from '../rcl/PanTable';
-import {useContext} from "react";
+import {useState, useContext} from "react";
+import { FormControlLabel, Switch } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
 
 function PanTableDemo() {
 
     const {i18nRef} = useContext(i18nContext);
+    const [isFilterActive, setIsFilterActive] = useState(false);
+
+    const handleSwitchChange = (event) => {
+        // Update the boolean state when the switch changes
+        setIsFilterActive(event.target.checked);
+    };
 
     const commits = [
         {
@@ -62,11 +69,27 @@ function PanTableDemo() {
         }
     });
 
-    return <PanTable
+    const currentFilterFunction = isFilterActive 
+    ? (row) => String(row.author).toLowerCase().includes('mark')
+    : (row) => true;
+
+    return <>
+        <FormControlLabel
+            control={
+                <Switch
+                    checked={isFilterActive}
+                    onChange={handleSwitchChange}
+                    slotProps={{ 'aria-label': 'controlled filter switch' }}
+                />
+            }
+            label={isFilterActive ? "Filtering: Only Mark" : "Filtering: Show All"}
+        />
+        <PanTable
             columns={columns}
             rows={rows}
-            defaultFilter={(row) => String(row.author).toLowerCase().includes('elias')}
+            defaultFilter={currentFilterFunction}
         />
+    </>       
 }
 
 export default PanTableDemo;
