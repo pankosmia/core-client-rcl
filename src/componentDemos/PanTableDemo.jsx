@@ -8,7 +8,7 @@ function PanTableDemo() {
 
     const commits = [
         {
-            author: "Mark Howe <mvahowe@gmail.com>",
+            author: "Elías Piñero <eliasrpt15@gmail.com>",
             date: "Mon Jul  7 14:20:09 2025 +0200",
             epoch: 1751890809,
             id: "93699759a580f69ac19a037fdbced61969c5e7f9",

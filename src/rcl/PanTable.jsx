@@ -1,6 +1,7 @@
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import PropTypes from 'prop-types';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, InputAdornment } from "@mui/material";
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 function descendingComparator(a, b, orderBy) {
@@ -20,10 +21,32 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-    const {order, orderBy, onRequestSort, commitsColumns } = props;
+    const {order, orderBy, onRequestSort, commitsColumns, columnFilters, setColumnFilter } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [activeField, setActiveField] = useState(null);
+
+    const handleFilterClick = (event, field) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+        setActiveField(field);
+    };
+
+    const handleFilterClose = () => {
+        setAnchorEl(null);
+        setActiveField(null);
+    };
+
+    const handleFilterChange = (event) => {
+        const text = event.target.value;
+        setColumnFilter(activeField, text);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'filter-popover' : undefined;
 
     return (
         <TableHead>
@@ -47,9 +70,35 @@ function EnhancedTableHead(props) {
                             </Box>
                             ) : null}
                         </TableSortLabel>
+                        <IconButton 
+                            size="small" 
+                            onClick={(e) => handleFilterClick(e, c.field)}
+                            sx={{ ml: 1, p: 0 }}
+                            color={columnFilters[c.field] ? 'primary' : 'default'} 
+                        >
+                            <FilterListIcon fontSize="small" />
+                        </IconButton>
                     </TableCell>
                 ))}
             </TableRow>
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleFilterClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            >
+                <Box sx={{ p: 2 }}>
+                    <TextField
+                        label={`Filter ${activeField}`}
+                        variant="outlined"
+                        value={activeField ? columnFilters[activeField] : ''}
+                        onChange={handleFilterChange}
+                        size="small"
+                        autoFocus
+                    />
+                </Box>
+            </Popover>
         </TableHead>
     );
 }
@@ -59,12 +108,24 @@ EnhancedTableHead.propTypes = {
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     commitsColumns: PropTypes.array.isRequired,
+    setColumnFilter: PropTypes.func.isRequired,
+    columnFilters: PropTypes.object.isRequired,
 };
 
-export default function PanTable({commitsColumns, commitsRows}) {
+export default function PanTable({commitsColumns, commitsRows, defaultFilter = () => true}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
+
+    const [columnFilters, setColumnFilters] = useState({});
+
+    useEffect(() => {
+        const filters = {};
+        commitsColumns.forEach(col => {
+            filters[col.field] = '';
+        });
+        setColumnFilters(filters);
+    }, [commitsColumns]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -72,11 +133,37 @@ export default function PanTable({commitsColumns, commitsRows}) {
         setOrderBy(property);
     };
 
+    const updateColumnFilter = (field, value) => {
+        setColumnFilters(prev => ({ ...prev, [field]: value }));
+    };
+
+    const combinedFilter = useMemo(() => {
+        return (row) => {
+
+            if (!defaultFilter(row)) {
+                return false;
+            }
+
+            for (const field in columnFilters) {
+                const filterValue = columnFilters[field].toLowerCase();
+                if (filterValue) {
+                    const rowValue = String(row[field]).toLowerCase();
+                    if (!rowValue.includes(filterValue)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        };
+    }, [defaultFilter, columnFilters]);
+
     const visibleRows = useMemo(
         () =>
         [...commitsRows]
+            .filter(combinedFilter)
             .sort(getComparator(order, orderBy)),
-        [order, orderBy],
+        [order, orderBy, commitsRows, combinedFilter],
     );
 
     return (
@@ -89,15 +176,23 @@ export default function PanTable({commitsColumns, commitsRows}) {
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
                             commitsColumns={commitsColumns}
+                            setColumnFilter={updateColumnFilter}
+                            columnFilters={columnFilters}
                         />
                         <TableBody>
                             {visibleRows
                                 .map((row, n) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={n}>
-                                            <TableCell sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.author}</TableCell>
-                                            <TableCell align="left" sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.date}</TableCell>
-                                            <TableCell align="left" sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.message}</TableCell>
+                                            {commitsColumns.map((col) => (
+                                                <TableCell 
+                                                    key={col.field} 
+                                                    align={col.numeric ? 'right' : 'left'}
+                                                    sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
+                                                >
+                                                    {row[col.field]}
+                                                </TableCell>
+                                            ))}
                                         </TableRow>
                                     );
                                 })}
