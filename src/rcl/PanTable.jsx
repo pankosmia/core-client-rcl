@@ -21,7 +21,7 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-    const {order, orderBy, onRequestSort, commitsColumns, columnFilters, setColumnFilter } = props;
+    const {order, orderBy, onRequestSort, columns, columnFilters, setColumnFilter } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -51,7 +51,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {commitsColumns.map((c) => (
+                {columns.map((c) => (
                     <TableCell
                         key={c.field}
                         align={c.numeric ? 'right' : 'left'}
@@ -107,12 +107,12 @@ EnhancedTableHead.propTypes = {
     onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
-    commitsColumns: PropTypes.array.isRequired,
+    columns: PropTypes.array.isRequired,
     setColumnFilter: PropTypes.func.isRequired,
     columnFilters: PropTypes.object.isRequired,
 };
 
-export default function PanTable({commitsColumns, commitsRows, defaultFilter = () => true}) {
+export default function PanTable({columns, rows, defaultFilter = () => true}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
@@ -121,11 +121,11 @@ export default function PanTable({commitsColumns, commitsRows, defaultFilter = (
 
     useEffect(() => {
         const filters = {};
-        commitsColumns.forEach(col => {
+        columns.forEach(col => {
             filters[col.field] = '';
         });
         setColumnFilters(filters);
-    }, [commitsColumns]);
+    }, [columns]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -160,22 +160,22 @@ export default function PanTable({commitsColumns, commitsRows, defaultFilter = (
 
     const visibleRows = useMemo(
         () =>
-        [...commitsRows]
+        [...rows]
             .filter(combinedFilter)
             .sort(getComparator(order, orderBy)),
-        [order, orderBy, commitsRows, combinedFilter],
+        [order, orderBy, rows, combinedFilter],
     );
 
     return (
         <Box sx={{width:550, height: 700}}>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: { sm: 140, md: 170, lg: 200, xl: 250 } }}>
-                    <Table stickyHeader aria-label="commits sticky table" sx={{ tableLayout: 'fixed' }}>
+                    <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>
                         <EnhancedTableHead
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            commitsColumns={commitsColumns}
+                            columns={columns}
                             setColumnFilter={updateColumnFilter}
                             columnFilters={columnFilters}
                         />
@@ -184,7 +184,7 @@ export default function PanTable({commitsColumns, commitsRows, defaultFilter = (
                                 .map((row, n) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={n}>
-                                            {commitsColumns.map((col) => (
+                                            {columns.map((col) => (
                                                 <TableCell 
                                                     key={col.field} 
                                                     align={col.numeric ? 'right' : 'left'}

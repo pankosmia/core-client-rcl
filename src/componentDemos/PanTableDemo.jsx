@@ -30,7 +30,7 @@ function PanTableDemo() {
         }
     ]
 
-    const commitsColumns = [
+    const columns = [
         {
             field: 'author',
             headerName: doI18n("pages:content:row_author", i18nRef.current),
@@ -51,7 +51,7 @@ function PanTableDemo() {
         }
     ];
 
-    const commitsRows = commits.map((c, n) => {
+    const rows = commits.map((c, n) => {
         return {
             ...c,
             id: n,
@@ -63,8 +63,9 @@ function PanTableDemo() {
     });
 
     return <PanTable
-            commitsColumns={commitsColumns}
-            commitsRows={commitsRows}
+            columns={columns}
+            rows={rows}
+            defaultFilter={(row) => String(row.author).toLowerCase().includes('elias')}
         />
 }
 
