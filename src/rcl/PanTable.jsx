@@ -1,6 +1,6 @@
 import {useState, useMemo, useEffect} from "react";
 import PropTypes from 'prop-types';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
@@ -112,7 +112,7 @@ EnhancedTableHead.propTypes = {
     columnFilters: PropTypes.object.isRequired,
 };
 
-export default function PanTable({columns, rows, defaultFilter = () => true}) {
+export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
@@ -168,6 +168,14 @@ export default function PanTable({columns, rows, defaultFilter = () => true}) {
 
     return (
         <Box sx={{width:550, height: 700}}>
+            {filterPreset && 
+            <Box>
+                <Stack direction="row" spacing={1}>
+                    {filterPreset.map((c) => {
+                        return <Chip label={c.label} variant="outlined" color="secondary" onClick={() => { setDefaultFilter(() => c.filter) }} />
+                    })}
+                </Stack>
+            </Box>}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: { sm: 140, md: 170, lg: 200, xl: 250 } }}>
                     <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>

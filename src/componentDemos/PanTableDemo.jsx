@@ -1,5 +1,5 @@
 import PanTable from '../rcl/PanTable';
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect} from "react";
 import { FormControlLabel, Switch } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
 
@@ -8,10 +8,19 @@ function PanTableDemo() {
     const {i18nRef} = useContext(i18nContext);
     const [isFilterActive, setIsFilterActive] = useState(false);
 
+    const [defaultFilter, setDefaultFilter] = useState(() => (row) => true);
+
     const handleSwitchChange = (event) => {
-        // Update the boolean state when the switch changes
         setIsFilterActive(event.target.checked);
     };
+
+    useEffect(() => {
+        if (isFilterActive) {
+            setDefaultFilter(() => (row) => String(row.author).toLowerCase().includes('mark'))
+        } else {
+            setDefaultFilter(() => (row) => true)
+        }
+    },[isFilterActive]);
 
     const commits = [
         {
@@ -34,6 +43,13 @@ function PanTableDemo() {
             epoch: 1751889376,
             id: "847d904e7fee7454dc6d2c71f5a65263caa17ead",
             message: "First commit\n"
+        },
+        {
+            author: "Loïse <loïse@gmail.com>",
+            date: "Mon Jul  9 15:56:16 2025 +0200",
+            epoch: 1751889327,
+            id: "848d904e7fee7454dc6d2c71f5a65263caa17ead",
+            message: "Test commit\n"
         }
     ]
 
@@ -69,9 +85,22 @@ function PanTableDemo() {
         }
     });
 
-    const currentFilterFunction = isFilterActive 
-    ? (row) => String(row.author).toLowerCase().includes('mark')
-    : (row) => true;
+    const filterExample = [
+        {
+            "label": "Mark's commits",
+            "filter": row => String(row.author).toLowerCase().includes("mark")
+        },
+        {
+            "label": "Elias' commits",
+            "filter": row => String(row.author).toLowerCase().includes("elias")
+        },
+        {
+            "label": "Anyone but Mark and Elias' commits",
+            "filter": row => !String(row.author).toLowerCase().includes("mark") && !String(row.author).toLowerCase().includes("elias")
+        }
+    ];
+
+    
 
     return <>
         <FormControlLabel
@@ -87,7 +116,9 @@ function PanTableDemo() {
         <PanTable
             columns={columns}
             rows={rows}
-            defaultFilter={currentFilterFunction}
+            defaultFilter={defaultFilter}
+            setDefaultFilter={setDefaultFilter}
+            filterPreset={filterExample}
         />
     </>       
 }
