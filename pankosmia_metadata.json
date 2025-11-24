@@ -13,6 +13,9 @@
     },
     "stub_content": {
       "en": "Content goes here"
+    },
+    "label":{
+      "en":"label"
     }
   }
 }

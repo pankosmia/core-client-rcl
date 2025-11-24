@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Box } from "@mui/material";
-import { InternetSwitchDemo } from './componentDemos';
+import { FabDemo, InternetSwitchDemo } from './componentDemos';
 import DialogExampleDemo from './componentDemos/DialogExampleDemo';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
@@ -29,6 +29,9 @@ function App() {
       </Demo>
       <Demo title="Drawer">
         <DrawerDemo />
+      </Demo>
+      <Demo title="Fab">
+        <FabDemo/>
       </Demo>
     </Demos>
   </Box>

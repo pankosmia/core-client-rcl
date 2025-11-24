@@ -2,9 +2,7 @@ import DrawerComponent from '../rcl/DrawerComponent';
 import {useContext, useState, useEffect, useRef} from "react";
 import {debugContext, getJson} from "pithekos-lib";
 
-
 function DrawerDemo() {
-
     const {debugRef} = useContext(debugContext);
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const [menuItems, setMenuItems] = useState([]);

@@ -18,7 +18,6 @@ export default function InternetSwitch({enableInternet, handleInternetToggleClic
 
     const {i18nRef} = useContext(i18nContext);
     const {enabledRef} = useContext(netContext);
-
     const handleClose = () => {
         setInternetDialogOpen(false);
     };
