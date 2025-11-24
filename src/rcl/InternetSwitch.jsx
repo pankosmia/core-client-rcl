@@ -1,23 +1,24 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
+    AppBar,
     Box, Button,
     Chip,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    Toolbar,
     Typography
 } from "@mui/material";
 import AirplanemodeInactiveOutlinedIcon from '@mui/icons-material/AirplanemodeInactiveOutlined';
 import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
-import {i18nContext, netContext, doI18n} from "pithekos-lib";
+import { i18nContext, netContext, doI18n } from "pithekos-lib";
 
 
-export default function InternetSwitch({enableInternet, handleInternetToggleClick, internetDialogOpen, setInternetDialogOpen}) {
+export default function InternetSwitch({ enableInternet, handleInternetToggleClick, internetDialogOpen, setInternetDialogOpen }) {
 
-    const {i18nRef} = useContext(i18nContext);
-    const {enabledRef} = useContext(netContext);
+    const { i18nRef } = useContext(i18nContext);
+    const { enabledRef } = useContext(netContext);
     const handleClose = () => {
         setInternetDialogOpen(false);
     };
@@ -41,11 +42,17 @@ export default function InternetSwitch({enableInternet, handleInternetToggleClic
                     },
                 }}
             >
-                <DialogTitle><b>{doI18n("components:header:internet_question_label", i18nRef.current)}</b></DialogTitle>
+                <AppBar color='secondary' sx={{ position: 'relative', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
+                    <Toolbar>
+                        <Typography variant="h6" component="div">
+                         {doI18n("components:header:internet_question_label", i18nRef.current)}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
                 <DialogContent>
                     <DialogContentText>
                         <Typography>
-                            {doI18n("components:header:internet_question", i18nRef.current)}tra la la
+                            {doI18n("components:header:internet_question", i18nRef.current)}
                         </Typography>
                     </DialogContentText>
                 </DialogContent>
