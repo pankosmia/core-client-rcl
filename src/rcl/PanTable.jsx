@@ -1,8 +1,10 @@
 import {useState, useMemo, useEffect} from "react";
 import PropTypes from 'prop-types';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip, Checkbox, Toolbar, Typography, Tooltip } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
+import { alpha } from '@mui/material/styles';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -21,7 +23,7 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-    const {order, orderBy, onRequestSort, columns, columnFilters, setColumnFilter } = props;
+    const {onSelectAllClick, numSelected, order, orderBy, rowCount, onRequestSort, columns, columnFilters, setColumnFilter, showColumnFilters, showCheckboxes } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -51,10 +53,22 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
+                {showCheckboxes && 
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        color="primary"
+                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                        checked={rowCount > 0 && numSelected === rowCount}
+                        onChange={onSelectAllClick}
+                        slotProps={{
+                        'aria-label': 'select all rows',
+                        }}
+                    />
+                </TableCell>}
                 {columns.map((c) => (
                     <TableCell
                         key={c.field}
-                        align={c.numeric ? 'right' : 'left'}
+                        align={c.alignRight ? 'right' : 'left'}
                         padding={c.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === c.field ? order : false}
                     >
@@ -70,6 +84,8 @@ function EnhancedTableHead(props) {
                             </Box>
                             ) : null}
                         </TableSortLabel>
+                        {/* Show or hide column filters */}
+                        {(showColumnFilters && !c.numeric) && 
                         <IconButton 
                             size="small" 
                             onClick={(e) => handleFilterClick(e, c.field)}
@@ -77,7 +93,7 @@ function EnhancedTableHead(props) {
                             color={columnFilters[c.field] ? 'primary' : 'default'} 
                         >
                             <FilterListIcon fontSize="small" />
-                        </IconButton>
+                        </IconButton>}
                     </TableCell>
                 ))}
             </TableRow>
@@ -112,10 +128,80 @@ EnhancedTableHead.propTypes = {
     columnFilters: PropTypes.object.isRequired,
 };
 
-export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset}) {
+function EnhancedTableToolbar(props) {
+    const { numSelected, selectedIds, clearSelection } = props;
+
+    // Definition of an action handler
+    const handleDeleteSelected = () => {
+        // You would typically call a function passed down from the parent
+        console.log("Action triggered for selected IDs:", selectedIds);
+        alert(`Deleting ${numSelected} items: ${selectedIds.join(', ')}`);
+        
+        clearSelection(); 
+    };
+
+    return (
+        <Toolbar
+            sx={{
+                pl: { sm: 2 },
+                pr: { xs: 1, sm: 1 },
+                // Conditional styling
+                ...(numSelected > 0 && {
+                    bgcolor: (theme) =>
+                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+                }),
+            }}
+        >
+            {numSelected > 0 ? (
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    color="inherit"
+                    variant="subtitle1"
+                    component="div"
+                >
+                    {numSelected} selected
+                </Typography>
+            ) : (
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                    Your Table Title
+                </Typography>
+            )}
+
+            {numSelected > 0 ? (
+                // Action button
+                <Tooltip title="Delete Selected Items">
+                    <IconButton onClick={handleDeleteSelected}>
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+            ) : (
+                // General filter icon if nothing is selected
+                <Tooltip title="Filter list">
+                    <IconButton>
+                        <FilterListIcon />
+                    </IconButton>
+                </Tooltip>
+            )}
+        </Toolbar>
+    );
+}
+
+EnhancedTableToolbar.propTypes = {
+    numSelected: PropTypes.number.isRequired,
+    selectedIds: PropTypes.array.isRequired,
+    clearSelection: PropTypes.func.isRequired,
+};
+
+export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset, showColumnFilters, showCheckboxes}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
+    const [selected, setSelected] = useState([]);
 
     const [columnFilters, setColumnFilters] = useState({});
 
@@ -133,6 +219,38 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
         setOrderBy(property);
     };
 
+    const handleSelectAllClick = (event) => {
+        if (event.target.checked) {
+          const newSelected = rows.map((n) => n.id);
+          setSelected(newSelected);
+          return;
+        }
+        setSelected([]);
+      };
+    
+      const handleClick = (event, id) => {
+        const selectedIndex = selected.indexOf(id);
+        let newSelected = [];
+    
+        if (selectedIndex === -1) {
+          newSelected = newSelected.concat(selected, id);
+        } else if (selectedIndex === 0) {
+          newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+          newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+          newSelected = newSelected.concat(
+            selected.slice(0, selectedIndex),
+            selected.slice(selectedIndex + 1),
+          );
+        }
+        setSelected(newSelected);
+    };
+
+    const handleClearSelection = () => {
+        setSelected([]);
+    };
+
     const updateColumnFilter = (field, value) => {
         setColumnFilters(prev => ({ ...prev, [field]: value }));
     };
@@ -140,7 +258,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
     const combinedFilter = useMemo(() => {
         return (row) => {
 
-            if (!defaultFilter(row)) {
+            if (defaultFilter && !defaultFilter(row)) {
                 return false;
             }
 
@@ -176,22 +294,50 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                     })}
                 </Stack>
             </Box>}
+            {showCheckboxes && (
+                <EnhancedTableToolbar 
+                    numSelected={selected.length} 
+                    selectedIds={selected} 
+                    clearSelection={handleClearSelection}
+                />
+            )}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: { sm: 140, md: 170, lg: 200, xl: 250 } }}>
                     <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>
                         <EnhancedTableHead
+                            numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
+                            rowCount={visibleRows.length}
                             columns={columns}
                             setColumnFilter={updateColumnFilter}
                             columnFilters={columnFilters}
+                            showColumnFilters={showColumnFilters}
+                            showCheckboxes={showCheckboxes}
                         />
                         <TableBody>
                             {visibleRows
                                 .map((row, n) => {
+                                    console.log(row);
+                                    const isItemSelected = selected.includes(row.id);
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={n}>
+                                        <TableRow 
+                                            hover 
+                                            onClick={(event) => handleClick(event, row.id)} 
+                                            role="checkbox" 
+                                            tabIndex={-1} 
+                                            key={row.id}
+                                            selected={isItemSelected}
+                                        >
+                                            {showCheckboxes &&
+                                            <TableCell padding="checkbox">
+                                                <Checkbox
+                                                    color="primary"
+                                                    checked={isItemSelected}
+                                                />
+                                            </TableCell>}
                                             {columns.map((col) => (
                                                 <TableCell 
                                                     key={col.field} 

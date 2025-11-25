@@ -51,7 +51,7 @@ function PanTableDemo() {
             id: "848d904e7fee7454dc6d2c71f5a65263caa17ead",
             message: "Test commit\n"
         }
-    ]
+    ];
 
     const columns = [
         {
@@ -59,18 +59,21 @@ function PanTableDemo() {
             headerName: doI18n("pages:content:row_author", i18nRef.current),
             numeric: false,
             disablePadding: false,
+            alignRight: true,
         },
         {
             field: 'date',
             headerName: doI18n("pages:content:row_date", i18nRef.current),
             numeric: true,
             disablePadding: false,
+            alignRight: true,
         },
         {
             field: 'message',
             headerName: doI18n("pages:content:row_message", i18nRef.current),
-            numeric: true,
+            numeric: false,
             disablePadding: false,
+            alignRight: true,
         }
     ];
 
@@ -119,6 +122,8 @@ function PanTableDemo() {
             defaultFilter={defaultFilter}
             setDefaultFilter={setDefaultFilter}
             filterPreset={filterExample}
+            showColumnFilters={false}
+            showCheckboxes={true}
         />
     </>       
 }
