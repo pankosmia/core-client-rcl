@@ -1,11 +1,6 @@
 .*/
-/node_modules
-/public
-/src/demoHelpers
-/src/componentDemos
-/src/App.jsx
-/src/index.css
-/src/index.jsx
-/src/index.html
+node_modules/
+public/
+src/
 index.html
 pankosmia_metadata.json
