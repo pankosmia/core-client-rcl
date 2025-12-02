@@ -127,7 +127,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected, selectedIds, clearSelection, tableTitle, groupOperations } = props;
+    const { numSelected, selectedIds, clearSelection, tableTitle, groupOperations, dataRows } = props;
 
     // Here we define the action handlers
     
@@ -143,12 +143,12 @@ function EnhancedTableToolbar(props) {
 
             groupOperations.forEach(operation => {
                 // Transforms the raw array action into a complete handler so the resulting handler no longer needs arguments when executed.
-                handlers[operation.label] = () => operation.action(context);
+                handlers[operation.label] = () => operation.action(context, dataRows);
             });
 
             return handlers;
         }
-    }, [selectedIds, numSelected]);
+    }, [selectedIds, numSelected, dataRows]);
 
     return (
         <Toolbar
@@ -325,6 +325,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                     clearSelection={handleClearSelection}
                     tableTitle={tableTitle}
                     groupOperations={groupOperations}
+                    dataRows={rows}
                 />
             )}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>

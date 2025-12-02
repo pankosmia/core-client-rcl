@@ -30,28 +30,28 @@ function PanTableDemo() {
             author: "Elías Piñero <eliasrpt15@gmail.com>",
             date: "Mon Jul  7 14:20:09 2025 +0200",
             epoch: 1751890809,
-            id: "93699759a580f69ac19a037fdbced61969c5e7f9",
+            commitId: "93699759a580f69ac19a037fdbced61969c5e7f9",
             message: "Add scope\n"
         },
         {
             author: "Mark Howe <mvahowe@gmail.com>",
             date: "Mon Jul  7 13:59:34 2025 +0200",
             epoch: 1751889574,
-            id: "db3265ee450320e306f1fd219492be648be4d7b4",
+            commitId: "db3265ee450320e306f1fd219492be648be4d7b4",
             message: "Add confidential\n"
         },
         {
             author: "Mark Howe <mvahowe@gmail.com>",
             date: "Mon Jul  7 13:56:16 2025 +0200",
             epoch: 1751889376,
-            id: "847d904e7fee7454dc6d2c71f5a65263caa17ead",
+            commitId: "847d904e7fee7454dc6d2c71f5a65263caa17ead",
             message: "First commit\n"
         },
         {
             author: "Loïse <loïse@gmail.com>",
             date: "Mon Jul  9 15:56:16 2025 +0200",
             epoch: 1751889327,
-            id: "848d904e7fee7454dc6d2c71f5a65263caa17ead",
+            commitId: "848d904e7fee7454dc6d2c71f5a65263caa17ead",
             message: "Test commit\n"
         }
     ];
@@ -84,7 +84,7 @@ function PanTableDemo() {
         return {
             ...c,
             id: n,
-            commitId: c.id,
+            commitId: c.commitId,
             author: c.author,
             date: c.date,
             message: c.message
@@ -110,24 +110,30 @@ function PanTableDemo() {
         {
             label: "Download selected",
             icon: CloudDownloadIcon,
-            action: (context) => {
-                alert(`Downloading IDs: ${context.selectedIds}`);
+            action: (context, allDataRows) => {
+                const selectedRowsData = allDataRows.filter(row => context.selectedIds.includes(row.id));
+                const authors = selectedRowsData.map(row => row.author).join(', ');
+                alert(`Downloading these authors: ${authors}`);
                 context.clearSelection();
             }
         },
         {
             label: "Archive selected",
             icon: HandymanIcon,
-            action: (context) => {
-                alert(`Archiving IDs: ${context.selectedIds}`);
+            action: (context, allDataRows) => {
+                const selectedRowsData = allDataRows.filter(row => context.selectedIds.includes(row.id));
+                const dates = selectedRowsData.map(row => row.date).join(', ');
+                alert(`Archiving these commit dates: ${dates}`);
                 context.clearSelection();
             }
         },
         {
             label: "Delete selected",
             icon: DeleteIcon,
-            action: (context) => {
-                alert(`Deleting ${context.numSelected} items with the IDs: ${context.selectedIds.join(', ')}`);
+            action: (context, allDataRows) => {
+                const selectedRowsData = allDataRows.filter(row => context.selectedIds.includes(row.id));
+                const messages = selectedRowsData.map(row => row.message).join(', ');
+                alert(`Deleting these commit messages: ${messages}`);
                 context.clearSelection();
             }
         }
