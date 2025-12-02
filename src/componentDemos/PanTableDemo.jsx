@@ -2,6 +2,9 @@ import PanTable from '../rcl/PanTable';
 import {useState, useContext, useEffect} from "react";
 import { FormControlLabel, Switch } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
+import DeleteIcon from '@mui/icons-material/Delete';
+import HandymanIcon from '@mui/icons-material/Handyman';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 function PanTableDemo() {
 
@@ -59,21 +62,21 @@ function PanTableDemo() {
             headerName: doI18n("pages:content:row_author", i18nRef.current),
             numeric: false,
             disablePadding: false,
-            alignRight: true,
+            alignRight: false,
         },
         {
             field: 'date',
             headerName: doI18n("pages:content:row_date", i18nRef.current),
             numeric: true,
             disablePadding: false,
-            alignRight: true,
+            alignRight: false,
         },
         {
             field: 'message',
             headerName: doI18n("pages:content:row_message", i18nRef.current),
             numeric: false,
             disablePadding: false,
-            alignRight: true,
+            alignRight: false,
         }
     ];
 
@@ -103,6 +106,33 @@ function PanTableDemo() {
         }
     ];
 
+    const operationsDefinitionsExample = [
+        {
+            label: "Download selected",
+            icon: CloudDownloadIcon,
+            action: (context) => {
+                alert(`Downloading IDs: ${context.selectedIds}`);
+                context.clearSelection();
+            }
+        },
+        {
+            label: "Archive selected",
+            icon: HandymanIcon,
+            action: (context) => {
+                alert(`Archiving IDs: ${context.selectedIds}`);
+                context.clearSelection();
+            }
+        },
+        {
+            label: "Delete selected",
+            icon: DeleteIcon,
+            action: (context) => {
+                alert(`Deleting ${context.numSelected} items with the IDs: ${context.selectedIds.join(', ')}`);
+                context.clearSelection();
+            }
+        }
+    ];
+
     
 
     return <>
@@ -123,7 +153,9 @@ function PanTableDemo() {
             setDefaultFilter={setDefaultFilter}
             filterPreset={filterExample}
             showColumnFilters={false}
-            showCheckboxes={true}
+          /*   showCheckboxes={true} */
+            tableTitle={"Hola this is my table"}
+            groupOperations={operationsDefinitionsExample}
         />
     </>       
 }

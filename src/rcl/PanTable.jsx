@@ -1,8 +1,7 @@
 import {useState, useMemo, useEffect} from "react";
 import PropTypes from 'prop-types';
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip, Checkbox, Toolbar, Typography, Tooltip } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip, Checkbox, Toolbar, Typography, Tooltip, Button } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 
@@ -23,7 +22,7 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-    const {onSelectAllClick, numSelected, order, orderBy, rowCount, onRequestSort, columns, columnFilters, setColumnFilter, showColumnFilters, showCheckboxes } = props;
+    const {onSelectAllClick, numSelected, order, orderBy, rowCount, onRequestSort, columns, columnFilters, setColumnFilter, showColumnFilters, groupOperations } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -53,16 +52,14 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {showCheckboxes && 
+                {groupOperations && 
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
-                        slotProps={{
-                        'aria-label': 'select all rows',
-                        }}
+                        slotProps={{ 'aria-label': 'select all rows' }}
                     />
                 </TableCell>}
                 {columns.map((c) => (
@@ -86,14 +83,15 @@ function EnhancedTableHead(props) {
                         </TableSortLabel>
                         {/* Show or hide column filters */}
                         {(showColumnFilters && !c.numeric) && 
-                        <IconButton 
-                            size="small" 
-                            onClick={(e) => handleFilterClick(e, c.field)}
-                            sx={{ ml: 1, p: 0 }}
-                            color={columnFilters[c.field] ? 'primary' : 'default'} 
-                        >
-                            <FilterListIcon fontSize="small" />
-                        </IconButton>}
+                            <IconButton 
+                                size="small" 
+                                onClick={(e) => handleFilterClick(e, c.field)}
+                                sx={{ ml: 1, p: 0 }}
+                                color={columnFilters[c.field] ? 'primary' : 'default'} 
+                            >
+                                <FilterListIcon fontSize="small" />
+                            </IconButton>
+                        }
                     </TableCell>
                 ))}
             </TableRow>
@@ -129,16 +127,28 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected, selectedIds, clearSelection } = props;
+    const { numSelected, selectedIds, clearSelection, tableTitle, groupOperations } = props;
 
-    // Definition of an action handler
-    const handleDeleteSelected = () => {
-        // You would typically call a function passed down from the parent
-        console.log("Action triggered for selected IDs:", selectedIds);
-        alert(`Deleting ${numSelected} items: ${selectedIds.join(', ')}`);
-        
-        clearSelection(); 
-    };
+    // Here we define the action handlers
+    
+    const hydratedHandlers = useMemo(() => {
+        if (groupOperations && groupOperations.length > 0) {
+            const context = {
+                selectedIds,
+                numSelected,
+                clearSelection
+            };
+
+            const handlers = {};
+
+            groupOperations.forEach(operation => {
+                // Transforms the raw array action into a complete handler so the resulting handler no longer needs arguments when executed.
+                handlers[operation.label] = () => operation.action(context);
+            });
+
+            return handlers;
+        }
+    }, [selectedIds, numSelected]);
 
     return (
         <Toolbar
@@ -161,31 +171,45 @@ function EnhancedTableToolbar(props) {
                 >
                     {numSelected} selected
                 </Typography>
-            ) : (
+            ) : tableTitle && (
                 <Typography
                     sx={{ flex: '1 1 100%' }}
                     variant="h6"
                     id="tableTitle"
                     component="div"
                 >
-                    Your Table Title
+                    {tableTitle}
                 </Typography>
             )}
 
             {numSelected > 0 ? (
-                // Action button
-                <Tooltip title="Delete Selected Items">
-                    <IconButton onClick={handleDeleteSelected}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
+                // Action buttons
+                <>
+                    {groupOperations && groupOperations.map((operation, index) => {
+                        const IconComponent = operation.icon; 
+                        const specificHandler = hydratedHandlers[operation.label];
+
+                        return (
+                            <Tooltip title={operation.label} key={index}>
+                                <IconButton 
+                                    onClick={specificHandler} 
+                                    disabled={numSelected === 0}
+                                >
+                                    <IconComponent />
+                                </IconButton>
+                            </Tooltip>
+                        );
+                    })}
+                </>
             ) : (
-                // General filter icon if nothing is selected
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
+                // Here we can add an icon for filtering if nothing is selected
+                <>
+                    {/* <Tooltip title="Filter list">
+                        <IconButton>
+                            <FilterListIcon />
+                        </IconButton>
+                    </Tooltip> */}
+                </>
             )}
         </Toolbar>
     );
@@ -197,7 +221,7 @@ EnhancedTableToolbar.propTypes = {
     clearSelection: PropTypes.func.isRequired,
 };
 
-export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset, showColumnFilters, showCheckboxes}) {
+export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset, showColumnFilters, tableTitle, groupOperations}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
@@ -294,11 +318,13 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                     })}
                 </Stack>
             </Box>}
-            {showCheckboxes && (
+            {groupOperations && (
                 <EnhancedTableToolbar 
                     numSelected={selected.length} 
                     selectedIds={selected} 
                     clearSelection={handleClearSelection}
+                    tableTitle={tableTitle}
+                    groupOperations={groupOperations}
                 />
             )}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -315,12 +341,11 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                             setColumnFilter={updateColumnFilter}
                             columnFilters={columnFilters}
                             showColumnFilters={showColumnFilters}
-                            showCheckboxes={showCheckboxes}
+                            groupOperations={groupOperations}
                         />
                         <TableBody>
                             {visibleRows
                                 .map((row, n) => {
-                                    console.log(row);
                                     const isItemSelected = selected.includes(row.id);
                                     return (
                                         <TableRow 
@@ -331,7 +356,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                                             key={row.id}
                                             selected={isItemSelected}
                                         >
-                                            {showCheckboxes &&
+                                            {groupOperations &&
                                             <TableCell padding="checkbox">
                                                 <Checkbox
                                                     color="primary"
@@ -341,7 +366,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                                             {columns.map((col) => (
                                                 <TableCell 
                                                     key={col.field} 
-                                                    align={col.numeric ? 'right' : 'left'}
+                                                    align={col.alignRight ? 'right' : 'left'}
                                                     sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
                                                 >
                                                     {row[col.field]}
