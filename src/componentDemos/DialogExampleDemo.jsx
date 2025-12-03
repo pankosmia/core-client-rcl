@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PanDialog from "../rcl/PanDialog";
+import PanDialog from "../../rclStash/PanDialog";
 import { Button } from "@mui/material";
 
 export default function DialogExampleDemo() {

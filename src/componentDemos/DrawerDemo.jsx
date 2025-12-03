@@ -1,4 +1,4 @@
-import DrawerComponent from '../rcl/DrawerComponent';
+import DrawerComponent from '../../rclStash/DrawerComponent';
 import {useContext, useState, useEffect, useRef} from "react";
 import {debugContext, getJson} from "pithekos-lib";
 
