@@ -17,10 +17,10 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       external: ["react", "react-dom"],
-      output: {
+/*      output: {
         name: "pankosmia-rcl",
         globals: { 'react': 'React', 'react-dom': 'ReactDom' }
-      }
+      }*/
     },
     lib: {
       entry: path.resolve(__dirname, './src/rcl/index.js'),

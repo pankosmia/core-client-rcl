@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
     Box, Button,
     Chip,
@@ -11,13 +11,14 @@ import {
 } from "@mui/material";
 import AirplanemodeInactiveOutlinedIcon from '@mui/icons-material/AirplanemodeInactiveOutlined';
 import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
-import {i18nContext, netContext, doI18n} from "pithekos-lib";
 
 
-export default function InternetSwitch({enableInternet, handleInternetToggleClick, internetDialogOpen, setInternetDialogOpen}) {
+export default function InternetSwitch({internetState, enableInternet, handleInternetToggleClick, internetDialogOpen, setInternetDialogOpen}) {
 
-    const {i18nRef} = useContext(i18nContext);
-    const {enabledRef} = useContext(netContext);
+    // const {i18nRef} = useContext(i18nContext);
+    // const {enabledRef} = useContext(netContext);
+    const doI18n = s => s;
+    const i18nRef = {current: ""}
 
     const handleClose = () => {
         setInternetDialogOpen(false);
@@ -26,10 +27,10 @@ export default function InternetSwitch({enableInternet, handleInternetToggleClic
     return (
         <Box>
             <Chip
-                icon={enabledRef.current ? <AirplanemodeInactiveOutlinedIcon /> : <AirplanemodeActiveOutlinedIcon />}
+                icon={internetState ? <AirplanemodeInactiveOutlinedIcon /> : <AirplanemodeActiveOutlinedIcon />}
                 label={doI18n("components:header:offline_mode", i18nRef.current)}
                 onClick={handleInternetToggleClick}
-                color={enabledRef.current ? "appbar-chip-inactive" : "secondary"}
+                color={internetState ? "appbar-chip-inactive" : "secondary"}
                 variant="Filled"
             />
             <Dialog
