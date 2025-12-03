@@ -19,7 +19,7 @@ export default defineConfig({
       external: ["react", "react-dom"],
       output: {
         name: "pankosmia-rcl",
-        globals: { 'react': 'react', 'react-dom': 'react-dom' }
+        globals: { 'react': 'React', 'react-dom': 'ReactDom' }
       }
     },
     lib: {
