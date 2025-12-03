@@ -15,6 +15,13 @@ export default defineConfig({
   build: {
     outDir: 'build',
     emptyOutDir: true,
+    rollupOptions: {
+      external: ["react", "react-dom"],
+      output: {
+        name: "pankosmia-rcl",
+        globals: { 'react': 'react', 'react-dom': 'react-dom' }
+      }
+    },
     lib: {
       entry: path.resolve(__dirname, './src/rcl/index.js'),
       name: 'pankosmia-rcl',
