@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Drawer,
@@ -14,14 +14,40 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import {i18nContext, netContext, debugContext, doI18n} from "pithekos-lib";
+import {doI18n, getJson} from "pithekos-lib";
 
+export default function AppbarHamburger({i18n, netEnabled, debug}) {
 
-export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItems, toggleDebug, showAdvanced, setShowAdvanced, drawerWidth, measurementRef }) {
+    const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+    const [showAdvanced, setShowAdvanced] = useState(false);
+    const [menuItems, setMenuItems] = useState([]);
 
-    const {i18nRef} = useContext(i18nContext);
-    const {enabledRef} = useContext(netContext);
-    const {debugRef} = useContext(debugContext);
+    useEffect(
+        () => {
+            const doFetch = async () => {
+                const fetched = await getJson("/list-clients", debug);
+                if (fetched.ok) {
+                    setMenuItems(
+                        fetched.json.filter(
+                            i => !i.exclude_from_menu && (debug || !i.requires.debug)
+                        )
+                    );
+                }
+            };
+            doFetch().then();
+        },
+        [debug]
+    );
+
+    const toggleDebug = (ev) => {
+        getJson(`/debug/${debug} ? "disable" : "enable"}`)
+            .then(
+                () => {
+                    ev.stopPropagation();
+                    ev.preventDefault();
+                }
+            );
+    };
 
     return (
         <Box sx={{m: 0, mr: 2}}>
@@ -31,9 +57,9 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
             <Drawer
                 open={drawerIsOpen} 
                 onClose={() => setDrawerIsOpen(false)} 
-                slotProps={{ paper: { sx: { width: drawerWidth, overflow: 'hidden' } } }}
+                slotProps={{ paper: { sx: { width: "auto", overflow: 'hidden' } } }}
             >
-                <Box sx={{width: "100%", minHeight: '98vh', m: 0, p: 0}} role="presentation">                         
+                <Box sx={{width: "100%", minHeight: '98vh', minWidth: "20vw", m: 0, p: 0}} role="presentation">
                     <List sx={{ height: '100%', width: '100%' }}>
                         <Stack
                             direction="column"
@@ -49,22 +75,15 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                                 {
                                     menuItems
                                     .map(
-                                        (mi, n) => /* mi.id === currentId ?
-                                            <ListItem key={n} disablePadding onClick={() => setDrawerIsOpen(false)}>
-                                                <ListItemButton selected={true} >
-                                                    <ListItemText
-                                                        primary={doI18n(`pages:${mi.id}:title`, i18nRef.current)}/>
-                                                </ListItemButton>
-                                            </ListItem> : */
-                                            <ListItem key={n} disablePadding>
+                                        (mi, n) => <ListItem key={n} disablePadding>
                                                 <ListItemButton
-                                                    disabled={mi.requires.net && !enabledRef.current}
+                                                    disabled={mi.requires.net && !netEnabled.current}
                                                     onClick={() => {
                                                         window.location.href = mi.url
                                                     }}
                                                 >
                                                     <ListItemText
-                                                        primary={doI18n(`pages:${mi.id}:title`, i18nRef.current)}/>
+                                                        primary={doI18n(`pages:${mi.id}:title`, i18n)}/>
                                                 </ListItemButton>
                                             </ListItem>
                                     )
@@ -76,29 +95,29 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                                         /* selected={currentId.includes("settings")}  */
                                         onClick={ () => { window.location.href = "/clients/settings" }} 
                                     >
-                                        <ListItemText primary={doI18n("pages:core-settings:title", i18nRef.current)}/>
+                                        <ListItemText primary={doI18n("pages:core-settings:title", i18n)}/>
                                     </ListItemButton> 
                                 </ListItem>
-                                <ListItem sx={{width: drawerWidth}} disablePadding>
+                                <ListItem sx={{width: "auto"}} disablePadding>
                                     <ListItemButton onClick={() => setShowAdvanced(a => !a)}>
-                                        <ListItemText primary={doI18n(`components:header:advanced`, i18nRef.current)} />
+                                        <ListItemText primary={doI18n(`components:header:advanced`, i18n)} />
                                         {showAdvanced ? <ExpandLess /> : <ExpandMore />}
                                     </ListItemButton>
                                 </ListItem>
                                 <Collapse in={showAdvanced} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding>
                                         <ListItemButton onClick={toggleDebug} sx={{ pl:4 }}>
-                                            <ListItemText primary={doI18n(`components:header:experimental_mode`, i18nRef.current)} />
+                                            <ListItemText primary={doI18n(`components:header:experimental_mode`, i18n)} />
                                             <Switch
                                                 edge="end"
                                                 onChange={toggleDebug}
-                                                checked={debugRef.current}
+                                                checked={debug}
                                             />
                                         </ListItemButton>
                                     </List>
                                 </Collapse>
                                 <Box
-                                    ref={measurementRef}
+                                    // ref={measurementRef}
                                     sx={{
                                         visibility: 'hidden', 
                                         position: 'absolute', 
@@ -109,11 +128,11 @@ export default function DrawerComponent({drawerIsOpen, setDrawerIsOpen, menuItem
                                 >
                                     <List component="div" disablePadding>
                                         <ListItemButton onClick={toggleDebug} sx={{ pl:4 }}>
-                                            <ListItemText primary={doI18n(`components:header:experimental_mode`, i18nRef.current)} />
+                                            <ListItemText primary={doI18n(`components:header:experimental_mode`, i18n)} />
                                             <Switch
                                                 edge="end"
                                                 onChange={toggleDebug}
-                                                checked={debugRef.current}
+                                                checked={debug}
                                             />
                                         </ListItemButton>
                                     </List>

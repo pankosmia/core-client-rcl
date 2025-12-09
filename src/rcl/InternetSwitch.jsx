@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Box, Button,
     Chip,
@@ -11,31 +11,43 @@ import {
 } from "@mui/material";
 import AirplanemodeInactiveOutlinedIcon from '@mui/icons-material/AirplanemodeInactiveOutlined';
 import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActiveOutlined';
+import {doI18n, postEmptyJson} from 'pithekos-lib';
 
 
-export default function InternetSwitch({internetState, enableInternet, handleInternetToggleClick, internetDialogOpen, setInternetDialogOpen}) {
+export default function InternetSwitch({i18n, netEnabled, debug=false}) {
 
-    // const {i18nRef} = useContext(i18nContext);
-    // const {enabledRef} = useContext(netContext);
-    const doI18n = s => s;
-    const i18nRef = {current: ""}
-
-    const handleClose = () => {
+    const [internetDialogOpen, setInternetDialogOpen] = useState(false);
+    const handleCloseDialog = () => {
         setInternetDialogOpen(false);
+    };
+
+    const disableInternet = () => {
+        postEmptyJson('/net/disable', debug)
+    };
+
+    const enableInternet = () => {
+        postEmptyJson('/net/enable', debug)
+    };
+    const handleInternetToggleClick = () => {
+        if (!netEnabled) {
+            setInternetDialogOpen(true);
+        } else {
+            disableInternet();
+        }
     };
 
     return (
         <Box>
             <Chip
-                icon={internetState ? <AirplanemodeInactiveOutlinedIcon /> : <AirplanemodeActiveOutlinedIcon />}
-                label={doI18n("components:header:offline_mode", i18nRef.current)}
+                icon={netEnabled ? <AirplanemodeInactiveOutlinedIcon /> : <AirplanemodeActiveOutlinedIcon />}
+                label={doI18n("components:header:offline_mode", i18n)}
                 onClick={handleInternetToggleClick}
-                color={internetState ? "appbar-chip-inactive" : "secondary"}
+                color={netEnabled ? "appbar-chip-inactive" : "secondary"}
                 variant="Filled"
             />
             <Dialog
                 open={internetDialogOpen}
-                onClose={handleClose}
+                onClose={handleCloseDialog}
                 slotProps={{
                     paper: {
                         component: 'form',
@@ -43,20 +55,20 @@ export default function InternetSwitch({internetState, enableInternet, handleInt
                     },
                 }}
             >
-                <DialogTitle><b>{doI18n("components:header:internet_question_label", i18nRef.current)}</b></DialogTitle>
+                <DialogTitle><b>{doI18n("components:header:internet_question_label", i18n)}</b></DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <Typography>
-                            {doI18n("components:header:internet_question", i18nRef.current)}tra la la
+                            {doI18n("components:header:internet_question", i18n)}tra la la
                         </Typography>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>{doI18n("components:header:cancel", i18nRef.current)}</Button>
+                    <Button onClick={handleCloseDialog}>{doI18n("components:header:cancel", i18n)}</Button>
                     <Button onClick={() => {
                         enableInternet();
-                        handleClose();
-                    }}>{doI18n("components:header:accept", i18nRef.current)}</Button>
+                        handleCloseDialog();
+                    }}>{doI18n("components:header:accept", i18n)}</Button>
                 </DialogActions>
             </Dialog>
         </Box>

@@ -1,33 +1,16 @@
 import InternetSwitch from '../rcl/InternetSwitch';
-import {useContext, useState} from "react";
-import {debugContext, netContext, postEmptyJson} from "pithekos-lib";
+import {useContext} from "react";
+import {i18nContext, debugContext, netContext} from "pithekos-lib";
 
 function InternetSwitchDemo() {
-
-    const [internetDialogOpen, setInternetDialogOpen] = useState(false);
     const {enabledRef} = useContext(netContext);
+    const {i18nRef} = useContext(i18nContext);
     const {debugRef} = useContext(debugContext);
 
-    const disableInternet = () => {
-        postEmptyJson('/net/disable', debugRef.current)
-    };
-
-    const enableInternet = () => {
-        postEmptyJson('/net/enable', debugRef.current)
-    };
-    const handleInternetToggleClick = () => {
-        if (!enabledRef.current) {
-            setInternetDialogOpen(true);
-        } else {
-            disableInternet();
-        }
-    };
-
     return <InternetSwitch
-            enableInternet={enableInternet}
-            handleInternetToggleClick={handleInternetToggleClick}
-            internetDialogOpen={internetDialogOpen}
-            setInternetDialogOpen={setInternetDialogOpen}
+        i18n={i18nRef.current}
+        netEnabled={enabledRef.current}
+        debug={debugRef.current}
         />
 }
 
