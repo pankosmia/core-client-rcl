@@ -1,8 +1,10 @@
 {
-  "name": "core-client-rcl",
-  "version": "0.0.1",
-  "private": true,
+  "name": "pankosmia-rcl",
+  "version": "0.0.11",
+  "private": false,
   "homepage": "/clients/core-client-rcl",
+  "main": "build/pankosmia-rcl.umd.js",
+  "module": "build/pankosmia-rcl.es.js",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -27,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:vite": "vite build",
-    "dev": "vite"
+    "build:package": "vite build",
+    "dev": "vite",
+    "prepublishOnly": "rm -rf ./build && npm run build:vite"
   },
   "eslintConfig": {
     "extends": [

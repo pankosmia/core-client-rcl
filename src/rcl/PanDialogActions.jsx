@@ -1,11 +1,9 @@
 import { DialogActions } from "@mui/material";
-import PanDialogButton from "./PanDialogButton";
+import PanDialogButton from "./PanDialogInternals/PanDialogButton";
 
-export default function PanDialogActions ({closeFn,createButtonDisabled}) {
-    return <>
-        <DialogActions>
-           <PanDialogButton closeFn={closeFn} createButtonDisabled={createButtonDisabled}/>
+export default function PanDialogActions ({actionFn, actionLabel, closeFn, closeLabel, isDisabled}) {
+    return <DialogActions>
+        <PanDialogButton actionFn={() => {closeFn(); actionFn();}} isDisabled={isDisabled} label={actionLabel}/>
+        <PanDialogButton actionFn={closeFn} isDisabled={false} label={closeLabel}/>
         </DialogActions>
-    </>
-
 }

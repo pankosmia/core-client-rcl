@@ -1,9 +1,10 @@
 import InternetSwitch from './InternetSwitch';
-import DialogExample from './DialogExample';
-
+import AppbarHamburger from './AppbarHamburger';
+import PanDialog from './PanDialog';
+import PanDialogActions from "./PanDialogActions";
 export {
-    InternetSwitch
-}
-export {
-    DialogExample
-}
+    InternetSwitch,
+    AppbarHamburger,
+    PanDialog,
+    PanDialogActions
+};

@@ -1,10 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Box } from "@mui/material";
-import { InternetSwitchDemo } from './componentDemos';
-import DialogExampleDemo from './componentDemos/DialogExampleDemo';
+import { InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo } from './componentDemos';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
-import DrawerDemo from './componentDemos/DrawerDemo';
 import PanTableDemo from './componentDemos/PanTableDemo';
 
 function App() {
@@ -22,7 +20,10 @@ function App() {
 
   return <Box sx={{ maxHeight: maxWindowHeight }}>
     <Demos>
-      <Demo title="InternetSwitch">
+      <Demo title="Appbar Hamburger">
+        <AppbarHamburgerDemo />
+      </Demo>
+      <Demo title="Internet Switch">
         <InternetSwitchDemo />
       </Demo>
       <Demo title="Dialog">
@@ -30,9 +31,6 @@ function App() {
       </Demo>
       <Demo title="Drawer">
         <DrawerDemo />
-      </Demo>
-      <Demo title="PanTable">
-        <PanTableDemo />
       </Demo>
     </Demos>
   </Box>
