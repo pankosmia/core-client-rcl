@@ -171,7 +171,7 @@ function EnhancedTableToolbar(props) {
                 >
                     {numSelected} selected
                 </Typography>
-            ) : tableTitle && (
+            ) : (tableTitle ? (
                 <Typography
                     sx={{ flex: '1 1 100%' }}
                     variant="h6"
@@ -179,6 +179,14 @@ function EnhancedTableToolbar(props) {
                     component="div"
                 >
                     {tableTitle}
+                </Typography>) : 
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                    PanTable
                 </Typography>
             )}
 
@@ -328,6 +336,17 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                     dataRows={rows}
                 />
             )}
+            {(!groupOperations && tableTitle) &&
+            <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                    {tableTitle}
+                </Typography>
+            </Toolbar>}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: { sm: 140, md: 170, lg: 200, xl: 250 } }}>
                     <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>

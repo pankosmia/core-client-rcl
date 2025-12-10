@@ -1,6 +1,6 @@
 import PanTable from '../rcl/PanTable';
 import {useState, useContext, useEffect} from "react";
-import { FormControlLabel, Switch } from "@mui/material";
+import { FormControlLabel, Switch, Grid2 } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
 import DeleteIcon from '@mui/icons-material/Delete';
 import HandymanIcon from '@mui/icons-material/Handyman';
@@ -10,11 +10,35 @@ function PanTableDemo() {
 
     const {i18nRef} = useContext(i18nContext);
     const [isFilterActive, setIsFilterActive] = useState(false);
+    const [isChipFilterActive, setIsChipFilterActive] = useState(false);
+    const [chipsFilter, setChipsFilter] = useState(false);
+    const [isColumnFilterActive, setIsColumnFilterActive] = useState(false);
+    const [columnFilter, setColumnFilter] = useState(false);
+    const [isTitleActive, setIsTitleActive] = useState(false);
+    const [tableTitle, setTableTitle] = useState(null);
+    const [areGroupOpsActive, setAreGroupOpsActive] = useState(false);
+    const [groupOps, setGroupOps] = useState(null);
 
     const [defaultFilter, setDefaultFilter] = useState(() => (row) => true);
 
     const handleSwitchChange = (event) => {
         setIsFilterActive(event.target.checked);
+    };
+
+    const handleChipsFilterChange = (event) => {
+        setIsChipFilterActive(event.target.checked);
+    };
+
+    const handleColumnFilterChange = (event) => {
+        setIsColumnFilterActive(event.target.checked);
+    };
+
+    const handleTitleChange = (event) => {
+        setIsTitleActive(event.target.checked);
+    };
+
+    const handleGroupOpsChange = (event) => {
+        setAreGroupOpsActive(event.target.checked);
     };
 
     useEffect(() => {
@@ -24,6 +48,38 @@ function PanTableDemo() {
             setDefaultFilter(() => (row) => true)
         }
     },[isFilterActive]);
+
+    useEffect(() => {
+        if (isChipFilterActive) {
+            setChipsFilter(filterExample)
+        } else {
+            setChipsFilter(null)
+        }
+    },[isChipFilterActive]);
+
+    useEffect(() => {
+        if (isColumnFilterActive) {
+            setColumnFilter(true)
+        } else {
+            setColumnFilter(false)
+        }
+    },[isColumnFilterActive]);
+
+    useEffect(() => {
+        if (isTitleActive) {
+            setTableTitle("Given table title")
+        } else {
+            setTableTitle(null)
+        }
+    },[isTitleActive]);
+
+    useEffect(() => {
+        if (areGroupOpsActive) {
+            setGroupOps(operationsDefinitionsExample);
+        } else {
+            setGroupOps(null);
+        }
+    },[areGroupOpsActive]);
 
     const commits = [
         {
@@ -139,29 +195,78 @@ function PanTableDemo() {
         }
     ];
 
-    
-
     return <>
-        <FormControlLabel
-            control={
-                <Switch
-                    checked={isFilterActive}
-                    onChange={handleSwitchChange}
-                    slotProps={{ 'aria-label': 'controlled filter switch' }}
+        <Grid2 container spacing={2}>
+            <Grid2 size={1}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isFilterActive}
+                            onChange={handleSwitchChange}
+                            slotProps={{ 'aria-label': 'controlled filter switch' }}
+                        />
+                    }
+                    label={isFilterActive ? "Filtering: Only Mark" : "Filtering: Show All"}
                 />
-            }
-            label={isFilterActive ? "Filtering: Only Mark" : "Filtering: Show All"}
-        />
+            </Grid2>
+            <Grid2 size={1}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isChipFilterActive}
+                            onChange={handleChipsFilterChange}
+                            slotProps={{ 'aria-label': 'controlled filter switch' }}
+                        />
+                    }
+                    label={isChipFilterActive ? "Disable chips filter" : "Enable chips filter"}
+                />
+            </Grid2>
+            <Grid2 size={1}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isColumnFilterActive}
+                            onChange={handleColumnFilterChange}
+                            slotProps={{ 'aria-label': 'controlled filter switch' }}
+                        />
+                    }
+                    label={isColumnFilterActive ? "Disable column filter" : "Enable column filter"}
+                />
+            </Grid2>
+            <Grid2 size={1}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={isTitleActive}
+                            onChange={handleTitleChange}
+                            slotProps={{ 'aria-label': 'controlled filter switch' }}
+                        />
+                    }
+                    label={isTitleActive ? "Hide title" : "Show title"}
+                />
+            </Grid2>
+            <Grid2 size={1}>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={areGroupOpsActive}
+                            onChange={handleGroupOpsChange}
+                            slotProps={{ 'aria-label': 'controlled filter switch' }}
+                        />
+                    }
+                    label={areGroupOpsActive ? "Disable group operations" : "Enable group operations"}
+                />
+            </Grid2>
+        </Grid2>
         <PanTable
             columns={columns}
             rows={rows}
             defaultFilter={defaultFilter}
             setDefaultFilter={setDefaultFilter}
-            filterPreset={filterExample}
-            showColumnFilters={false}
-          /*   showCheckboxes={true} */
-            tableTitle={"Hola this is my table"}
-            groupOperations={operationsDefinitionsExample}
+            filterPreset={chipsFilter}
+            showColumnFilters={columnFilter}
+            tableTitle={tableTitle}
+            groupOperations={groupOps}
         />
     </>       
 }
