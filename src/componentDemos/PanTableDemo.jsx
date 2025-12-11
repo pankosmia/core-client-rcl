@@ -58,11 +58,7 @@ function PanTableDemo() {
     },[isChipFilterActive]);
 
     useEffect(() => {
-        if (isColumnFilterActive) {
-            setColumnFilter(true)
-        } else {
-            setColumnFilter(false)
-        }
+        setColumnFilter(isColumnFilterActive);
     },[isColumnFilterActive]);
 
     useEffect(() => {
@@ -206,7 +202,7 @@ function PanTableDemo() {
                             slotProps={{ 'aria-label': 'controlled filter switch' }}
                         />
                     }
-                    label={isFilterActive ? "Filtering: Only Mark" : "Filtering: Show All"}
+                    label="Mark only"
                 />
             </Grid2>
             <Grid2 size={1}>
@@ -218,7 +214,7 @@ function PanTableDemo() {
                             slotProps={{ 'aria-label': 'controlled filter switch' }}
                         />
                     }
-                    label={isChipFilterActive ? "Disable chips filter" : "Enable chips filter"}
+                    label="Chips"
                 />
             </Grid2>
             <Grid2 size={1}>
@@ -230,7 +226,7 @@ function PanTableDemo() {
                             slotProps={{ 'aria-label': 'controlled filter switch' }}
                         />
                     }
-                    label={isColumnFilterActive ? "Disable column filter" : "Enable column filter"}
+                    label="Column filters"
                 />
             </Grid2>
             <Grid2 size={1}>
@@ -242,7 +238,7 @@ function PanTableDemo() {
                             slotProps={{ 'aria-label': 'controlled filter switch' }}
                         />
                     }
-                    label={isTitleActive ? "Hide title" : "Show title"}
+                    label="Title"
                 />
             </Grid2>
             <Grid2 size={1}>
@@ -254,7 +250,7 @@ function PanTableDemo() {
                             slotProps={{ 'aria-label': 'controlled filter switch' }}
                         />
                     }
-                    label={areGroupOpsActive ? "Disable group operations" : "Enable group operations"}
+                    label="Group operations"
                 />
             </Grid2>
         </Grid2>
