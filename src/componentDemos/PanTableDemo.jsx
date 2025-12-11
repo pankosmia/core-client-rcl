@@ -18,7 +18,6 @@ function PanTableDemo() {
     const [tableTitle, setTableTitle] = useState(null);
     const [areGroupOpsActive, setAreGroupOpsActive] = useState(false);
     const [groupOps, setGroupOps] = useState(null);
-
     const [defaultFilter, setDefaultFilter] = useState(() => (row) => true);
 
     const handleSwitchChange = (event) => {
@@ -42,40 +41,12 @@ function PanTableDemo() {
     };
 
     useEffect(() => {
-        if (isFilterActive) {
-            setDefaultFilter(() => (row) => String(row.author).toLowerCase().includes('mark'))
-        } else {
-            setDefaultFilter(() => (row) => true)
-        }
-    },[isFilterActive]);
-
-    useEffect(() => {
-        if (isChipFilterActive) {
-            setChipsFilter(filterExample)
-        } else {
-            setChipsFilter(null)
-        }
-    },[isChipFilterActive]);
-
-    useEffect(() => {
+        setDefaultFilter(isFilterActive ? () => (row) => String(row.author).toLowerCase().includes('mark') : () => (row) => true);
+        setTableTitle(isTitleActive ? "Given table title" : null);
+        setChipsFilter(isChipFilterActive ? filterExample : null);
         setColumnFilter(isColumnFilterActive);
-    },[isColumnFilterActive]);
-
-    useEffect(() => {
-        if (isTitleActive) {
-            setTableTitle("Given table title")
-        } else {
-            setTableTitle(null)
-        }
-    },[isTitleActive]);
-
-    useEffect(() => {
-        if (areGroupOpsActive) {
-            setGroupOps(operationsDefinitionsExample);
-        } else {
-            setGroupOps(null);
-        }
-    },[areGroupOpsActive]);
+        setGroupOps(areGroupOpsActive ? operationsDefinitionsExample : null);
+    },[isFilterActive, isTitleActive, isChipFilterActive, isColumnFilterActive, areGroupOpsActive]);
 
     const commits = [
         {
