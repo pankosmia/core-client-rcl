@@ -163,6 +163,7 @@ function PanTableDemo() {
     ];
 
     return <>
+        {/* These are the switches that change the different properties of the table component */}
         <Grid2 container spacing={2}>
             <Grid2 size={1}>
                 <FormControlLabel
@@ -225,6 +226,7 @@ function PanTableDemo() {
                 />
             </Grid2>
         </Grid2>
+        {/* This is the actual component */}
         <PanTable
             columns={columns}
             rows={rows}
