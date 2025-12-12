@@ -2,6 +2,7 @@ import {useState, useMemo, useEffect} from "react";
 import PropTypes from 'prop-types';
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Stack, Chip, Checkbox, Toolbar, Typography, Tooltip } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 
@@ -234,6 +235,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
     const [selected, setSelected] = useState([]);
+    const [activeFiltersIndices, setActiveFiltersIndices] = useState([]);
 
     const [columnFilters, setColumnFilters] = useState({});
 
@@ -287,42 +289,87 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
         setColumnFilters(prev => ({ ...prev, [field]: value }));
     };
 
-    const combinedFilter = useMemo(() => {
+    const handleChipClick = (index) => {
+        setActiveFiltersIndices(prevActiveFilters => {
+            if (prevActiveFilters.includes(index)) {
+                return prevActiveFilters.filter(i => i !== index);
+            } else {
+                return [...prevActiveFilters, index];
+            }
+        });
+    };
+    // Function handling the multi-select Chips
+    const currentCombinedFilter = useMemo(() => {
+        if (!filterPreset || activeFiltersIndices.length === 0) {
+            return () => true; 
+        }
+        const selectedFilterFunctions = activeFiltersIndices.map(index => {
+            const filterItem = filterPreset[index];
+            if (filterItem && typeof filterItem.filter === 'function') {
+                return filterItem.filter;
+            } else {
+                console.warn(`Invalid filter function found for index ${index}`);
+                return () => false;
+            }
+        });
         return (row) => {
-
-            if (defaultFilter && !defaultFilter(row)) {
-                return false;
-            }
-
-            for (const field in columnFilters) {
-                const filterValue = columnFilters[field].toLowerCase();
-                if (filterValue) {
-                    const rowValue = String(row[field]).toLowerCase();
-                    if (!rowValue.includes(filterValue)) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
+            return selectedFilterFunctions.some(filterFn => filterFn(row));
         };
-    }, [defaultFilter, columnFilters]);
+    }, [activeFiltersIndices, filterPreset]); 
 
+    // The filter that handles simple filter, column filters and multi-select filters
     const visibleRows = useMemo(
         () =>
         [...rows]
-            .filter(combinedFilter)
+            .filter(row => {
+                if (defaultFilter && typeof defaultFilter === 'function' && !defaultFilter(row)) {
+                    return false;
+                }
+                if (!currentCombinedFilter(row)) {
+                    return false;
+                }
+                for (const field in columnFilters) {
+                    const filterValue = columnFilters[field].toLowerCase();
+                    if (filterValue) {
+                        const rowValue = String(row[field]).toLowerCase();
+                        if (!rowValue.includes(filterValue)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            })
             .sort(getComparator(order, orderBy)),
-        [order, orderBy, rows, combinedFilter],
+        [order, orderBy, rows, defaultFilter, currentCombinedFilter, columnFilters],
     );
 
     return (
-        <Box sx={{width:550, height: 700}}>
+        <Box /* sx={{width:550, height: 550}} */>
             {filterPreset && 
             <Box>
                 <Stack direction="row" spacing={1}>
-                    {filterPreset.map((c) => {
-                        return <Chip label={c.label} variant="outlined" color="secondary" onClick={() => { setDefaultFilter(() => c.filter) }} />
+                    {filterPreset.map((c, index) => {
+                        const isActive = activeFiltersIndices.includes(index);
+                        return (
+                            <Chip
+                                key={c.label}
+                                label={
+                                    <Box 
+                                        sx={{ 
+                                            display: 'flex', 
+                                            alignItems: 'center', 
+                                            gap: isActive ? 0.5 : 0 
+                                        }}
+                                    >
+                                        <span>{c.label}</span>
+                                        {isActive && <HighlightOffIcon sx={{ fontSize: 24 }} />}
+                                    </Box>
+                                }
+                                variant={isActive ? "filled" : "outlined"}
+                                color={"secondary"}
+                                onClick={() => handleChipClick(index)}
+                            />
+                        );
                     })}
                 </Stack>
             </Box>}
