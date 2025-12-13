@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Box } from "@mui/material";
-import { InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo } from './componentDemos';
+import { InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo, PanTableDemo } from './componentDemos';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
 
@@ -27,6 +27,9 @@ function App() {
       </Demo>
       <Demo title="PanDialog">
         <PanDialogDemo />
+      </Demo>
+      <Demo title="PanTable">
+        <PanTableDemo />
       </Demo>
     </Demos>
   </Box>
