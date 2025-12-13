@@ -1,4 +1,4 @@
-import PanTable from '../rcl/PanTable';
+import PanTable from '../rcl/PanTableComponents/PanTable';
 import {useContext} from "react";
 import { Grid2 } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
@@ -131,7 +131,7 @@ function PanTableDemo() {
                     columns={columns}
                     rows={rows}
                     tableTitle={"Filtering only Mark"}
-                    defaultFilter={() => (row) => String(row.author).toLowerCase().includes('mark')}
+                    defaultFilter={(row) => String(row.author).toLowerCase().includes('mark')}
                 />
             </Grid2>
             <Grid2 item size={4}>
