@@ -1,4 +1,4 @@
-import PanTable from '../rcl/PanTableComponents/PanTable';
+import PanTable from '../rcl/PanTable';
 import {useContext} from "react";
 import { Grid2 } from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";

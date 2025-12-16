@@ -1,8 +1,8 @@
 import {useState, useMemo, useEffect} from "react";
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Stack, Chip, Checkbox, Toolbar, Typography } from "@mui/material";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import EnhancedTableHead from "./EnhancedTableHead";
-import EnhancedTableToolbar from "./EnhancedTableToolbar";
+import EnhancedTableHead from "./PanTableInternals/EnhancedTableHead";
+import EnhancedTableToolbar from "./PanTableInternals/EnhancedTableToolbar";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
