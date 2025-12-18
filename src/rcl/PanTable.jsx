@@ -185,7 +185,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                 </Typography>
             </Toolbar>}
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: { sm: 140, md: 170, lg: 200, xl: 250 } }}>
+                <TableContainer>
                     <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>
                         <EnhancedTableHead
                             numSelected={selected.length}
