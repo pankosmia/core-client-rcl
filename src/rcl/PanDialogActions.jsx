@@ -5,5 +5,5 @@ export default function PanDialogActions ({actionFn, actionLabel, closeFn, close
     return <DialogActions>
         <PanDialogButton actionFn={closeFn} isDisabled={false} label={closeLabel}/>
         <PanDialogButton actionFn={() => {actionFn();}} isDisabled={isDisabled} label={actionLabel}/>
-        </DialogActions>
+        </DialogActions> 
 }
