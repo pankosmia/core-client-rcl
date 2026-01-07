@@ -134,7 +134,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
     );
 
     return (
-        <Box sx={{height: "100%", width: "100%"}}/* sx={sx ? sx : {width:550, height: 550}} */>
+        <Box sx={{height: "100%", width: "100%"}}>
             {filterPreset && 
             <Box>
                 <Stack direction="row" spacing={1}>

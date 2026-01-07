@@ -125,7 +125,7 @@ function PanTableDemo() {
     ];
 
     return <>
-        <Grid2 container spacing={8} minHeight={/* 350 */600}>
+        <Grid2 container spacing={8} minHeight={600}>
             <Grid2 item size={4}>
                 <PanTable
                     columns={columns}
