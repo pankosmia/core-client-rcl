@@ -20,7 +20,7 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset, showColumnFilters, tableTitle, groupOperations}) {
+export default function PanTable({columns, rows, defaultFilter, setDefaultFilter, filterPreset, showColumnFilters, tableTitle, groupOperations, sx}) {
 
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('date');
@@ -134,7 +134,7 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
     );
 
     return (
-        <Box /* sx={{width:550, height: 550}} */>
+        <Box sx={{height: "100%", width: "100%"}}/* sx={sx ? sx : {width:550, height: 550}} */>
             {filterPreset && 
             <Box>
                 <Stack direction="row" spacing={1}>
@@ -184,58 +184,63 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                     {tableTitle}
                 </Typography>
             </Toolbar>}
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer>
-                    <Table stickyHeader aria-label="pan table" sx={{ tableLayout: 'fixed' }}>
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={visibleRows.length}
-                            columns={columns}
-                            setColumnFilter={updateColumnFilter}
-                            columnFilters={columnFilters}
-                            showColumnFilters={showColumnFilters}
-                            groupOperations={groupOperations}
-                        />
-                        <TableBody>
-                            {visibleRows
-                                .map((row, n) => {
-                                    const isItemSelected = selected.includes(row.id);
-                                    return (
-                                        <TableRow 
-                                            hover 
-                                            onClick={(event) => handleClick(event, row.id)} 
-                                            role="checkbox" 
-                                            tabIndex={-1} 
-                                            key={row.id}
-                                            selected={isItemSelected}
-                                        >
-                                            {groupOperations &&
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                />
-                                            </TableCell>}
-                                            {columns.map((col) => (
-                                                <TableCell 
-                                                    key={col.field} 
-                                                    align={col.alignRight ? 'right' : 'left'}
-                                                    sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
-                                                >
-                                                    {row[col.field]}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+            <TableContainer component={Paper} sx={sx ? sx : {height: '100%'}}> {/* Custom sx styles is applied if defined */}
+                <Table stickyHeader aria-label="pan table" sx={{ height: '100%', width: '100%'}}>
+                    <EnhancedTableHead
+                        numSelected={selected.length}
+                        order={order}
+                        orderBy={orderBy}
+                        onSelectAllClick={handleSelectAllClick}
+                        onRequestSort={handleRequestSort}
+                        rowCount={visibleRows.length}
+                        columns={columns}
+                        setColumnFilter={updateColumnFilter}
+                        columnFilters={columnFilters}
+                        showColumnFilters={showColumnFilters}
+                        groupOperations={groupOperations}
+                    />
+                    <TableBody sx={{ verticalAlign: 'top' }}>
+                        {visibleRows
+                            .map((row, n) => {
+                                const isItemSelected = selected.includes(row.id);
+                                return (
+                                    <TableRow 
+                                        hover 
+                                        onClick={(event) => handleClick(event, row.id)} 
+                                        role="checkbox" 
+                                        tabIndex={-1} 
+                                        key={row.id}
+                                        selected={isItemSelected}
+                                    >
+                                        {groupOperations &&
+                                        <TableCell padding="checkbox">
+                                            <Checkbox
+                                                color="primary"
+                                                checked={isItemSelected}
+                                            />
+                                        </TableCell>}
+                                        {columns.map((col) => (
+                                            <TableCell 
+                                                key={col.field} 
+                                                align={col.alignRight ? 'right' : 'left'}
+                                                sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
+                                            >
+                                                {row[col.field]}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                );
+                            })}
+                        {/* Empty row that occuppies the extra space if there is any */}
+                        <TableRow sx={{ height: '100%' }}>
+                            <TableCell 
+                                colSpan={columns.length} 
+                                sx={{ padding: 0, borderBottom: 'none', height: '100%'}} 
+                            />
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     )
 }
