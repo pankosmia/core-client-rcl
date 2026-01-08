@@ -1,6 +1,6 @@
-import { AppBar, Dialog, Toolbar, Typography } from "@mui/material";
+import { AppBar, Dialog, Toolbar, Typography} from "@mui/material";
 
-export default function PanDialog({titleLabel, isOpen, closeFn, children}) {
+export default function PanDialog({ titleLabel, isOpen, closeFn, children, size='md', fullWidth=true}) {
     return <Dialog
         open={isOpen}
         onClose={closeFn}
@@ -9,6 +9,8 @@ export default function PanDialog({titleLabel, isOpen, closeFn, children}) {
                 component: 'form',
             },
         }}
+      fullWidth={fullWidth}
+      maxWidth={size}
     >
         <AppBar color='secondary' sx={{ position: 'relative', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
             <Toolbar>
@@ -18,7 +20,7 @@ export default function PanDialog({titleLabel, isOpen, closeFn, children}) {
 
             </Toolbar>
         </AppBar>
-            {children}
+        {children}
     </Dialog>;
 
 }
