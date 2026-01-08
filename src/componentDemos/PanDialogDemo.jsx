@@ -115,7 +115,7 @@ export default function PanDialogDemo() {
                                         onChange={() => setFullWidth(!fullWidth)}
                                         slotProps={
                                             {
-                                                input: { 'aria-label': 'pointless-dialog-input' },
+                                                input: { 'aria-label': 'maxWith-dialog' },
                                             }
                                         }
                                     />
