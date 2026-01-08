@@ -125,13 +125,14 @@ function PanTableDemo() {
     ];
 
     return <>
-        <Grid2 container spacing={8} minHeight={350}>
+        <Grid2 container spacing={8} minHeight={600}>
             <Grid2 item size={4}>
                 <PanTable
                     columns={columns}
                     rows={rows}
                     tableTitle={"Filtering only Mark"}
                     defaultFilter={(row) => String(row.author).toLowerCase().includes('mark')}
+                    sx={{height: '30%'}}
                 />
             </Grid2>
             <Grid2 item size={4}>
@@ -140,6 +141,7 @@ function PanTableDemo() {
                     rows={rows}
                     tableTitle={"Filtering Chips"}
                     filterPreset={filterExample}
+                    sx={{height: "50%"}}
                 />
             </Grid2>
         </Grid2>
