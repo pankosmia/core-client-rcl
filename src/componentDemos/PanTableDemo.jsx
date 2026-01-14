@@ -1,10 +1,11 @@
 import PanTable from '../rcl/PanTable';
 import {useContext} from "react";
-import { Grid2 } from "@mui/material";
+import { Grid2, IconButton} from "@mui/material";
 import {i18nContext, doI18n} from "pithekos-lib";
 import DeleteIcon from '@mui/icons-material/Delete';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 function PanTableDemo() {
 
@@ -62,6 +63,21 @@ function PanTableDemo() {
             numeric: false,
             disablePadding: false,
             alignRight: false,
+        },
+        {
+            field: 'download',
+            sortable: false,
+            headerName: doI18n("pages:core-remote-resources:row_download", i18nRef.current),
+            flex: 0.5,
+            minWidth: 120,
+            alignRight: false,
+            numeric: false,
+
+            renderCell: (params) => {
+                return <IconButton>
+                        <CloudDownloadOutlinedIcon onClick={() => alert("Downloading something!")} />
+                </IconButton>
+            }
         }
     ];
 
@@ -126,13 +142,13 @@ function PanTableDemo() {
 
     return <>
         <Grid2 container spacing={8} minHeight={600}>
-            <Grid2 item size={4}>
+            <Grid2 item size={12}>
                 <PanTable
                     columns={columns}
                     rows={rows}
                     tableTitle={"Filtering only Mark"}
                     defaultFilter={(row) => String(row.author).toLowerCase().includes('mark')}
-                    sx={{height: '30%'}}
+                    sx={{height: '100%'}}
                 />
             </Grid2>
             <Grid2 item size={4}>
