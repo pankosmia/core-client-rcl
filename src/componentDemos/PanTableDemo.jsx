@@ -81,7 +81,6 @@ function PanTableDemo() {
             <CloudDownloadOutlinedIcon
               onClick={(event) => {
                 event.stopPropagation();
-
                 alert("Downloading something!");
               }}
             />
