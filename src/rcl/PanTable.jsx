@@ -225,7 +225,11 @@ export default function PanTable({columns, rows, defaultFilter, setDefaultFilter
                                                 align={col.alignRight ? 'right' : 'left'}
                                                 sx={{ whiteSpace: 'normal', wordBreak: 'break-word' }}
                                             >
-                                                {row[col.field]}
+                                                {/* Checks if the column has a renderCell, and if it does, it executes the code in it */}
+                                                {col.renderCell 
+                                                    ? col.renderCell({ row, id: row.id, field: col.field }) 
+                                                    : row[col.field]
+                                                }
                                             </TableCell>
                                         ))}
                                     </TableRow>
