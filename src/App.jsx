@@ -1,9 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Box } from "@mui/material";
-import { InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo, PanTableDemo } from './componentDemos';
+import { PanDownloadDemo,InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo, PanTableDemo } from './componentDemos';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
-
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(window.innerHeight - 64);
   const handleWindowResize = useCallback(event => {
@@ -30,6 +29,9 @@ function App() {
       </Demo>
       <Demo title="PanTable">
         <PanTableDemo />
+      </Demo>
+      <Demo title="PanDownload">
+        <PanDownloadDemo/>
       </Demo>
     </Demos>
   </Box>
