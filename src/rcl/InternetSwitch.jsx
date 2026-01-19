@@ -59,7 +59,7 @@ export default function InternetSwitch({i18n, netEnabled, debug=false}) {
                 <DialogContent>
                     <DialogContentText>
                         <Typography>
-                            {doI18n("components:header:internet_question", i18n)}tra la la
+                            {doI18n("components:header:internet_question", i18n)}
                         </Typography>
                     </DialogContentText>
                 </DialogContent>
