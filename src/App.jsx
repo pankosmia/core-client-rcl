@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { InternetSwitchDemo, AppbarHamburgerDemo, PanDialogDemo, PanTableDemo } from './componentDemos';
 import Demos from './demoHelpers/Demos';
 import Demo from './demoHelpers/Demo';
+import PanDialogOneActionDemo from './componentDemos/PanDialogSecondaryDemo';
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(window.innerHeight - 64);
@@ -30,6 +31,9 @@ function App() {
       </Demo>
       <Demo title="PanTable">
         <PanTableDemo />
+      </Demo>
+       <Demo title="Deuxieme dialog">
+        <PanDialogOneActionDemo />
       </Demo>
     </Demos>
   </Box>
