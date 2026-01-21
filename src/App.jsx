@@ -22,6 +22,9 @@ function App() {
       <Demo title="Appbar Hamburger">
         <AppbarHamburgerDemo />
       </Demo>
+       <Demo title="PanFilteredMenu">
+        <PanFilteredMenuDemo />
+      </Demo>
       <Demo title="Internet Switch">
         <InternetSwitchDemo />
       </Demo>
@@ -30,9 +33,6 @@ function App() {
       </Demo>
       <Demo title="PanTable">
         <PanTableDemo />
-      </Demo>
-       <Demo title="PanFilteredMenu">
-        <PanFilteredMenuDemo />
       </Demo>
     </Demos>
   </Box>
