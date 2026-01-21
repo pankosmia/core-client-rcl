@@ -32,7 +32,7 @@ function App() {
       <Demo title="PanTable">
         <PanTableDemo />
       </Demo>
-       <Demo title="Deuxieme dialog">
+       <Demo title="Simple Dialog">
         <PanDialogOneActionDemo />
       </Demo>
     </Demos>
