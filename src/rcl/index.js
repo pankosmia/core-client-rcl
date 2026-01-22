@@ -3,6 +3,7 @@ import AppbarHamburger from './AppbarHamburger';
 import PanDialog from './PanDialog';
 import PanDialogActions from "./PanDialogActions";
 import PanTable from "./PanTable";
+import PanDownload from './PanDownload';
 import PanFilteredMenu from './PanFilteredMenu';
 
 export {
@@ -11,5 +12,6 @@ export {
     PanDialog,
     PanDialogActions,
     PanTable,
+    PanDownload,
     PanFilteredMenu
 };
