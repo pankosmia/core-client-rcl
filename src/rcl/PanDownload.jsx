@@ -1,5 +1,5 @@
 import PanTable from "./PanTable";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress,Box } from "@mui/material";
 import { useMemo } from "react";
 import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
@@ -23,7 +23,7 @@ export default function PanDownload({
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
-    console.log(sources)
+  console.log(sources);
 
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
@@ -62,7 +62,7 @@ export default function PanDownload({
       filterExample: [],
     };
   }, [sources]);
-  console.log(sourceWhitelist)
+  console.log(sourceWhitelist);
   const [activeFilterIndex, setActiveFilterIndex] = useState(null);
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
@@ -263,18 +263,20 @@ export default function PanDownload({
         if (isDownloading[remoteRepoPath] === "notDownloaded") {
           return (
             <CloudDownload
-              onClick={() =>
-                handleDownloadClick(params, remoteRepoPath, "clone")
-              }
+              onClick={(event) => {
+                event.stopPropagation();
+                handleDownloadClick(params, remoteRepoPath, "clone");
+              }}
             />
           );
         }
         if (isDownloading[remoteRepoPath] === "updatable") {
           return (
             <Update
-              onClick={() =>
-                handleDownloadClick(params, remoteRepoPath, "fetch")
-              }
+              onClick={(event) => {
+                event.stopPropagation();
+                handleDownloadClick(params, remoteRepoPath, "fetch");
+              }}
             />
           );
         }
@@ -323,31 +325,33 @@ export default function PanDownload({
       },
     },
   ];
-  return (
-    <>
-      {/* ───────────── Filter Buttons ───────────── */}
-      {filterExample?.length > 0 && (
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          sx={{ mb: 1, flexWrap: "wrap" }}
-        >
-          {filterExample.map((f, index) => {
-            const isActive = activeFilterIndex === index;
+return (
+  <>
+    {/* ───────────── Filter Buttons ───────────── */}
+    {filterExample?.length > 0 && (
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        sx={{ mb: 1, flexWrap: "wrap" }}
+      >
+        {filterExample.map((f, index) => {
+          const isActive = activeFilterIndex === index;
 
-            return (
-              <Chip
-                key={f.label}
-                label={f.label}
-                color={isActive ? "secondary" : "default"}
-                variant={isActive ? "filled" : "outlined"}
-                onClick={() => setActiveFilterIndex(index)}
-              />
-            );
-          })}
-        </Stack>
-      )}
+          return (
+            <Chip
+              key={f.label}
+              label={f.label}
+              color={isActive ? "secondary" : "default"}
+              variant={isActive ? "filled" : "outlined"}
+              onClick={() => setActiveFilterIndex(index)}
+            />
+          );
+        })}
+      </Stack>
+    )}
+
+    {rows && rows.length > 0 ? (
       <PanTable
         columns={columns}
         rows={rows}
@@ -357,6 +361,19 @@ export default function PanDownload({
         showColumnFilters={showColumnFilters}
         sx={{ ...sx, height: "100%" }}
       />
-    </>
-  );
+    ) : (
+      // Centered loading spinner
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%", // take full available height
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )}
+  </>
+);
 }
