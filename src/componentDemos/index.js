@@ -2,10 +2,12 @@ import InternetSwitchDemo from "./InternetSwitchDemo";
 import AppbarHamburgerDemo from "./AppbarHamburgerDemo";
 import PanDialogDemo from "./PanDialogDemo";
 import PanTableDemo from "./PanTableDemo";
+import PanFilteredMenuDemo from "./PanFilteredMenuDemo";
 
 export {
     InternetSwitchDemo,
     AppbarHamburgerDemo,
     PanDialogDemo,
-    PanTableDemo
+    PanTableDemo,
+    PanFilteredMenuDemo,
 };
