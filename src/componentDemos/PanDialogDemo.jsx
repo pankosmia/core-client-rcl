@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PanDialog from "../rcl/PanDialog";
 import PanDialogActions from "../rcl/PanDialogActions";
-import { Button, DialogContent, DialogContentText, Checkbox, FormControlLabel, FormGroup, Grid2, Switch } from "@mui/material";
+import { Button, DialogContent, DialogContentText, Checkbox, FormControlLabel, FormGroup, Grid2, Switch, useTheme, createTheme } from "@mui/material";
 
 export default function PanDialogDemo() {
     const [openDialog1, setOpenDialog1] = useState(null);
@@ -12,7 +12,16 @@ export default function PanDialogDemo() {
     const [fullWidth, setFullWidth] = useState(true);
 
     const actionFn = () => console.log("Doing it!!!");
-
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: "#C49464",
+            },
+            secondary: {
+                main: "#00473E",
+            },
+        },
+    });
     return <>
         <Grid2 container spacing={8} minHeight={600}>
             <Grid2 item size={4}>
@@ -23,6 +32,7 @@ export default function PanDialogDemo() {
                     titleLabel="A Pointless Dialog"
                     isOpen={!!openDialog1}
                     closeFn={() => setOpenDialog1(false)}
+                    theme={theme}
                 >
                     <DialogContent>
                         <DialogContentText>
