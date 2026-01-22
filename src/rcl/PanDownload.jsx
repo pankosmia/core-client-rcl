@@ -16,38 +16,53 @@ import {
 } from "pithekos-lib";
 import { useState, useEffect, useContext, useCallback } from "react";
 export default function PanDownload({
-  sourceWhitelistOrgs,
-  list = null,
-  typeTable,
+  sources,
   showColumnFilters,
   tableTitle,
   sx,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
+    console.log(sources)
 
-  const { sourceWhitelist, filterExample } = useMemo(() => {
-    let sourceWhitelist = [];
-    let filterExample = [];
-
-    if (list) {
-      for (const [org, projects] of Object.entries(list)) {
-        for (const projectKey of Object.keys(projects)) {
-          sourceWhitelist.push([`${org}/${projectKey}`, projectKey]);
-        }
-      }
-    } else {
-      sourceWhitelist = sourceWhitelistOrgs ?? [];
-      for (let e of sourceWhitelist) {
-        filterExample.push({
-          label: e[1],
-          filter: (row) => row?.source?.startsWith(e[0]) ?? false,
-        });
-      }
+  const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
+    // Case 1: whitelist array
+    if (Array.isArray(sources)) {
+      return {
+        listMode: false,
+        sourceWhitelist: sources,
+        filterExample: sources.map(([path, label]) => ({
+          label,
+          filter: (row) => row?.source?.startsWith(path) ?? false,
+        })),
+      };
     }
 
-    return { sourceWhitelist, filterExample };
-  }, [list, sourceWhitelistOrgs]);
+    // Case 2: structured list object
+    if (sources && typeof sources === "object") {
+      const whitelist = [];
+
+      for (const [org, projects] of Object.entries(sources)) {
+        for (const projectKey of Object.keys(projects)) {
+          whitelist.push([`${org}/${projectKey}`, projectKey]);
+        }
+      }
+
+      return {
+        listMode: true,
+        sourceWhitelist: whitelist,
+        filterExample: [],
+      };
+    }
+
+    // Fallback
+    return {
+      listMode: false,
+      sourceWhitelist: [],
+      filterExample: [],
+    };
+  }, [sources]);
+  console.log(sourceWhitelist)
   const [activeFilterIndex, setActiveFilterIndex] = useState(null);
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
@@ -79,9 +94,9 @@ export default function PanDownload({
             debugRef.current,
           );
           if (response.ok) {
-            if (list) {
+            if (listMode) {
               const newResponse = response.json
-                .filter((r) => list[chemin[0]][chemin[1]].includes(r.name))
+                .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
                 .map((r) => ({ ...r, source: source[0] }));
               newCatalog = [...newCatalog, ...newResponse];
             } else {
@@ -337,8 +352,7 @@ export default function PanDownload({
         columns={columns}
         rows={rows}
         tableTitle={tableTitle}
-        groupOperations={list ? operationsDefinitionsExample : null}
-        typeTable={typeTable}
+        groupOperations={listMode ? operationsDefinitionsExample : null}
         defaultFilter={activeFilter}
         showColumnFilters={showColumnFilters}
         sx={{ ...sx, height: "100%" }}

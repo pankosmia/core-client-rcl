@@ -40,7 +40,6 @@ export default function PanDownloadDemo() {
     ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
     ["git.door43.org/shower", "Aquifer exported content (Door43)"],
   ];
-
   const defaultFilterProps = useMemo(() => {
     // In whitelist mode, filter by the first org
     if (mode === "whitelist" && sourceWhitelistOrgs.length > 0) {
@@ -50,6 +49,7 @@ export default function PanDownloadDemo() {
     // In list mode, no default filter
     return null;
   }, [mode, sourceWhitelistOrgs]);
+
   const toggleMode = () => {
     setMode((prev) => (prev === "list" ? "whitelist" : "list"));
   };
@@ -57,13 +57,11 @@ export default function PanDownloadDemo() {
   /** Build the real props object passed to PanDownload */
   const panDownloadProps = useMemo(
     () => ({
-      list: mode === "list" ? demoList : null,
-      sourceWhitelistOrgs: mode === "whitelist" ? sourceWhitelistOrgs : [],
+      sources: mode === "list" ? demoList : sourceWhitelistOrgs,
       tableTitle:
         mode === "list"
           ? "Remote Resources (List Mode)"
           : "Remote Resources (Whitelist Mode)",
-      typeTable: "checkbox",
       defaultFilterProps,
       showColumnFilters: true,
       sx: { flex: 1 },
@@ -119,14 +117,12 @@ export default function PanDownloadDemo() {
           {/* Props Panel */}
           <PropsPanel
             args={{
-              list: mode === "list" ? demoList : null,
-              sourceWhitelistOrgs:
-                mode === "whitelist" ? sourceWhitelistOrgs : [],
+              sources: mode === "list" ? demoList : sourceWhitelistOrgs,
+
               tableTitle:
                 mode === "list"
                   ? "Remote Resources (List Mode)"
                   : "Remote Resources (Whitelist Mode)",
-              typeTable: "checkbox",
               defaultFilterProps,
               showColumnFilters: true,
             }}
