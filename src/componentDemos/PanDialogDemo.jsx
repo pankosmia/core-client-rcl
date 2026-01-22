@@ -23,7 +23,7 @@ export default function PanDialogDemo() {
         },
     });
     return <>
-        <Grid2 container spacing={8} minHeight={600}>
+        <Grid2 container spacing={8}>
             <Grid2 item size={4}>
                 <Button onClick={(event) => {
                     setOpenDialog1(event.target)
