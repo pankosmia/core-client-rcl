@@ -89,6 +89,7 @@ export default function PanDialogDemo() {
                         closeFn={() => setOpenDialog2(false)}
                         closeLabel="Don't do it!"
                         isDisabled={!pointlessInput}
+
                     />
                 </PanDialog>
             </Grid2>
@@ -127,6 +128,7 @@ export default function PanDialogDemo() {
                         closeFn={() => setOpenDialog3(false)}
                         closeLabel="Don't do it!"
                         closeOnAction={false}
+                        onlyCloseButton={true}
                     />
                 </PanDialog>
             </Grid2>
