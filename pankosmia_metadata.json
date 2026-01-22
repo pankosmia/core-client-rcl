@@ -4,6 +4,7 @@
     "net": false,
     "debug": false
   },
+  "minServerVersion": "0.12.14",
   "i18n": {
     "title": {
       "en": "Pankosmia RCL"
