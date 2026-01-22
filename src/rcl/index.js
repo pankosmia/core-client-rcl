@@ -4,11 +4,14 @@ import PanDialog from './PanDialog';
 import PanDialogActions from "./PanDialogActions";
 import PanTable from "./PanTable";
 import PanDownload from './PanDownload';
+import PanFilteredMenu from './PanFilteredMenu';
+
 export {
     AppbarHamburger,
     InternetSwitch,
     PanDialog,
     PanDialogActions,
     PanTable,
-    PanDownload
+    PanDownload,
+    PanFilteredMenu
 };
