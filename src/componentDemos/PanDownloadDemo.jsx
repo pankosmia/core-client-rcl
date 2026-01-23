@@ -8,6 +8,7 @@ import {
   Divider,
   Paper,
   Chip,
+  createTheme,
 } from "@mui/material";
 import { PanDownload } from "../rcl";
 import { netContext } from "pithekos-lib";
@@ -17,6 +18,16 @@ export default function PanDownloadDemo() {
   const { enabledRef } = useContext(netContext);
   const isOnline = enabledRef?.current ?? false;
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#C49464",
+      },
+      secondary: {
+        main: "#00473E",
+      },
+    },
+  });
   /** Structured list mode */
   const demoList = {
     "git.door43.org": {
@@ -153,7 +164,7 @@ export default function PanDownloadDemo() {
         <Divider sx={{ mb: 2 }} />
 
         {isOnline ? (
-          <PanDownload {...panDownloadProps} />
+          <PanDownload theme={theme} {...panDownloadProps} />
         ) : (
           <Alert severity="info">
             Connect to the internet to see the component preview.
