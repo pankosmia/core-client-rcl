@@ -1,6 +1,8 @@
 import InternetSwitch from '../rcl/InternetSwitch';
 import {useContext} from "react";
-import {i18nContext, debugContext, netContext} from "pithekos-lib";
+import netContext from "../rcl/contexts/netContext";
+import debugContext from "../rcl/contexts/debugContext";
+import i18nContext from "../rcl/contexts/i18nContext";
 
 function InternetSwitchDemo() {
     const {enabledRef} = useContext(netContext);

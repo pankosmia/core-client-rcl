@@ -11,16 +11,13 @@ import {
   Collapse,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useEffect, useState, useRef, useContext } from "react";
-import {
-  doI18n,
-  i18nContext,
-  netContext,
-  getJson,
-  debugContext,
-} from "pithekos-lib";
+import { doI18n, getJson } from "pithekos-lib";
+import netContext from "../contexts/netContext";
+import debugContext from "../contexts/debugContext";
+import i18nContext from "../contexts/i18nContext";
 function HeaderDrawer({ currentId }) {
   const [drawerWidth, setDrawerWidth] = useState("auto");
   const [widthLocked, setWidthLocked] = useState(false);

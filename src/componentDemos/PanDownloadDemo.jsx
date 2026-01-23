@@ -10,7 +10,7 @@ import {
   Chip,
 } from "@mui/material";
 import { PanDownload } from "../rcl";
-import { netContext } from "pithekos-lib";
+import netContext from "../rcl/contexts/netContext";
 import PropsPanel from "./PropsPanel";
 export default function PanDownloadDemo() {
   const [mode, setMode] = useState("list"); // "list" | "whitelist"

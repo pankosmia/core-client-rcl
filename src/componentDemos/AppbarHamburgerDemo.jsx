@@ -1,7 +1,8 @@
 import AppbarHamburger from '../rcl/AppbarHamburger';
 import {useContext} from "react";
-import {debugContext, i18nContext, netContext} from "pithekos-lib";
-
+import debugContext from '../rcl/contexts/debugContext';
+import netContext from '../rcl/contexts/netContext';
+import i18nContext from '../rcl/contexts/i18nContext';
 
 function AppbarHamburgerDemo() {
 
