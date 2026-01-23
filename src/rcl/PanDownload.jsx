@@ -1,6 +1,6 @@
 import PanTable from "./PanTable";
-import { CircularProgress,Box } from "@mui/material";
-import { useMemo } from "react";
+import { CircularProgress,Box, ThemeProvider } from "@mui/material";
+import React, { useMemo } from "react";
 import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
 import Update from "@mui/icons-material/Update";
@@ -20,6 +20,7 @@ export default function PanDownload({
   showColumnFilters,
   tableTitle,
   sx,
+  theme
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -325,8 +326,10 @@ export default function PanDownload({
       },
     },
   ];
+  const Wrapper = theme ? ThemeProvider : React.Fragment; 
+  const wrapperProps = theme ? { theme } : {}; 
 return (
-  <>
+  <Wrapper {...wrapperProps}>
     {/* ───────────── Filter Buttons ───────────── */}
     {filterExample?.length > 0 && (
       <Stack
@@ -350,7 +353,6 @@ return (
         })}
       </Stack>
     )}
-
     {rows && rows.length > 0 ? (
       <PanTable
         columns={columns}
@@ -374,6 +376,6 @@ return (
         <CircularProgress />
       </Box>
     )}
-  </>
+  </Wrapper>
 );
 }

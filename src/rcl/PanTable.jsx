@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -12,6 +12,7 @@ import {
   Checkbox,
   Toolbar,
   Typography,
+  ThemeProvider,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EnhancedTableHead from "./PanTableInternals/EnhancedTableHead";
@@ -43,6 +44,7 @@ export default function PanTable({
   tableTitle,
   groupOperations,
   sx,
+  theme
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("date");
@@ -51,6 +53,8 @@ export default function PanTable({
 
   const [columnFilters, setColumnFilters] = useState({});
 
+  const Wrapper = theme ? ThemeProvider : React.Fragment;
+  const wrapperProps = theme ? { theme } : {};
   useEffect(() => {
     const filters = {};
     columns.forEach((col) => {
@@ -160,7 +164,8 @@ export default function PanTable({
   );
 
   return (
-    <Box sx={{ height: "100%", width: "100%" }}>
+    <Wrapper {...wrapperProps}>
+    <Box sx={{ height: "100%", width: "100%", }}>
       {filterPreset && (
         <Box>
           <Stack direction="row" spacing={1}>
@@ -280,5 +285,6 @@ export default function PanTable({
         </Table>
       </TableContainer>
     </Box>
+  </Wrapper>
   );
 }
