@@ -1,6 +1,6 @@
 import PanTable from "../rcl/PanTable";
 import { useContext } from "react";
-import { Grid2, IconButton } from "@mui/material";
+import { Grid2, IconButton, createTheme } from "@mui/material";
 import {  doI18n } from "pithekos-lib";
 import i18nContext from "../rcl/contexts/i18nContext";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,7 +10,16 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 
 function PanTableDemo() {
   const { i18nRef } = useContext(i18nContext);
-
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#C49464",
+      },
+      secondary: {
+        main: "#00473E",
+      },
+    },
+  });
   const commits = [
     {
       author: "Elías Piñero <eliasrpt15@gmail.com>",
@@ -163,6 +172,7 @@ function PanTableDemo() {
       <Grid2 container spacing={8} minHeight={600}>
         <Grid2 item size={12}>
           <PanTable
+          theme={theme}
             columns={columns}
             rows={rows}
             tableTitle={"Filtering only Mark"}
@@ -174,6 +184,7 @@ function PanTableDemo() {
         </Grid2>
         <Grid2 item size={4}>
           <PanTable
+            theme={theme}
             columns={columns}
             rows={rows}
             tableTitle={"Filtering Chips"}
@@ -185,6 +196,7 @@ function PanTableDemo() {
       <Grid2 container spacing={8} minHeight={350}>
         <Grid2 item size={4}>
           <PanTable
+            theme={theme}
             columns={columns}
             rows={rows}
             tableTitle={"Column filter"}
@@ -193,6 +205,7 @@ function PanTableDemo() {
         </Grid2>
         <Grid2 item size={4}>
           <PanTable
+            theme={theme}
             columns={columns}
             rows={rows}
             tableTitle={"Group operations"}
