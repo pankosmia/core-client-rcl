@@ -5,14 +5,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { getAndSetJson } from "pithekos-lib";
 
-import authContext from "../contexts/authContext";
-import i18nContext from "../contexts/i18nContext";
-import typographyContext from "../contexts/typographyContext";
-import currentProjectContext from "../contexts/currentProjectContext";
-import bcvContext from "../contexts/bcvContext";
-import messagesContext from "../contexts/messagesContext";
-import debugContext from "../contexts/debugContext";
-import netContext from "../contexts/netContext";
+import AuthContext from "../contexts/authContext";
+import I18nContext from "../contexts/i18nContext";
+import TypographyContext from "../contexts/typographyContext";
+import CurrentProjectContext from "../contexts/currentProjectContext";
+import BcvContext from "../contexts/bcvContext";
+import MessagesContext from "../contexts/messagesContext";
+import DebugContext from "../contexts/debugContext";
+import NetContext from "../contexts/netContext";
 
 import ClientConfigContext from "../contexts/clientConfigContext";
 import ClientInterfacesContext from "../contexts/clientInterfacesContext";
@@ -80,25 +80,25 @@ function AppWrapper({
     <ThemeProvider theme={theme}>
       <ClientConfigContext.Provider value={clientConfigValue}>
         <ClientInterfacesContext.Provider value={clientInterfacesValue}>
-          <i18nContext.Provider value={i18nValue}>
-            <typographyContext.Provider value={typographyValue}>
-              <authContext.Provider value={authValue}>
-                <currentProjectContext.Provider value={currentProjectValue}>
-                  <bcvContext.Provider value={bcvValue}>
-                    <messagesContext.Provider value={messageValue}>
-                      <debugContext.Provider value={debugValue}>
-                        <netContext.Provider value={netValue}>
+          <I18nContext.Provider value={i18nValue}>
+            <TypographyContext.Provider value={typographyValue}>
+              <AuthContext.Provider value={authValue}>
+                <CurrentProjectContext.Provider value={currentProjectValue}>
+                  <BcvContext.Provider value={bcvValue}>
+                    <MessagesContext.Provider value={messageValue}>
+                      <DebugContext.Provider value={debugValue}>
+                        <NetContext.Provider value={netValue}>
                           <Box sx={{ height: "100vh", overflow: "hidden" }}>
                             {children}
                           </Box>
-                        </netContext.Provider>
-                      </debugContext.Provider>
-                    </messagesContext.Provider>
-                  </bcvContext.Provider>
-                </currentProjectContext.Provider>
-              </authContext.Provider>
-            </typographyContext.Provider>
-          </i18nContext.Provider>
+                        </NetContext.Provider>
+                      </DebugContext.Provider>
+                    </MessagesContext.Provider>
+                  </BcvContext.Provider>
+                </CurrentProjectContext.Provider>
+              </AuthContext.Provider>
+            </TypographyContext.Provider>
+          </I18nContext.Provider>
         </ClientInterfacesContext.Provider>
       </ClientConfigContext.Provider>
     </ThemeProvider>
