@@ -4,7 +4,7 @@ import PanDialogDemo from "./PanDialogDemo";
 import PanTableDemo from "./PanTableDemo";
 import PanDownloadDemo from "./PanDownloadDemo";
 import PanFilteredMenuDemo from "./PanFilteredMenuDemo";
-
+import HeaderDemo from "./HeaderDemo";
 export {
     InternetSwitchDemo,
     AppbarHamburgerDemo,
@@ -12,4 +12,5 @@ export {
     PanTableDemo,
     PanDownloadDemo,
     PanFilteredMenuDemo,
+    HeaderDemo
 };
