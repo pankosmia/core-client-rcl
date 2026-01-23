@@ -9,11 +9,12 @@ import { Stack, Chip } from "@mui/material";
 import {
   getAndSetJson,
   getJson,
-  i18nContext,
   doI18n,
-  debugContext,
   postEmptyJson,
 } from "pithekos-lib";
+import i18nContext from "./contexts/i18nContext";
+import debugContext from "./contexts/debugContext";
+
 import { useState, useEffect, useContext, useCallback } from "react";
 export default function PanDownload({
   sources,

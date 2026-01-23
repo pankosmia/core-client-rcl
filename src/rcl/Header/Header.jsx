@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 
 import InternetSwitch from "../InternetSwitch";
 import { ThemeProvider } from "@mui/material";
 import HeaderDrawer from "./HeaderDrawer";
-import { i18nContext, doI18n, getJson, netContext} from "pithekos-lib";
+import { doI18n } from "pithekos-lib";
+import i18nContext from "../contexts/i18nContext";
+import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
 function Header({ titleKey, widget, currentId, theme }) {
   const { i18nRef } = useContext(i18nContext);
   const { clientConfigRef } = useContext(clientConfigContext);
-  const {enabledRef} = useContext(netContext)
+  const { enabledRef } = useContext(netContext);
   const internetAcces =
     clientConfigRef.current["_global"]
       ?.find((e) => e.id === "internetConfig")
@@ -38,9 +40,12 @@ function Header({ titleKey, widget, currentId, theme }) {
             )}
             <Box sx={{ flexGrow: 1, m: 0, p: 0 }}>{widget}</Box>
             <Box sx={{ m: 0, p: 0 }}>
-              {internetAcces && <InternetSwitch
-              netEnabled={enabledRef.current}
-               i18n={i18nRef.current} />}
+              {internetAcces && (
+                <InternetSwitch
+                  netEnabled={enabledRef.current}
+                  i18n={i18nRef.current}
+                />
+              )}
             </Box>
           </Toolbar>
         </AppBar>

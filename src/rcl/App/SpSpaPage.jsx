@@ -2,7 +2,9 @@ import React, {useContext} from "react";
 import {Box, Grid2} from "@mui/material";
 import BlockOutlined from "@mui/icons-material/BlockOutlined";
 import Header from "../Header/Header";
-import { i18nContext,netContext,doI18n } from "pithekos-lib";
+import {doI18n } from "pithekos-lib";
+import netContext from "../contexts/netContext";
+import i18nContext from "../contexts/i18nContext";
 
 function SpSpaPage({titleKey, widget, margin = 0, children, requireNet = false, currentId}) {
     const {enableNet} = useContext(netContext);
