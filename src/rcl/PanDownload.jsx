@@ -197,7 +197,7 @@ export default function PanDownload({
       {
         field: "resourceCode",
         headerName: doI18n(
-          "pages:core-remote-resources:row_resource_code",
+          "library:panksomia-rcl:row_resource_code",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -206,7 +206,7 @@ export default function PanDownload({
       {
         field: "language",
         headerName: doI18n(
-          "pages:core-remote-resources:row_language",
+          "library:panksomia-rcl:row_language",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -215,7 +215,7 @@ export default function PanDownload({
       {
         field: "description",
         headerName: doI18n(
-          "pages:core-remote-resources:row_description",
+          "library:panksomia-rcl:row_description",
           i18nRef.current,
         ),
         flex: 2,
@@ -224,7 +224,7 @@ export default function PanDownload({
       {
         field: "type",
         headerName: doI18n(
-          "pages:core-remote-resources:row_type",
+          "library:panksomia-rcl:row_type",
           i18nRef.current,
         ),
         flex: 1.5,
@@ -234,7 +234,7 @@ export default function PanDownload({
         field: "download",
         sortable: false,
         headerName: doI18n(
-          "pages:core-remote-resources:row_download",
+          "library:panksomia-rcl:row_download",
           i18nRef.current,
         ),
         flex: 0.5,
