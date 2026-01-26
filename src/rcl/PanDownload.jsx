@@ -118,13 +118,10 @@ export default function PanDownload({
       const downloadStatus = async () => {
         const newIsDownloading = {};
         for (const e of catalog) {
-          console.log(localRepos,e)
           if (localRepos.includes(`${e.source}/${e.name}`)) {
             const metadataUrl = `/burrito/metadata/summary/${e.source}/${e.name}`;
             let metadataResponse = await getJson(metadataUrl, debugRef.current);
-            console.log(metadataResponse)
             if (metadataResponse.ok) {
-              console.log(metadataResponse);
 
               const metadataTime = metadataResponse.json.timestamp;
               const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
@@ -144,7 +141,6 @@ export default function PanDownload({
       downloadStatus().then();
     }
   }, [isDownloading, catalog, localRepos]);
-  console.log(isDownloading);
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
       setIsDownloading((isDownloadingCurrent) => ({
