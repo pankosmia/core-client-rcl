@@ -73,7 +73,6 @@ function AppWrapper({
     }
   });
 
-  console.log(themeSpec)
   
   const theme = createTheme(themeSpec);
 

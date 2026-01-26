@@ -71,7 +71,7 @@ export default function PanDownload({
       : null;
   }, [activeFilterIndex, filterExample]);
   const [catalog, setCatalog] = useState([]);
-  const [localRepos, setLocalRepos] = useState([]);
+  const [localRepos, setLocalRepos] = useState(null);
   const [isDownloading, setIsDownloading] = useState(null);
   useEffect(() => {
     setCatalog([]);
@@ -118,10 +118,14 @@ export default function PanDownload({
       const downloadStatus = async () => {
         const newIsDownloading = {};
         for (const e of catalog) {
+          console.log(localRepos,e)
           if (localRepos.includes(`${e.source}/${e.name}`)) {
             const metadataUrl = `/burrito/metadata/summary/${e.source}/${e.name}`;
             let metadataResponse = await getJson(metadataUrl, debugRef.current);
+            console.log(metadataResponse)
             if (metadataResponse.ok) {
+              console.log(metadataResponse);
+
               const metadataTime = metadataResponse.json.timestamp;
               const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
               newIsDownloading[`${e.source}/${e.name}`] =
@@ -140,7 +144,7 @@ export default function PanDownload({
       downloadStatus().then();
     }
   }, [isDownloading, catalog, localRepos]);
-
+  console.log(isDownloading);
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
       setIsDownloading((isDownloadingCurrent) => ({
@@ -158,6 +162,7 @@ export default function PanDownload({
         postType === "clone"
           ? `/git/clone-repo/${remoteRepoPath}`
           : `/git/pull-repo/origin/${remoteRepoPath}`;
+
       const fetchResponse = await postEmptyJson(fetchUrl, debugRef.current);
       if (fetchResponse.ok) {
         enqueueSnackbar(

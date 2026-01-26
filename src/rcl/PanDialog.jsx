@@ -53,7 +53,7 @@ export default function PanDialog({
             </Typography>
           </Toolbar>
         </AppBar>
-        <DialogContent dividers={"body"}>{children}</DialogContent>
+        {children}
       </Dialog>
     </Wrapper>
   );
