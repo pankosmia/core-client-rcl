@@ -10,13 +10,15 @@ import {
   Chip,
   createTheme,
 } from "@mui/material";
-import { PanDownload } from "../rcl";
+import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import PropsPanel from "./PropsPanel";
 export default function PanDownloadDemo() {
   const [mode, setMode] = useState("list"); // "list" | "whitelist"
   const { enabledRef } = useContext(netContext);
   const isOnline = enabledRef?.current ?? false;
+
+  const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
 
   const theme = createTheme({
     palette: {
@@ -171,6 +173,23 @@ export default function PanDownloadDemo() {
           </Alert>
         )}
       </Paper>
+      <Box
+        sx={{
+          flex: 1,
+          minHeight: 0,
+          overflow: "auto",
+        }}
+      >
+        <Button onClick={() => setOpenDialoguePanDownload(true)}>
+          PanDownload in PanDialogue
+        </Button>
+        <PanDialog
+          isOpen={openDialoguePanDownload}
+          closeFn={() => setOpenDialoguePanDownload(false)}
+        >
+          <PanDownload theme={theme} {...panDownloadProps} />
+        </PanDialog>
+      </Box>
     </Box>
   );
 }

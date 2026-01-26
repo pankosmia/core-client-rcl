@@ -1,4 +1,11 @@
-import { AppBar, Dialog, ThemeProvider, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Dialog,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+  DialogContent,
+} from "@mui/material";
 import React from "react";
 export default function PanDialog({
   titleLabel,
@@ -6,29 +13,35 @@ export default function PanDialog({
   closeFn,
   children,
   theme,
-  size = 'md',
+  size = "md",
   fullWidth = true,
 }) {
-
-  const Wrapper = theme ? ThemeProvider : React.Fragment; 
-  const wrapperProps = theme ? { theme } : {}; 
+  const Wrapper = theme ? ThemeProvider : React.Fragment;
+  const wrapperProps = theme ? { theme } : {};
 
   return (
     <Wrapper {...wrapperProps}>
       <Dialog
         open={isOpen}
         onClose={closeFn}
+        sx={{ overflow: "hidden" }}
         slotProps={{
+          sx: {
+            overflow: "hidden !important",
+            display: "flex",
+            flexDirection: "column",
+          },
           paper: {
-            component: 'form',
+            component: "form",
           },
         }}
         fullWidth={fullWidth}
         maxWidth={size}
       >
         <AppBar
+          position="sticky"
           sx={{
-            position: 'relative',
+            position: "relative",
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
             backgroundColor: theme?.palette?.secondary?.main,
@@ -40,7 +53,7 @@ export default function PanDialog({
             </Typography>
           </Toolbar>
         </AppBar>
-        {children}
+        <DialogContent dividers={"body"}>{children}</DialogContent>
       </Dialog>
     </Wrapper>
   );
