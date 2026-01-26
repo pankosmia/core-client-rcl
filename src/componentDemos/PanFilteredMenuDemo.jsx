@@ -2,7 +2,7 @@ import { useState } from "react";
 import PanFilteredMenu from "../rcl/PanFilteredMenu";
 
 export default function PanFilteredMenuDemo() {
-    const [value, setValue] = useState({});
+    const [value, setValue] = useState(null);
 
     const countries = [
         { code: 'AD', label: 'Andorra', phone: '376' },
