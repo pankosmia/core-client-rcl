@@ -9,6 +9,7 @@ import {
   Paper,
   Chip,
   createTheme,
+  DialogContent
 } from "@mui/material";
 import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
@@ -187,7 +188,9 @@ export default function PanDownloadDemo() {
           isOpen={openDialoguePanDownload}
           closeFn={() => setOpenDialoguePanDownload(false)}
         >
-          <PanDownload theme={theme} {...panDownloadProps} />
+          <DialogContent>
+            <PanDownload theme={theme} {...panDownloadProps} />
+          </DialogContent>
         </PanDialog>
       </Box>
     </Box>
