@@ -6,9 +6,7 @@ export default function PanFilteredMenu({ data, titleLabel, getOptionLabel, valu
         <Autocomplete
             disablePortal
             value={value}
-            onChange={(event, newValue) => {
-                onChange(newValue)
-            }}
+            onChange={onChange}
             options={data}
             getOptionLabel={getOptionLabel}
             sx={{ width: "100%" }}
