@@ -13,7 +13,6 @@ import BcvContext from "../contexts/bcvContext";
 import MessagesContext from "../contexts/messagesContext";
 import DebugContext from "../contexts/debugContext";
 import NetContext from "../contexts/netContext";
-
 import ClientConfigContext from "../contexts/clientConfigContext";
 import ClientInterfacesContext from "../contexts/clientInterfacesContext";
 
@@ -74,6 +73,7 @@ function AppWrapper({
     }
   });
 
+  
   const theme = createTheme(themeSpec);
 
   return (
