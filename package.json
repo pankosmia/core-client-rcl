@@ -5,18 +5,16 @@
   "homepage": "/clients/core-client-rcl",
   "main": "build/pankosmia-rcl.umd.js",
   "module": "build/pankosmia-rcl.es.js",
+
   "dependencies": {
-    "eslint-config-react-app": "^7.0.1",
     "notistack": "^3.0.1",
     "pithekos-lib": "^0.11.4",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@vitejs/plugin-react": "^4.3.4",
-    "react-scripts": "5.0.1",
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "@vitejs/plugin-react": "^4.3.4"
   },
   "peerDependencies": {
     "@emotion/react": "^11.13.3",
@@ -27,8 +25,7 @@
     "react-dom": "^17.0.0 || ^18.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "vite build",
     "build:vite": "vite build",
     "build:package": "vite build",
     "dev": "vite",

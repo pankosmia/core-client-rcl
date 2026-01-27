@@ -1,12 +1,12 @@
-import path from 'path';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5174, // Unique port for new_project
+    port: 5174,
     strictPort: true,
     host: true,
     cors: true,
@@ -16,17 +16,9 @@ export default defineConfig({
     outDir: 'build',
     emptyOutDir: true,
     rollupOptions: {
-      external: ["react", "react-dom"],
-/*      output: {
-        name: "pankosmia-rcl",
-        globals: { 'react': 'React', 'react-dom': 'ReactDom' }
-      }*/
+      // You can remove `external` for an app build
+      // external: ["react", "react-dom"],
     },
-    lib: {
-      entry: path.resolve(__dirname, './src/rcl/index.js'),
-      name: 'pankosmia-rcl',
-      fileName: (format) => `pankosmia-rcl.${format}.js`
-    }
   },
   base: '/clients/core-client-rcl/'
 })
