@@ -26,7 +26,9 @@ export default function PanFilteredMenuDemo() {
             value={value}
             data={options}
             titleLabel="Countries"
-            onChange={setValue}
+            onChange={(event, newValue) => {
+                setValue(newValue)
+            }}
             getOptionLabel={(option) =>
                 `${option.label || ''} (${option.code})`
             }
