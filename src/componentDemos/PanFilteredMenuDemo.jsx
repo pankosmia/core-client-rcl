@@ -1,6 +1,8 @@
+import { useState } from "react";
 import PanFilteredMenu from "../rcl/PanFilteredMenu";
 
 export default function PanFilteredMenuDemo() {
+    const [value, setValue] = useState(null);
 
     const countries = [
         { code: 'AD', label: 'Andorra', phone: '376' },
@@ -21,8 +23,12 @@ export default function PanFilteredMenuDemo() {
 
     return options.length ? (
         <PanFilteredMenu
+            value={value}
             data={options}
             titleLabel="Countries"
+            onChange={(event, newValue) => {
+                setValue(newValue)
+            }}
             getOptionLabel={(option) =>
                 `${option.label || ''} (${option.code})`
             }
