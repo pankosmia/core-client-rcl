@@ -3,9 +3,9 @@
   "version": "0.1.14",
   "private": false,
   "homepage": "/clients/core-client-rcl",
-  "main": "build/pankosmia-rcl.umd.js",
-  "module": "build/pankosmia-rcl.es.js",
-
+  "main": "dist/pankosmia-rcl.umd.js",
+  "module": "dist/pankosmia-rcl.es.js",
+  "type": "module",
   "dependencies": {
     "notistack": "^3.0.1",
     "pithekos-lib": "^0.11.4",
@@ -25,7 +25,7 @@
     "react-dom": "^17.0.0 || ^18.0.0"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "node build.js",
     "build:vite": "vite build",
     "build:package": "vite build",
     "dev": "vite",

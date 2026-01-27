@@ -12,6 +12,7 @@ import {
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 function App() {
+
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64,
   );
