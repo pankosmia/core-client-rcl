@@ -4,7 +4,6 @@ export default function PanFilteredMenu({ data, titleLabel, getOptionLabel, valu
 
     return (
         <Autocomplete
-            disablePortal
             value={value}
             onChange={onChange}
             options={data}
