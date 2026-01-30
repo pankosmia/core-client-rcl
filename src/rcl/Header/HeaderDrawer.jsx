@@ -76,7 +76,7 @@ function HeaderDrawer({ currentId }) {
         open={drawerIsOpen}
         onClose={() => setDrawerIsOpen(false)}
         slotProps={{
-          paper: { sx: { width: drawerWidth, overflow: "hidden" } },
+          paper: { sx: { minWidth:"16rem", overflow: "hidden" } },
         }}
       >
         <Box
@@ -127,6 +127,7 @@ function HeaderDrawer({ currentId }) {
                         />
                       </ListItemButton>
                     </ListItem>
+                    
                   ),
                 )}
               </Box>
@@ -146,26 +147,13 @@ function HeaderDrawer({ currentId }) {
                     />
                   </ListItemButton>
                 </ListItem>
-                <ListItem sx={{ width: drawerWidth }} disablePadding>
-                  <ListItemButton onClick={() => setShowAdvanced((a) => !a)}>
-                    <ListItemText
-                      primary={doI18n(
-                        `components:header:advanced`,
-                        i18nRef.current,
-                      )}
-                    />
-                    {showAdvanced ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemButton>
-                </ListItem>
-                <Collapse in={showAdvanced} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton onClick={toggleDebug} sx={{ pl: 4 }}>
+                  <List disablePadding>
+                    <ListItemButton onClick={toggleDebug}>
                       <ListItemText
                         primary={doI18n(
-                          `components:header:experimental_mode`,
+                          `components:header:beta_mode`,
                           i18nRef.current,
-                        )}
-                      />
+                        )} />
                       <Switch
                         edge="end"
                         onChange={toggleDebug}
@@ -173,33 +161,6 @@ function HeaderDrawer({ currentId }) {
                       />
                     </ListItemButton>
                   </List>
-                </Collapse>
-                <Box
-                  ref={measurementRef}
-                  sx={{
-                    visibility: "hidden",
-                    position: "absolute",
-                    whiteSpace: "nowrap",
-                    top: 0,
-                    left: 0,
-                  }}
-                >
-                  <List component="div" disablePadding>
-                    <ListItemButton onClick={toggleDebug} sx={{ pl: 4 }}>
-                      <ListItemText
-                        primary={doI18n(
-                          `components:header:experimental_mode`,
-                          i18nRef.current,
-                        )}
-                      />
-                      <Switch
-                        edge="end"
-                        onChange={toggleDebug}
-                        checked={debugRef.current}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Box>
               </Box>
             </Stack>
           </List>
