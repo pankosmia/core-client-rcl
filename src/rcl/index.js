@@ -22,6 +22,7 @@ import languagesContext from './contexts/languagesContext';
 import messagesContext from './contexts/messagesContext';
 import netContext from './contexts/netContext';
 import typographyContext from './contexts/typographyContext';
+import PanLanguagePicker from './PanDialogInternals/PanLanguagePicker';
 export {
     authContext,
     bcvContext,
@@ -46,5 +47,6 @@ export {
     SpSpaPage,
     AppWrapper,
     clientConfigContext,
-    clientInterfacesContext
+    clientInterfacesContext,
+    PanLanguagePicker,
 };
