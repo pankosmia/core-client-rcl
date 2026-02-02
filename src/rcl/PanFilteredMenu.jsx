@@ -1,11 +1,13 @@
 import { Autocomplete, TextField } from "@mui/material";
 
-export default function PanFilteredMenu({ data, titleLabel, getOptionLabel, value, onChange }) {
+export default function PanFilteredMenu({ data, titleLabel, getOptionLabel, value, setValue }) {
 
     return (
         <Autocomplete
             value={value}
-            onChange={onChange}
+            onChange={(event, newValue) => {
+                setValue(newValue)
+            }}
             options={data}
             getOptionLabel={getOptionLabel}
             sx={{ width: "100%" }}
