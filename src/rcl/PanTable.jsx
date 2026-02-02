@@ -44,7 +44,8 @@ export default function PanTable({
   tableTitle,
   groupOperations,
   sx,
-  theme
+  theme,
+  onRowSelectionModelChange
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("date");
@@ -70,12 +71,13 @@ export default function PanTable({
   };
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
+    const newSelected = event.target.checked 
+      ? rows.map((n) => n.id) 
+      : [];
+    setSelected(newSelected);
+    if (onRowSelectionModelChange) {
+      onRowSelectionModelChange(newSelected);
     }
-    setSelected([]);
   };
 
   const handleClick = (event, id) => {
@@ -95,10 +97,12 @@ export default function PanTable({
       );
     }
     setSelected(newSelected);
+    if (onRowSelectionModelChange) onRowSelectionModelChange(newSelected);
   };
 
   const handleClearSelection = () => {
     setSelected([]);
+    if (onRowSelectionModelChange) onRowSelectionModelChange([]);
   };
 
   const updateColumnFilter = (field, value) => {
