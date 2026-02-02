@@ -97,12 +97,16 @@ export default function PanTable({
       );
     }
     setSelected(newSelected);
-    if (onRowSelectionModelChange) onRowSelectionModelChange(newSelected);
+    if (onRowSelectionModelChange){
+      onRowSelectionModelChange(newSelected)
+    };
   };
 
   const handleClearSelection = () => {
     setSelected([]);
-    if (onRowSelectionModelChange) onRowSelectionModelChange([]);
+    if (onRowSelectionModelChange) {
+      onRowSelectionModelChange([])
+    };
   };
 
   const updateColumnFilter = (field, value) => {
