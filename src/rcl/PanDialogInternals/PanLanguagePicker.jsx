@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 
 export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage, setIsValid, open = true }) {
 
-    const [languageOption, setLanguageOption] = useState("");
+    const [languageOption, setLanguageOption] = useState("BCP47List");
     const [errorLangCode, setErrorLangCode] = useState(false);
     const { i18nRef } = useContext(i18nContext);
     const [localRepoOnly, setLocalRepoOnly] = useState(true);
