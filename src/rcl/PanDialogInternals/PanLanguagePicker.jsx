@@ -78,7 +78,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
         <>
             <FormControl>
                 <FormLabel id="demo-radio-buttons-group-label">
-                    {doI18n("pages:core-client-rcl:choose_language", i18nRef.current)}
+                    {doI18n("library:panksomia-rcl:choose_language", i18nRef.current)}
                 </FormLabel>
                 <RadioGroup
                     row
@@ -87,19 +87,19 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                     aria-labelledby="demo-radio-buttons-group-label"
                     name="radio-buttons-group"
                 >
-                    <FormControlLabel value="BCP47List" control={<Radio />} label={doI18n("pages:core-client-rcl:lang_code_bcp47_list", i18nRef.current)} />
+                    <FormControlLabel value="BCP47List" control={<Radio />} label={doI18n("library:panksomia-rcl:lang_code_bcp47_list", i18nRef.current)} />
 
                     <FormControlLabel value="burrito" control={<Radio />}
-                        label={doI18n("pages:core-client-rcl:lang_code_burrito", i18nRef.current)} />
+                        label={doI18n("library:panksomia-rcl:lang_code_burrito", i18nRef.current)} />
 
                     <FormControlLabel value="customLanguage" control={<Radio />}
-                        label={doI18n("pages:core-client-rcl:lang_code_custom_language", i18nRef.current)} />
+                        label={doI18n("library:panksomia-rcl:lang_code_custom_language", i18nRef.current)} />
                 </RadioGroup>
             </FormControl>
             {languageOption === "BCP47List" &&
                 <Grid2 container spacing={2} >
                     <Grid2 item size={12}>
-                        <Typography>{doI18n("pages:core-client-rcl:description_bcp47_list", i18nRef.current)}</Typography>
+                        <Typography>{doI18n("library:panksomia-rcl:description_bcp47_list", i18nRef.current)}</Typography>
                     </Grid2>
                     <Grid2 item size={6}>
                         <PanFilteredMenu
@@ -108,7 +108,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             getOptionLabel={(option) =>
                                 `${option.language_name || ''} (${option.language_code})`
                             }
-                            titleLabel={`${doI18n("pages:core-client-rcl:language", i18nRef.current)} *`}
+                            titleLabel={`${doI18n("library:panksomia-rcl:language", i18nRef.current)} *`}
                         />
                     </Grid2>
                     <Grid2 item size={6}>
@@ -116,7 +116,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             disabled
                             id="language_code"
                             sx={{ width: "100%" }}
-                            label={doI18n("pages:core-client-rcl:lang_code", i18nRef.current)}
+                            label={doI18n("library:panksomia-rcl:lang_code", i18nRef.current)}
                             value={currentLanguage ? currentLanguage.language_code : null}
                         />
                     </Grid2>
@@ -126,9 +126,9 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
             {languageOption === "burrito" &&
 
                 <Grid2 container spacing={1} justifyItems="flex-end" alignItems="stretch">
-                    <Typography>{doI18n("pages:core-client-rcl:description_lang_code_burrito", i18nRef.current)}</Typography>
+                    <Typography>{doI18n("library:panksomia-rcl:description_lang_code_burrito", i18nRef.current)}</Typography>
                     <Grid2 item size={12}>
-                        <FormLabel>{doI18n("pages:core-client-rcl:title_section_burrito", i18nRef.current)}</FormLabel>
+                        <FormLabel>{doI18n("library:panksomia-rcl:title_section_burrito", i18nRef.current)}</FormLabel>
                         <FormGroup row required>
                             <FormControlLabel
                                 control={
@@ -139,7 +139,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                                         defaultChecked
                                     />
                                 }
-                                label={doI18n("pages:core-client-rcl:local_project", i18nRef.current)}
+                                label={doI18n("library:panksomia-rcl:local_project", i18nRef.current)}
                             />
                             <FormControlLabel
                                 control={
@@ -149,7 +149,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                                         onChange={() => setResourcesBurrito(!resourcesBurrito)}
                                     />
                                 }
-                                label={doI18n("pages:core-client-rcl:burrito_resources", i18nRef.current)}
+                                label={doI18n("library:panksomia-rcl:burrito_resources", i18nRef.current)}
                             />
                         </FormGroup>
                     </Grid2>
@@ -158,7 +158,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             data={documents}
                             setValue={setBurritoSelected}
                             getOptionLabel={(option) => `${option}`}
-                            titleLabel={`${doI18n("pages:core-client-rcl:document", i18nRef.current)} *`}
+                            titleLabel={`${doI18n("library:panksomia-rcl:document", i18nRef.current)} *`}
 
                         />
                     </Grid2>
@@ -168,7 +168,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             disabled
                             id="language_name"
                             sx={{ width: "100%" }}
-                            label={doI18n("pages:core-client-rcl:lang_name", i18nRef.current)}
+                            label={doI18n("library:panksomia-rcl:lang_name", i18nRef.current)}
                             value={currentLanguage ? currentLanguage.language_name : null}
                         />
                     </Grid2>
@@ -177,7 +177,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             disabled
                             id="language_code"
                             sx={{ width: "100%" }}
-                            label={doI18n("pages:core-client-rcl:lang_code", i18nRef.current)}
+                            label={doI18n("library:panksomia-rcl:lang_code", i18nRef.current)}
                             value={currentLanguage ? currentLanguage.language_code : null}
                         />
                     </Grid2>
@@ -186,14 +186,14 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
             {languageOption === "customLanguage" &&
                 <Grid2 container spacing={1} justifyItems="flex-end" alignItems="stretch">
                     <Grid2 item size={12}>
-                        <Typography>{doI18n("pages:core-client-rcl:description_custom_language", i18nRef.current)}</Typography>
+                        <Typography>{doI18n("library:panksomia-rcl:description_custom_language", i18nRef.current)}</Typography>
                     </Grid2>
                     <Grid2 item size={6}>
                         <TextField
                             id="language_name"
                             required
                             sx={{ width: "100%" }}
-                            label={doI18n("pages:core-client-rcl:lang_name", i18nRef.current)}
+                            label={doI18n("library:panksomia-rcl:lang_name", i18nRef.current)}
                             value={currentLanguage ? currentLanguage.language_name : null}
                             onChange={(event) => {
                                 const value = event.target.value;
@@ -206,10 +206,10 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             id="language_code"
                             placeholder='x-abc'
                             error={errorLangCode}
-                            helperText={doI18n("pages:core-client-rcl:helper_language_code", i18nRef.current)}
+                            helperText={doI18n("library:panksomia-rcl:helper_language_code", i18nRef.current)}
                             required
                             sx={{ width: "100%" }}
-                            label={doI18n("pages:core-client-rcl:lang_code", i18nRef.current)}
+                            label={doI18n("library:panksomia-rcl:lang_code", i18nRef.current)}
                             value={currentLanguage ? currentLanguage.language_code : null}
                             onChange={(event) => {
                                 const value = event.target.value.toLocaleLowerCase();

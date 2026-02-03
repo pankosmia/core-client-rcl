@@ -14,64 +14,6 @@
     },
     "stub_content": {
       "en": "Content goes here"
-    },   
-    "lang_code": {
-      "en": "Language Code",
-      "es": "Código del Idioma",
-      "fr": "Code Langue",
-      "id": "Kode Bahasa"
-    },
-    "lang_name":{
-      "en":"Language name"
-    },
-    "lang_code_bcp47_list":{
-      "en":" From BCP47 List"
-    },
-    "lang_code_burrito":{
-      "en":" From another document"
-    },
-     "lang_code_custom_language":{
-      "en":" Create custom language"
-    },
-    "description_bcp47_list":{
-      "en":"Choose a standard (BCP 47) language code from the list.",
-      "fr":"Choisissez un code standard (BCP 47) à partir de la liste."
-    },
-    "description_lang_code_burrito":{
-      "en":"Copy language details from an existing document.",
-      "fr":"Copiez les informations linguistiques d'un autre document."
-    },
-     "description_custom_language":{
-      "en":"Supply your own custom language name and code.",
-      "fr":"Fournissez votre propre nom et code de langue. "
-    },
-    "local_project":{
-      "en": "Local projects",
-      "fr":"Les projets locaux"
-    },
-    "burrito_resources":{
-      "en": "Resources",
-      "fr":"Ressources"
-    },
-    "choose_language":{
-      "en":"Choose language",
-      "fr":"Choisir langue"
-    },
-    "helper_language_code":{
-      "en":"\"x-\" followed by 3 lowercase letters",
-      "fr":"\"x-\" suivi de 3 lettres minuscules (a-z)"
-    },
-    "document":{
-      "en":"Document",
-      "fr":"Document"
-    },
-    "title_section_burrito":{
-      "en":"Copy from",
-      "fr":"Copier depuis"
-    },
-    "language":{
-      "en":"Language",
-      "fr":"Langue"
     }
   }
 }
