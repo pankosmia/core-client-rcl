@@ -91,7 +91,7 @@ function HeaderDrawer({ currentId }) {
                 height: "100%",
                 width: "100%",
                 justifyContent: "space-between",
-                alignItems: "flex-start",
+                alignItems: "stretch",
               }}
             >
               <Box sx={{ width: "100%" }}>
@@ -147,7 +147,7 @@ function HeaderDrawer({ currentId }) {
                     />
                   </ListItemButton>
                 </ListItem>
-                  <List disablePadding>
+                  <List sx={{width:"100%"}}  disablePadding>
                     <ListItemButton onClick={toggleDebug}>
                       <ListItemText
                         primary={doI18n(
