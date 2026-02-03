@@ -8,6 +8,7 @@ import {
   PanTableDemo,
   PanFilteredMenuDemo,
   HeaderDemo,
+  PanLanguagePickerDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
@@ -30,6 +31,9 @@ function App() {
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
       <Demos>
+      <Demo title="PanLanguagePicker">
+        <PanLanguagePickerDemo />
+      </Demo>
         <Demo title="Appbar Hamburger">
           <AppbarHamburgerDemo />
         </Demo>
