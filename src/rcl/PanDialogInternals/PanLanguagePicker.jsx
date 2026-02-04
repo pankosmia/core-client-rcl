@@ -46,15 +46,13 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
         },
         [open]
     );
-
-      useEffect(
-        () => {
-            if (errorLangCode === false) {
-               setIsValid(true)
-            }
-        },
-        [open,errorLangCode]
-    );
+    useEffect(() => {
+        if (currentLanguage.language_code) {
+            setIsValid(
+                !errorLangCode
+            );
+        }
+    }, [errorLangCode]);
 
     const languageCodes = Object.entries(contentBcpList).map(([key, value]) => ({
         language_code: key,
@@ -214,7 +212,7 @@ export default function PanLanguagePicker({ currentLanguage, setCurrentLanguage,
                             onChange={(event) => {
                                 const value = event.target.value.toLocaleLowerCase();
                                 setCurrentLanguage({ ...currentLanguage, language_code: value });
-                                setErrorLangCode(!regexLangCode.test(value))
+                                setErrorLangCode(value.length > 0 && !regexLangCode.test(value));
                             }}
                         />
                     </Grid2>
