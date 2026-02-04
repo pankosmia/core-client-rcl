@@ -48,7 +48,7 @@ export default function EnhancedTableToolbar(props) {
                 >
                     {numSelected} selected
                 </Typography>
-            ) : (tableTitle ? (
+            ) : (tableTitle && (
                 <Typography
                     sx={{ flex: '1 1 100%' }}
                     variant="h6"
@@ -56,15 +56,7 @@ export default function EnhancedTableToolbar(props) {
                     component="div"
                 >
                     {tableTitle}
-                </Typography>) : 
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
-                    PanTable
-                </Typography>
+                </Typography>)
             )}
 
             {numSelected > 0 ? (
