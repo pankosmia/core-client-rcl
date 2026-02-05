@@ -5,7 +5,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 export default function EnhancedTableHead(props) {
-    const {onSelectAllClick, numSelected, order, orderBy, rowCount, onRequestSort, columns, columnFilters, setColumnFilter, showColumnFilters, groupOperations } = props;
+    const {onSelectAllClick, numSelected, order, orderBy, rowCount, onRequestSort, columns, columnFilters, setColumnFilter, showColumnFilters, groupOperations, checkboxSelection } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -35,7 +35,7 @@ export default function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {groupOperations && 
+                {(checkboxSelection || groupOperations) && 
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"

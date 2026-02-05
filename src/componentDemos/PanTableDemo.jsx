@@ -208,7 +208,7 @@ function PanTableDemo() {
             theme={theme}
             columns={columns}
             rows={rows}
-            tableTitle={"Group operations"}
+            tableTitle={"Group operations"} // Title occupies the space the Toolbar takes, when nothing is selected.
             groupOperations={operationsDefinitionsExample}
           />
         </Grid2>
@@ -216,11 +216,11 @@ function PanTableDemo() {
       <Grid2 container spacing={8} minHeight={350}>
         <Grid2 item size={4}>
           <PanTable
+            checkboxSelection
             theme={theme}
             columns={columns}
             rows={rows}
-            tableTitle={"Checkboxes only and onRowSelectionModelChange"}
-            groupOperations={[]} // Here we add an empty groupOperations, to just use the checkboxess
+            tableTitle={"Checkboxes and onRowSelectionModelChange"}
             onRowSelectionModelChange={(ids) => {
               console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
             }}

@@ -45,7 +45,8 @@ export default function PanTable({
   groupOperations,
   sx,
   theme,
-  onRowSelectionModelChange
+  onRowSelectionModelChange,
+  checkboxSelection
 }) {
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("date");
@@ -245,6 +246,7 @@ export default function PanTable({
             columnFilters={columnFilters}
             showColumnFilters={showColumnFilters}
             groupOperations={groupOperations}
+            checkboxSelection={checkboxSelection}
           />
           <TableBody sx={{ verticalAlign: "top" }}>
             {visibleRows.map((row, n) => {
@@ -253,7 +255,7 @@ export default function PanTable({
                 <TableRow
                   hover
                   onClick={(event) => {
-                    if (groupOperations) {
+                    if (checkboxSelection || groupOperations) {
                       handleClick(event, row.id);
                     }
                   }}
@@ -262,7 +264,7 @@ export default function PanTable({
                   key={row.id}
                   selected={isItemSelected}
                 >
-                  {groupOperations && (
+                  {(checkboxSelection || groupOperations) && (
                     <TableCell padding="checkbox">
                       <Checkbox color="primary" checked={isItemSelected} />
                     </TableCell>
