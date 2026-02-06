@@ -53,17 +53,16 @@ export default function PanTable({
   const [selected, setSelected] = useState([]);
   const [activeFiltersIndices, setActiveFiltersIndices] = useState([]);
 
-  const [columnFilters, setColumnFilters] = useState({});
-
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
-  useEffect(() => {
-    const filters = {};
-    columns.forEach((col) => {
-      filters[col.field] = "";
-    });
-    setColumnFilters(filters);
-  }, [columns]);
+
+  const [columnFilters, setColumnFilters] = useState(() => {
+      const filters = {};
+      columns.forEach((col) => {
+        filters[col.field] = "";
+      });
+      return filters;
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -73,7 +72,7 @@ export default function PanTable({
 
   const handleSelectAllClick = (event) => {
     const newSelected = event.target.checked 
-      ? rows.map((n) => n.id) 
+      ? visibleRows.map((n) => n.id) 
       : [];
     setSelected(newSelected);
     if (onRowSelectionModelChange) {

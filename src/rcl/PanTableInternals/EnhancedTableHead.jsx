@@ -2,6 +2,7 @@ import {useState} from "react";
 import PropTypes from 'prop-types';
 import { Box, TableCell, TableHead, TableRow, TableSortLabel, IconButton, Popover, TextField, Checkbox } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
+import CloseIcon from '@mui/icons-material/Close';
 import { visuallyHidden } from '@mui/utils';
 
 export default function EnhancedTableHead(props) {
@@ -52,29 +53,35 @@ export default function EnhancedTableHead(props) {
                         padding={c.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === c.field ? order : false}
                     >
-                        <TableSortLabel
-                            active={orderBy === c.field}
-                            direction={orderBy === c.field ? order : 'asc'}
-                            onClick={createSortHandler(c.field)}
-                        >
-                            {c.headerName}
-                            {orderBy === c.field ? (
-                            <Box component="span" sx={visuallyHidden}>
-                                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                            </Box>
-                            ) : null}
-                        </TableSortLabel>
-                        {/* Show or hide column filters */}
-                        {(showColumnFilters && !c.numeric) && 
-                            <IconButton 
-                                size="small" 
-                                onClick={(e) => handleFilterClick(e, c.field)}
-                                sx={{ ml: 1, p: 0 }}
-                                color={columnFilters[c.field] ? 'primary' : 'default'} 
+                        <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: c.alignRight ? 'flex-end' : 'flex-start' 
+                        }}>
+                            <TableSortLabel
+                                active={orderBy === c.field}
+                                direction={orderBy === c.field ? order : 'asc'}
+                                onClick={createSortHandler(c.field)}
                             >
-                                <FilterListIcon fontSize="small" />
-                            </IconButton>
-                        }
+                                {c.headerName}
+                                {orderBy === c.field ? (
+                                <Box component="span" sx={visuallyHidden}>
+                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </Box>
+                                ) : null}
+                            </TableSortLabel>
+                            {/* Show or hide column filters */}
+                            {(showColumnFilters && !c.numeric) && 
+                                <IconButton 
+                                    size="small" 
+                                    onClick={(e) => handleFilterClick(e, c.field)}
+                                    sx={{ ml: 0.5, p: 0.5 }}
+                                    color={columnFilters[c.field] ? 'primary' : 'default'} 
+                                >
+                                    <FilterListIcon fontSize="small" />
+                                </IconButton>
+                            }
+                        </Box>
                     </TableCell>
                 ))}
             </TableRow>
@@ -93,6 +100,29 @@ export default function EnhancedTableHead(props) {
                         onChange={handleFilterChange}
                         size="small"
                         autoFocus
+                        slotProps={{
+                            input: {
+                                endAdornment: activeField && columnFilters[activeField] && (
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => { 
+                                            e.stopPropagation();
+                                            setColumnFilter(activeField, ''); 
+                                            handleFilterClose()
+                                        }}
+                                        edge="end"
+                                        sx={{
+                                            color: 'primary.main',
+                                            '&:hover': {
+                                                backgroundColor: 'action.hover'
+                                            }
+                                        }}
+                                    >
+                                        <CloseIcon fontSize="small" />
+                                    </IconButton>
+                                ),
+                            }
+                        }}
                     />
                 </Box>
             </Popover>
