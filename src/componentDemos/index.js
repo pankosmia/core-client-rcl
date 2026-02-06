@@ -8,6 +8,7 @@ import HeaderDemo from "./HeaderDemo";
 import PanLanguagePickerDemo from "./PanLanguagePickerDemo";
 import PanVersificationPickerDemo from "./PanVersificationPickerDemo";
 import PanBookPickerDemo from "./PanBookPickerDemo";
+import PanStepperPickerDemo from "./PanStepperPickerDemo";
 export {
     InternetSwitchDemo,
     AppbarHamburgerDemo,
@@ -19,4 +20,5 @@ export {
     PanLanguagePickerDemo,
     PanVersificationPickerDemo,
     PanBookPickerDemo,
+    PanStepperPickerDemo
 };

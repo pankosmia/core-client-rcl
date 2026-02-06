@@ -25,6 +25,7 @@ import typographyContext from './contexts/typographyContext';
 import PanLanguagePicker from './PanDialogInternals/PanLanguagePicker';
 import PanVersificationPicker from './PanDialogInternals/PanVersificationPicker';
 import PanBookPicker from './PanDialogInternals/PanBookPicker';
+import PanStepperPicker from './PanDialogInternals/PanStepperPicker';
 export {
     authContext,
     bcvContext,
@@ -52,5 +53,6 @@ export {
     clientInterfacesContext,
     PanLanguagePicker,
     PanVersificationPicker,
-    PanBookPicker
+    PanBookPicker,
+    PanStepperPicker
 };
