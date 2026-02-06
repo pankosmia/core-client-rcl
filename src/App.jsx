@@ -11,6 +11,7 @@ import {
   PanLanguagePickerDemo,
   PanVersificationPickerDemo,
   PanBookPickerDemo,
+  PanStepperPickerDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
@@ -41,6 +42,9 @@ function App() {
         </Demo>
         <Demo title="PanBookPicker">
           <PanBookPickerDemo/>
+        </Demo>
+        <Demo title="PanStepperPicker">
+          <PanStepperPickerDemo/>
         </Demo>
         <Demo title="Appbar Hamburger">
           <AppbarHamburgerDemo />

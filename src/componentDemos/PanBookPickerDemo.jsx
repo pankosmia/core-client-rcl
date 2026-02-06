@@ -10,7 +10,8 @@ export default function PanBookPickerDemo() {
     const [bookCode, setBookCode] = useState("TIT");
     const [bookTitle, setBookTitle] = useState("Tit");
     const [bookAbbr, setBookAbbr] = useState("Ti");
-    //const [showVersification,setShowVersification] = useState(true)
+    const [showVersification,setShowVersification] = useState(true)
+    const [bookName,setBookName] = useState(["COL"]);
 
     useEffect(
         () => {
@@ -34,8 +35,9 @@ export default function PanBookPickerDemo() {
         bookCodes={bookCodes} 
         bookTitle={bookTitle} 
         setBookTitle={setBookTitle} 
-        //showVersification={showVersification} 
-        //setShowVersification={setShowVersification}
+        showVersification={showVersification} 
+        setShowVersification={setShowVersification}
+        bookProject={bookName}
         />
     );
 }

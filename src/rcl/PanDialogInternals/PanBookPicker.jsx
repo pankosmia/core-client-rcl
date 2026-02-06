@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
 
-export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr,bookTitle,setBookTitle,bookCodes}) {
+export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr,bookTitle,setBookTitle,bookCodes,showVersification,setShowVersification,bookProject}) {
     const { i18nRef } = useContext(I18nContext);
     const [protestantOnly, setProtestantOnly] = useState(true);
     const [clientConfig, setClientConfig] = useState({});
@@ -60,7 +60,7 @@ export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr
                         >
                             {
                                 (protestantOnly ? bookCodes.slice(0, 66) : bookCodes).map((listItem, n) =>
-                                    <MenuItem key={n} value={listItem} dense>
+                                    <MenuItem key={n} value={listItem} dense disabled={bookProject ? bookProject.includes(listItem) : false}>
                                         <ListMenuItem
                                             listItem={`${listItem} - ${doI18n(`scripture:books:${listItem}`, i18nRef.current)}`} />
                                     </MenuItem>
@@ -108,7 +108,7 @@ export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr
                         />
                     </FormGroup>
                 )}
-                {/* <FormGroup>
+                <FormGroup>
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -120,7 +120,7 @@ export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr
                         }
                         label={doI18n("library:panksomia-rcl:add_versification_checkbox", i18nRef.current)}
                     />
-                </FormGroup> */}
+                </FormGroup>
             </Grid2>
         </>
     );
