@@ -23,6 +23,8 @@ import messagesContext from './contexts/messagesContext';
 import netContext from './contexts/netContext';
 import typographyContext from './contexts/typographyContext';
 import PanLanguagePicker from './PanDialogInternals/PanLanguagePicker';
+import PanVersificationPicker from './PanDialogInternals/PanVersificationPicker';
+import PanBookPicker from './PanDialogInternals/PanBookPicker';
 export {
     authContext,
     bcvContext,
@@ -49,4 +51,6 @@ export {
     clientConfigContext,
     clientInterfacesContext,
     PanLanguagePicker,
+    PanVersificationPicker,
+    PanBookPicker
 };
