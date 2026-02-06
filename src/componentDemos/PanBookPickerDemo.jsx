@@ -27,12 +27,11 @@ export default function PanBookPickerDemo() {
     );
     return (
         <PanBookPicker
-        isOpen={open}
         bookCode={bookCode} 
         setBookCode={setBookCode} 
         bookAbbr={bookAbbr} 
-        bookCodes={bookCodes} 
         setBookAbbr={setBookAbbr} 
+        bookCodes={bookCodes} 
         bookTitle={bookTitle} 
         setBookTitle={setBookTitle} 
         //showVersification={showVersification} 
