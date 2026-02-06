@@ -5,7 +5,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 export default function PanStepperPickerDemo() {
     const [pointlessInput, setPointlessInput] = useState(false);
     const steps = [`Step 1`,` Step 2 `,`Step 3`];
-    
+
     const renderStepContent = (step) => {
         switch (step) {
             case 0:
@@ -50,7 +50,6 @@ export default function PanStepperPickerDemo() {
                             />
                         </FormGroup >
                     </>
-
                 );
             case 2:
                 return (
