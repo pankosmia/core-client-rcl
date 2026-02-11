@@ -1,0 +1,82 @@
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
+
+import { doI18n, postEmptyJson } from "pithekos-lib";
+
+import debugContext from "./contexts/debugContext";
+import i18nContext from "./contexts/i18nContext";
+import netContext from "./contexts/netContext";
+export default function InternetWarningDialog({
+  callBack = () => {},
+  internetDialogOpen,
+  setInternetDialogOpen,
+}) {
+  const { i18nRef } = useContext(i18nContext);
+  const { debugRef } = useContext(debugContext);
+  const { enabledRef } = useContext(netContext);
+
+  useEffect(() => {
+    if (internetDialogOpen) {
+      if (enabledRef.current) {
+        handleCloseDialog();
+      }
+    }
+  }, [internetDialogOpen]);
+
+  const handleCloseDialog = () => {
+    setInternetDialogOpen(false);
+    callBack();
+  };
+
+  const enableInternet = () => {
+    postEmptyJson("/net/enable", debugRef.current);
+  };
+
+  return (
+    <Dialog
+      open={internetDialogOpen}
+      onClose={handleCloseDialog}
+      slotProps={{
+        paper: {
+          component: "form",
+        },
+      }}
+    >
+      <DialogTitle>
+        <b>
+          {doI18n("components:header:internet_question_label", i18nRef.current)}
+        </b>
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <Typography>
+            {doI18n("components:header:internet_question", i18nRef.current)}
+          </Typography>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseDialog}>
+          {doI18n("components:header:cancel", i18nRef.current)}
+        </Button>
+        <Button
+          onClick={() => {
+            enableInternet();
+            handleCloseDialog();
+          }}
+        >
+          {doI18n("components:header:accept", i18nRef.current)}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
