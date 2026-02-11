@@ -31,7 +31,7 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter: downloadedType==="burrito"?(row) => row?.source?.startsWith(path) ?? false :(row) => row?.metadata_types === "rc" ?? false
+          filter: downloadedType==="burrito" ? (row) => {return row?.source?.startsWith(path) ?? false} : (row) => {return row?.metadata_types === "rc" || false}
         })),
       };
     }
