@@ -14,6 +14,37 @@
     },
     "stub_content": {
       "en": "Content goes here"
+    },
+    "props_title": { "en": "PanDownload Props" },
+    "network_status": { "en": "Network status" },
+    "online": { "en": "Online" },
+    "offline": { "en": "Offline" },
+    "mode": { "en": "Mode" },
+    "switch_mode": { "en": "Switch mode" },
+    "list_mode": {
+      "en": "Remote Resources (List Mode)"
+    },
+    "whitelist_mode": {
+      "en": "Remote Resources (Whitelist Mode)"
+    },
+    "legacy_download": { "en": "Legacy Download" },
+    "failed_download": {
+      "en": "Failed to download zip"
+    },
+    "upload_failed": { "en": "Upload failed" },
+    "document_downloaded": {
+      "en": "Document downloaded in temp folder with name"
+    },
+    "internet_required": {
+      "en": "Internet is required to load remote repositories."
+    },
+    "live_preview": { "en": "Live Preview" },
+    "connect_internet": {
+      "en": "Connect to the internet to see the component preview."
+    },
+    "pan_download_in_dialogue": {
+      "en": "PanDownload in PanDialogue"
     }
+   
   }
 }

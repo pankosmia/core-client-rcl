@@ -11,29 +11,29 @@ import {
   createTheme,
   DialogContent,
 } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
 import { postEmptyJson } from "pithekos-lib";
+import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
+import { i18nContext } from "../rcl";
 export default function PanDownloadDemo() {
   const [mode, setMode] = useState("list"); // "list" | "whitelist"
   const { enabledRef } = useContext(netContext);
   const isOnline = enabledRef?.current ?? false;
   const { debugRef } = useContext(debugContext);
-
+  const { i18nRef } = useContext(i18nContext);
   const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
 
   const theme = createTheme({
     palette: {
-      primary: {
-        main: "#C49464",
-      },
-      secondary: {
-        main: "#00473E",
-      },
+      primary: { main: "#C49464" },
+      secondary: { main: "#00473E" },
     },
   });
+
   /** Structured list mode */
   const demoList = {
     "git.door43.org": {
@@ -57,13 +57,12 @@ export default function PanDownloadDemo() {
     ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
     ["git.door43.org/shower", "Aquifer exported content (Door43)"],
   ];
+
   const defaultFilterProps = useMemo(() => {
-    // In whitelist mode, filter by the first org
     if (mode === "whitelist" && sourceWhitelistOrgs.length > 0) {
-      const firstOrg = sourceWhitelistOrgs[0][0]; // "git.door43.org/BurritoTruck"
+      const firstOrg = sourceWhitelistOrgs[0][0];
       return (row) => row.source.startsWith(firstOrg);
     }
-    // In list mode, no default filter
     return null;
   }, [mode, sourceWhitelistOrgs]);
 
@@ -71,107 +70,94 @@ export default function PanDownloadDemo() {
     setMode((prev) => (prev === "list" ? "whitelist" : "list"));
   };
 
-  /** Build the real props object passed to PanDownload */
+  /** Build props for PanDownload */
   const panDownloadProps = useMemo(
     () => ({
       sources: mode === "list" ? demoList : sourceWhitelistOrgs,
       tableTitle:
         mode === "list"
-          ? "Remote Resources (List Mode)"
-          : "Remote Resources (Whitelist Mode)",
+          ? doI18n("pages:core-client-rcl:list_mode", i18nRef.current)
+          : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
       defaultFilterProps,
       downloadFunction: DowloadBurrito,
       showColumnFilters: true,
       sx: { flex: 1 },
     }),
-    [mode, defaultFilterProps],
+    [mode, defaultFilterProps]
   );
 
   const panDownloadPropsLegacy = useMemo(
     () => ({
       sources: [["git.door43.org/quentinroca", "Quentin Roca content"]],
-      tableTitle: "Legacy Download",
+      tableTitle: doI18n("pages:core-client-rcl:legacy_download", i18nRef.current),
       defaultFilterProps,
       showColumnFilters: true,
       downloadedType: "legacy",
       downloadFunction: DowloadLegacy,
       sx: { flex: 1 },
     }),
-    [mode, defaultFilterProps],
+    [mode, defaultFilterProps]
   );
+
   async function DowloadLegacy(params, remoteRepoPath, postType) {
-    console.log(params, remoteRepoPath, postType);
     let fetchResponse;
-    // 1. Download the zip
     const downloadResponse = await fetch(params.row.url);
 
     if (!downloadResponse.ok) {
-      throw new Error("Failed to download zip");
+      throw new Error(doI18n("pages:core-client-rcl:failed_download", i18nRef.current));
     }
 
     const zipBlob = await downloadResponse.blob();
     const formData = new FormData();
     formData.append("file", zipBlob);
 
-    fetchResponse = await fetch("/temp/bytes", {
-      method: "POST",
-      body: formData,
-    });
-    console.log(fetchResponse);
+    fetchResponse = await fetch("/temp/bytes", { method: "POST", body: formData });
+
     if (!fetchResponse.ok) {
-      throw new Error("Upload failed");
+      throw new Error(doI18n("pages:core-client-rcl:upload_failed", i18nRef.current));
     }
 
     const data = await fetchResponse.json();
-    console.log(data.uuid);
-    window.location.href = `/clients/core-contenthandler_text_translation#/createDocument/textTranslation?uuid=${data.uuid}`;
+    enqueueSnackbar(
+      `${doI18n("pages:core-client-rcl:document_downloaded", i18nRef.current)} ${data.uuid}`,
+      { variant: "success" }
+    );
     return fetchResponse;
   }
 
   async function DowloadBurrito(params, remoteRepoPath, postType) {
-    let fetchResponse;
-
     const fetchUrl =
       postType === "clone"
         ? `/git/clone-repo/${remoteRepoPath}`
         : `/git/pull-repo/origin/${remoteRepoPath}`;
 
-    fetchResponse = await postEmptyJson(fetchUrl, debugRef.current);
-    return fetchResponse;
+    return await postEmptyJson(fetchUrl, debugRef.current);
   }
-  return (
-    <Box
-      sx={{
-        p: 2,
-        display: "grid",
-        gridTemplateColumns: "320px 1fr",
-        gap: 2,
-        flex: 1,
 
-      }}
-    >
-      {/* ───────────── Left: Interactive Args Panel ───────────── */}
+  return (
+    <Box sx={{ p: 2, display: "grid", gridTemplateColumns: "320px 1fr", gap: 2, flex: 1 }}>
+      {/* ───────────── Left Panel ───────────── */}
       <Paper elevation={2} sx={{ p: 2, overflow: "auto" }}>
         <Typography variant="h6" gutterBottom>
-          PanDownload Props
+          {doI18n("pages:core-client-rcl:props_title", i18nRef.current)}
         </Typography>
 
         <Divider sx={{ mb: 2 }} />
 
         <Stack spacing={2}>
-          {/* Network Status */}
           <Box>
-            <Typography variant="subtitle2">Network status</Typography>
+            <Typography variant="subtitle2">
+              {doI18n("pages:core-client-rcl:network_status", i18nRef.current)}
+            </Typography>
             <Chip
-              label={isOnline ? "Online" : "Offline"}
+              label={isOnline ? doI18n("pages:core-client-rcl:online", i18nRef.current) : doI18n("pages:core-client-rcl:offline", i18nRef.current)}
               color={isOnline ? "success" : "warning"}
               size="small"
             />
           </Box>
 
-          {/* Mode */}
           <Box>
-            <Typography variant="subtitle2">Mode</Typography>
+            <Typography variant="subtitle2">{doI18n("pages:core-client-rcl:mode", i18nRef.current)}</Typography>
             <Stack direction="row" spacing={1} alignItems="center">
               <Chip label={mode} color="primary" size="small" />
               <Button
@@ -180,45 +166,34 @@ export default function PanDownloadDemo() {
                 onClick={toggleMode}
                 disabled={!isOnline}
               >
-                Switch mode
+                {doI18n("pages:core-client-rcl:switch_mode", i18nRef.current)}
               </Button>
             </Stack>
           </Box>
 
-          {/* Props Panel */}
           <PropsPanel
             args={{
               sources: mode === "list" ? demoList : sourceWhitelistOrgs,
-
-              tableTitle:
-                mode === "list"
-                  ? "Remote Resources (List Mode)"
-                  : "Remote Resources (Whitelist Mode)",
+              tableTitle: mode === "list"
+                ? doI18n("pages:core-client-rcl:list_mode", i18nRef.current)
+                : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
               defaultFilterProps,
               showColumnFilters: true,
             }}
           />
-          {/* Offline warning */}
+
           {!isOnline && (
             <Alert severity="warning">
-              Internet is required to load remote repositories.
+              {doI18n("pages:core-client-rcl:internet_required", i18nRef.current)}
             </Alert>
           )}
         </Stack>
       </Paper>
 
-      {/* ───────────── Right: Live Component Preview ───────────── */}
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      {/* ───────────── Right Panel Preview ───────────── */}
+      <Paper elevation={2} sx={{ p: 2, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" gutterBottom>
-          Live Preview
+          {doI18n("pages:core-client-rcl:live_preview", i18nRef.current)}
         </Typography>
 
         <Divider sx={{ mb: 2 }} />
@@ -227,51 +202,45 @@ export default function PanDownloadDemo() {
           <PanDownload theme={theme} {...panDownloadProps} />
         ) : (
           <Alert severity="info">
-            Connect to the internet to see the component preview.
+            {doI18n("pages:core-client-rcl:connect_internet", i18nRef.current)}
           </Alert>
         )}
       </Paper>
+
+      {/* ───────────── Legacy Panel ───────────── */}
       <Paper elevation={2} sx={{ p: 2, overflow: "auto" }}>
         <Typography variant="h6" gutterBottom>
-          PanDownload Props
+          {doI18n("pages:core-client-rcl:props_title", i18nRef.current)}
         </Typography>
 
         <Divider sx={{ mb: 2 }} />
 
         <Stack spacing={2}>
-          {/* Network Status */}
           <Box>
-            <Typography variant="subtitle2">Network status</Typography>
+            <Typography variant="subtitle2">
+              {doI18n("pages:core-client-rcl:network_status", i18nRef.current)}
+            </Typography>
             <Chip
-              label={isOnline ? "Online" : "Offline"}
+              label={isOnline ? doI18n("pages:core-client-rcl:online", i18nRef.current) : doI18n("pages:core-client-rcl:offline", i18nRef.current)}
               color={isOnline ? "success" : "warning"}
               size="small"
             />
           </Box>
 
-          {/* Props Panel */}
           <PropsPanel args={{}} />
-          {/* Offline warning */}
+
           {!isOnline && (
             <Alert severity="warning">
-              Internet is required to load remote repositories.
+              {doI18n("pages:core-client-rcl:internet_required", i18nRef.current)}
             </Alert>
           )}
         </Stack>
       </Paper>
 
-      {/* ───────────── Right: Live Component Preview ───────────── */}
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          overflow: "hidden",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      {/* ───────────── Legacy Preview ───────────── */}
+      <Paper elevation={2} sx={{ p: 2, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         <Typography variant="h6" gutterBottom>
-          Live Preview
+          {doI18n("pages:core-client-rcl:live_preview", i18nRef.current)}
         </Typography>
 
         <Divider sx={{ mb: 2 }} />
@@ -280,24 +249,16 @@ export default function PanDownloadDemo() {
           <PanDownload theme={theme} {...panDownloadPropsLegacy} />
         ) : (
           <Alert severity="info">
-            Connect to the internet to see the component preview.
+            {doI18n("pages:core-client-rcl:connect_internet", i18nRef.current)}
           </Alert>
         )}
       </Paper>
-      <Box
-        sx={{
-          flex: 1,
-          minHeight: 0,
-          overflow: "auto",
-        }}
-      >
+
+      <Box sx={{ flex: 1, minHeight: 0, overflow: "auto" }}>
         <Button onClick={() => setOpenDialoguePanDownload(true)}>
-          PanDownload in PanDialogue
+          {doI18n("pages:core-client-rcl:pan_download_in_dialogue", i18nRef.current)}
         </Button>
-        <PanDialog
-          isOpen={openDialoguePanDownload}
-          closeFn={() => setOpenDialoguePanDownload(false)}
-        >
+        <PanDialog isOpen={openDialoguePanDownload} closeFn={() => setOpenDialoguePanDownload(false)}>
           <DialogContent>
             <PanDownload theme={theme} {...panDownloadProps} />
           </DialogContent>
