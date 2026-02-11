@@ -26,6 +26,7 @@ import PanLanguagePicker from './PanDialogInternals/PanLanguagePicker';
 import PanVersificationPicker from './PanDialogInternals/PanVersificationPicker';
 import PanBookPicker from './PanDialogInternals/PanBookPicker';
 import PanStepperPicker from './PanDialogInternals/PanStepperPicker';
+import InternetWarningDialog from './InternetWarningDialog';
 export {
     authContext,
     bcvContext,
@@ -38,6 +39,7 @@ export {
     typographyContext,
     AppbarHamburger,
     InternetSwitch,
+    InternetWarningDialog,
     PanDialog,
     PanDialogActions,
     PanTable,

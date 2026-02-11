@@ -12,6 +12,8 @@ import debugContext from "./contexts/debugContext";
 
 import { useState, useEffect, useContext, useCallback } from "react";
 export default function PanDownload({
+  downloadedType = "burrito",
+  downloadFunction,
   sources,
   showColumnFilters,
   tableTitle,
@@ -20,7 +22,7 @@ export default function PanDownload({
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
-
+  const [activeFilterIndex, setActiveFilterIndex] = useState(null);
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -29,7 +31,7 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter: (row) => row?.source?.startsWith(path) ?? false,
+          filter: downloadedType==="burrito"?(row) => row?.source?.startsWith(path) ?? false :(row) => row?.metadata_types === "rc" ?? false
         })),
       };
     }
@@ -59,17 +61,20 @@ export default function PanDownload({
     };
   }, [sources]);
 
-  const [activeFilterIndex, setActiveFilterIndex] = useState(null);
+  
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
       setActiveFilterIndex(0);
     }
   }, [filterExample, activeFilterIndex]);
+
   const activeFilter = useMemo(() => {
     return activeFilterIndex !== null
       ? filterExample[activeFilterIndex]?.filter
       : null;
   }, [activeFilterIndex, filterExample]);
+
+
   const [catalog, setCatalog] = useState([]);
   const [localRepos, setLocalRepos] = useState(null);
   const [isDownloading, setIsDownloading] = useState(null);
@@ -83,10 +88,19 @@ export default function PanDownload({
       let newCatalog = [];
       for (let source of sourceWhitelist) {
         let chemin = source[0].split("/");
-        const response = await getJson(
-          `/gitea/remote-repos/${source[0]}`,
-          debugRef.current,
-        );
+        let response;
+        if (downloadedType === "burrito") {
+          response = await getJson(
+            `/gitea/remote-repos/${source[0]}`,
+            debugRef.current,
+          );
+        }
+        if (downloadedType === "legacy") {
+          response = await getJson(
+            `/gitea/user-remote-repos/${source[0]}`,
+            debugRef.current,
+          );
+        }
         if (response.ok) {
           if (listMode) {
             const newResponse = response.json
@@ -122,7 +136,6 @@ export default function PanDownload({
             const metadataUrl = `/burrito/metadata/summary/${e.source}/${e.name}`;
             let metadataResponse = await getJson(metadataUrl, debugRef.current);
             if (metadataResponse.ok) {
-
               const metadataTime = metadataResponse.json.timestamp;
               const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
               newIsDownloading[`${e.source}/${e.name}`] =
@@ -154,12 +167,9 @@ export default function PanDownload({
         )} ${params.row.abbreviation}`,
         { variant: "info" },
       );
-      const fetchUrl =
-        postType === "clone"
-          ? `/git/clone-repo/${remoteRepoPath}`
-          : `/git/pull-repo/origin/${remoteRepoPath}`;
+      let fetchResponse = await downloadFunction(params, remoteRepoPath, postType);
+    
 
-      const fetchResponse = await postEmptyJson(fetchUrl, debugRef.current);
       if (fetchResponse.ok) {
         enqueueSnackbar(
           `${params.row.abbreviation} ${doI18n(
@@ -223,10 +233,7 @@ export default function PanDownload({
       },
       {
         field: "type",
-        headerName: doI18n(
-          "library:panksomia-rcl:row_type",
-          i18nRef.current,
-        ),
+        headerName: doI18n("library:panksomia-rcl:row_type", i18nRef.current),
         flex: 1.5,
         minWidth: 80,
       },
@@ -276,6 +283,8 @@ export default function PanDownload({
         .map((ce) => ({
           ...ce,
           id: `${ce.source}/${ce.name}`, // ✅ stable
+          url: ce.latest_zip,
+          metadata_types: ce.metadata_types,
           resourceCode: ce.abbreviation.toUpperCase(),
           language: ce.language_code,
           description: ce.description,
