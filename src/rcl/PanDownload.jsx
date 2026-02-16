@@ -5,12 +5,19 @@ import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
-import { Stack, Chip } from "@mui/material";
+import { Stack, Chip, Grid2 } from "@mui/material";
 import { getAndSetJson, getJson, doI18n, postEmptyJson } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
-
 import { useState, useEffect, useContext, useCallback } from "react";
+const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
+  const summaries = await getJson(
+    "/burrito/metadata/summaries",
+    debugRef.current,
+  );
+  setMetadataSummaries(summaries.json);
+};
+
 export default function PanDownload({
   downloadedType = "burrito",
   downloadFunction,
@@ -22,7 +29,11 @@ export default function PanDownload({
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
-  const [activeFilterIndex, setActiveFilterIndex] = useState(null);
+  const [activeFilterIndex, setActiveFilterIndex] = useState(0);
+  const [catalog, setCatalog] = useState([]);
+  const [isDownloading, setIsDownloading] = useState(null);
+  const [metadataSummaries, setMetadataSummaries] = useState({});
+
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -31,7 +42,10 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter: downloadedType==="burrito"?(row) => row?.source?.startsWith(path) ?? false :(row) => row?.metadata_types === "rc" ?? false
+          filter:
+            downloadedType === "burrito"
+              ? (row) => row?.source?.startsWith(path) ?? false
+              : (row) => row?.metadata_types === "rc" ?? false,
         })),
       };
     }
@@ -61,7 +75,6 @@ export default function PanDownload({
     };
   }, [sources]);
 
-  
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
       setActiveFilterIndex(0);
@@ -74,77 +87,62 @@ export default function PanDownload({
       : null;
   }, [activeFilterIndex, filterExample]);
 
-
-  const [catalog, setCatalog] = useState([]);
-  const [localRepos, setLocalRepos] = useState(null);
-  const [isDownloading, setIsDownloading] = useState(null);
   useEffect(() => {
     setCatalog([]);
     setIsDownloading(null);
-  }, [sourceWhitelist]);
+    fetchMetaDataSummaries(setMetadataSummaries, debugRef);
+  }, [sourceWhitelist, activeFilterIndex]);
 
   useEffect(() => {
     const doCatalog = async () => {
       let newCatalog = [];
-      for (let source of sourceWhitelist) {
-        let chemin = source[0].split("/");
-        let response;
-        if (downloadedType === "burrito") {
-          response = await getJson(
-            `/gitea/remote-repos/${source[0]}`,
-            debugRef.current,
-          );
-        }
-        if (downloadedType === "legacy") {
-          response = await getJson(
-            `/gitea/user-remote-repos/${source[0]}`,
-            debugRef.current,
-          );
-        }
-        if (response.ok) {
-          if (listMode) {
-            const newResponse = response.json
-              .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
-              .map((r) => ({ ...r, source: source[0] }));
-            newCatalog = [...newCatalog, ...newResponse];
-          } else {
-            const newResponse = response.json.map((r) => {
-              return { ...r, source: source[0] };
-            });
-            newCatalog = [...newCatalog, ...newResponse];
-          }
+      let source = sourceWhitelist[activeFilterIndex];
+      let chemin = source[0].split("/");
+      let response;
+      if (downloadedType === "burrito") {
+        response = await getJson(
+          `/gitea/remote-repos/${source[0]}`,
+          debugRef.current,
+        );
+      }
+      if (downloadedType === "legacy") {
+        response = await getJson(
+          `/gitea/user-remote-repos/${source[0]}`,
+          debugRef.current,
+        );
+      }
+      if (response.ok) {
+        if (listMode) {
+          const newResponse = response.json
+            .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
+            .map((r) => ({ ...r, source: source[0] }));
+          newCatalog = [...newCatalog, ...newResponse];
+        } else {
+          const newResponse = response.json.map((r) => {
+            return { ...r, source: source[0] };
+          });
+          newCatalog = [...newCatalog, ...newResponse];
         }
       }
       setCatalog(newCatalog);
     };
     doCatalog().then();
-  }, [sourceWhitelist]);
+  }, [sourceWhitelist, activeFilterIndex]);
 
   useEffect(() => {
-    getAndSetJson({
-      url: "/git/list-local-repos",
-      setter: setLocalRepos,
-    }).then();
-  }, []);
-
-  useEffect(() => {
-    if (!isDownloading && catalog.length > 0 && localRepos) {
+    if (!isDownloading && catalog.length > 0) {
       const downloadStatus = async () => {
         const newIsDownloading = {};
+        console.log(catalog);
+        console.log(metadataSummaries)
         for (const e of catalog) {
-          if (localRepos.includes(`${e.source}/${e.name}`)) {
-            const metadataUrl = `/burrito/metadata/summary/${e.source}/${e.name}`;
-            let metadataResponse = await getJson(metadataUrl, debugRef.current);
-            if (metadataResponse.ok) {
-              const metadataTime = metadataResponse.json.timestamp;
-              const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
-              newIsDownloading[`${e.source}/${e.name}`] =
-                remoteUpdateTime - metadataTime > 0
-                  ? "updatable"
-                  : "downloaded";
-            } else {
-              newIsDownloading[`${e.source}/${e.name}`] = "downloaded";
-            }
+          console.log(e)
+          if (metadataSummaries[`${e.source}/${e.name}`]) {
+            const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
+            const metadataTime = metadataResponse.timestamp;
+            const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
+            newIsDownloading[`${e.source}/${e.name}`] =
+              remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
           } else {
             newIsDownloading[`${e.source}/${e.name}`] = "notDownloaded";
           }
@@ -153,7 +151,8 @@ export default function PanDownload({
       };
       downloadStatus().then();
     }
-  }, [isDownloading, catalog, localRepos]);
+  }, [isDownloading, catalog,metadataSummaries]);
+
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
       setIsDownloading((isDownloadingCurrent) => ({
@@ -167,8 +166,11 @@ export default function PanDownload({
         )} ${params.row.abbreviation}`,
         { variant: "info" },
       );
-      let fetchResponse = await downloadFunction(params, remoteRepoPath, postType);
-    
+      let fetchResponse = await downloadFunction(
+        params,
+        remoteRepoPath,
+        postType,
+      );
 
       if (fetchResponse.ok) {
         enqueueSnackbar(
