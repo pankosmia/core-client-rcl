@@ -1,4 +1,4 @@
-import PanStepperPicker from "../rcl/PanDialogInternals/PanStepperPicker";
+import PanStepperPicker from "../rcl/PanStepperPicker";
 import { useState } from "react";
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
