@@ -10,9 +10,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import PanFilteredMenu from "../PanFilteredMenu";
+import PanFilteredMenu from "./PanFilteredMenu";
 import { doI18n, getAndSetJson, getJson } from "pithekos-lib";
-import i18nContext from "../contexts/i18nContext";
+import i18nContext from "./contexts/i18nContext";
 import { useContext, useEffect, useState } from "react";
 
 export default function PanLanguagePicker({
