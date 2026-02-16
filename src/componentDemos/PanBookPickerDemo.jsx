@@ -55,7 +55,7 @@ export default function PanBookPickerDemo() {
                     showVersification={showVersification}
                     setShowVersification={setShowVersification}
                     bookProject={bookName}
-                    addVerset={false}
+                    addVerses={false}
                 />
             </Grid2>
         </Grid2>

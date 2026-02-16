@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
 
-export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBookAbbr, bookTitle, setBookTitle, bookCodes, showVersification, setShowVersification, bookProject, addVerset = true }) {
+export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBookAbbr, bookTitle, setBookTitle, bookCodes, showVersification, setShowVersification, bookProject, addVerses = true }) {
     const { i18nRef } = useContext(I18nContext);
     const [protestantOnly, setProtestantOnly] = useState(true);
     const [clientConfig, setClientConfig] = useState({});
@@ -108,7 +108,7 @@ export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBook
                         />
                     </FormGroup>
                 )}
-                {addVerset === true && (
+                {addVerses === true && (
                     <FormGroup>
                         <FormControlLabel
                             control={
