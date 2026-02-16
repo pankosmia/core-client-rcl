@@ -5,11 +5,11 @@ import { useContext, useEffect, useState } from "react";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
 
-export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr,bookTitle,setBookTitle,bookCodes,showVersification,setShowVersification,bookProject}) {
+export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBookAbbr, bookTitle, setBookTitle, bookCodes, showVersification, setShowVersification, bookProject, addVerset = true }) {
     const { i18nRef } = useContext(I18nContext);
     const [protestantOnly, setProtestantOnly] = useState(true);
     const [clientConfig, setClientConfig] = useState({});
-   
+
     useEffect(() => {
         getJson('/client-config')
             .then((res) => res.json)
@@ -108,19 +108,21 @@ export default function PanBookPicker({bookCode,setBookCode,bookAbbr,setBookAbbr
                         />
                     </FormGroup>
                 )}
-                <FormGroup>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                color='secondary'
-                                checked={true}
-                                disabled
-                                onChange={() => setShowVersification(!showVersification)}
-                            />
-                        }
-                        label={doI18n("library:panksomia-rcl:add_versification_checkbox", i18nRef.current)}
-                    />
-                </FormGroup>
+                {addVerset === true && (
+                    <FormGroup>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color='secondary'
+                                    checked={true}
+                                    disabled
+                                    onChange={() => setShowVersification(!showVersification)}
+                                />
+                            }
+                            label={doI18n("library:panksomia-rcl:add_versification_checkbox", i18nRef.current)}
+                        />
+                    </FormGroup>
+                )}
             </Grid2>
         </>
     );

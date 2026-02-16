@@ -2,6 +2,7 @@ import { getJson } from "pithekos-lib";
 import { useContext, useEffect, useState } from "react";
 import DebugContext from "../rcl/contexts/debugContext";
 import { PanBookPicker } from "../rcl";
+import { Grid2 } from "@mui/material";
 
 export default function PanBookPickerDemo() {
     const [bookCodes, setBookCodes] = useState([]);
@@ -10,8 +11,8 @@ export default function PanBookPickerDemo() {
     const [bookCode, setBookCode] = useState("TIT");
     const [bookTitle, setBookTitle] = useState("Tit");
     const [bookAbbr, setBookAbbr] = useState("Ti");
-    const [showVersification,setShowVersification] = useState(true)
-    const [bookName,setBookName] = useState(["COL"]);
+    const [showVersification, setShowVersification] = useState(true)
+    const [bookName, setBookName] = useState(["COL"]);
 
     useEffect(
         () => {
@@ -27,17 +28,36 @@ export default function PanBookPickerDemo() {
         }, [open]
     );
     return (
-        <PanBookPicker
-        bookCode={bookCode} 
-        setBookCode={setBookCode} 
-        bookAbbr={bookAbbr} 
-        setBookAbbr={setBookAbbr} 
-        bookCodes={bookCodes} 
-        bookTitle={bookTitle} 
-        setBookTitle={setBookTitle} 
-        showVersification={showVersification} 
-        setShowVersification={setShowVersification}
-        bookProject={bookName}
-        />
+        <Grid2 container spacing={8} minHeight={600}>
+            <Grid2 item size={12}>
+                <PanBookPicker
+                    bookCode={bookCode}
+                    setBookCode={setBookCode}
+                    bookAbbr={bookAbbr}
+                    setBookAbbr={setBookAbbr}
+                    bookCodes={bookCodes}
+                    bookTitle={bookTitle}
+                    setBookTitle={setBookTitle}
+                    showVersification={showVersification}
+                    setShowVersification={setShowVersification}
+                    bookProject={bookName}
+                />
+            </Grid2>
+            <Grid2 item size={12}>
+                <PanBookPicker
+                    bookCode={bookCode}
+                    setBookCode={setBookCode}
+                    bookAbbr={bookAbbr}
+                    setBookAbbr={setBookAbbr}
+                    bookCodes={bookCodes}
+                    bookTitle={bookTitle}
+                    setBookTitle={setBookTitle}
+                    showVersification={showVersification}
+                    setShowVersification={setShowVersification}
+                    bookProject={bookName}
+                    addVerset={false}
+                />
+            </Grid2>
+        </Grid2>
     );
 }

@@ -4,14 +4,18 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 export default function PanStepperPickerDemo() {
     const [pointlessInput, setPointlessInput] = useState(false);
-    const steps = [`Step 1`,` Step 2 `,`Step 3`];
+    const steps = [`Step 1`, ` Step 2 `, `Step 3`];
+
+    const handleCreate = () => {
+        setPointlessInput(false)
+    }
 
     const renderStepContent = (step) => {
         switch (step) {
             case 0:
                 return (
                     <>
-                       Step 1
+                        Step 1
                         < FormGroup>
                             <FormControlLabel
                                 control={
@@ -33,7 +37,7 @@ export default function PanStepperPickerDemo() {
             case 1:
                 return (
                     <>
-                       Step 2
+                        Step 2
                         < FormGroup>
                             <FormControlLabel
                                 control={
@@ -92,6 +96,6 @@ export default function PanStepperPickerDemo() {
     };
 
     return (
-        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} />
+        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} />
     )
 }
