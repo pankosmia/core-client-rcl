@@ -10,6 +10,7 @@ import {
   Chip,
   createTheme,
   DialogContent,
+  Grid2,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
 import { PanDownload, PanDialog } from "../rcl";
@@ -81,22 +82,23 @@ export default function PanDownloadDemo() {
       defaultFilterProps,
       downloadFunction: DowloadBurrito,
       showColumnFilters: true,
-      sx: { flex: 1 },
     }),
-    [mode, defaultFilterProps]
+    [mode, defaultFilterProps],
   );
 
   const panDownloadPropsLegacy = useMemo(
     () => ({
       sources: [["git.door43.org/quentinroca", "Quentin Roca content"]],
-      tableTitle: doI18n("pages:core-client-rcl:legacy_download", i18nRef.current),
+      tableTitle: doI18n(
+        "pages:core-client-rcl:legacy_download",
+        i18nRef.current,
+      ),
       defaultFilterProps,
       showColumnFilters: true,
       downloadedType: "legacy",
       downloadFunction: DowloadLegacy,
-      sx: { flex: 1 },
     }),
-    [mode, defaultFilterProps]
+    [mode, defaultFilterProps],
   );
 
   async function DowloadLegacy(params, remoteRepoPath, postType) {
@@ -104,23 +106,30 @@ export default function PanDownloadDemo() {
     const downloadResponse = await fetch(params.row.url);
 
     if (!downloadResponse.ok) {
-      throw new Error(doI18n("pages:core-client-rcl:failed_download", i18nRef.current));
+      throw new Error(
+        doI18n("pages:core-client-rcl:failed_download", i18nRef.current),
+      );
     }
 
     const zipBlob = await downloadResponse.blob();
     const formData = new FormData();
     formData.append("file", zipBlob);
 
-    fetchResponse = await fetch("/temp/bytes", { method: "POST", body: formData });
+    fetchResponse = await fetch("/temp/bytes", {
+      method: "POST",
+      body: formData,
+    });
 
     if (!fetchResponse.ok) {
-      throw new Error(doI18n("pages:core-client-rcl:upload_failed", i18nRef.current));
+      throw new Error(
+        doI18n("pages:core-client-rcl:upload_failed", i18nRef.current),
+      );
     }
 
     const data = await fetchResponse.json();
     enqueueSnackbar(
       `${doI18n("pages:core-client-rcl:document_downloaded", i18nRef.current)} ${data.uuid}`,
-      { variant: "success" }
+      { variant: "success" },
     );
     return fetchResponse;
   }
@@ -135,7 +144,15 @@ export default function PanDownloadDemo() {
   }
 
   return (
-    <Box sx={{ p: 2, display: "grid", gridTemplateColumns: "320px 1fr", gap: 2, flex: 1 }}>
+    <Box
+      sx={{
+        p: 2,
+        display: "grid",
+        gridTemplateColumns: "320px 1fr",
+        gap: 2,
+        flex: 1,
+      }}
+    >
       {/* ───────────── Left Panel ───────────── */}
       <Paper elevation={2} sx={{ p: 2, overflow: "auto" }}>
         <Typography variant="h6" gutterBottom>
@@ -150,14 +167,20 @@ export default function PanDownloadDemo() {
               {doI18n("pages:core-client-rcl:network_status", i18nRef.current)}
             </Typography>
             <Chip
-              label={isOnline ? doI18n("pages:core-client-rcl:online", i18nRef.current) : doI18n("pages:core-client-rcl:offline", i18nRef.current)}
+              label={
+                isOnline
+                  ? doI18n("pages:core-client-rcl:online", i18nRef.current)
+                  : doI18n("pages:core-client-rcl:offline", i18nRef.current)
+              }
               color={isOnline ? "success" : "warning"}
               size="small"
             />
           </Box>
 
           <Box>
-            <Typography variant="subtitle2">{doI18n("pages:core-client-rcl:mode", i18nRef.current)}</Typography>
+            <Typography variant="subtitle2">
+              {doI18n("pages:core-client-rcl:mode", i18nRef.current)}
+            </Typography>
             <Stack direction="row" spacing={1} alignItems="center">
               <Chip label={mode} color="primary" size="small" />
               <Button
@@ -174,9 +197,13 @@ export default function PanDownloadDemo() {
           <PropsPanel
             args={{
               sources: mode === "list" ? demoList : sourceWhitelistOrgs,
-              tableTitle: mode === "list"
-                ? doI18n("pages:core-client-rcl:list_mode", i18nRef.current)
-                : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
+              tableTitle:
+                mode === "list"
+                  ? doI18n("pages:core-client-rcl:list_mode", i18nRef.current)
+                  : doI18n(
+                      "pages:core-client-rcl:whitelist_mode",
+                      i18nRef.current,
+                    ),
               defaultFilterProps,
               showColumnFilters: true,
             }}
@@ -184,14 +211,25 @@ export default function PanDownloadDemo() {
 
           {!isOnline && (
             <Alert severity="warning">
-              {doI18n("pages:core-client-rcl:internet_required", i18nRef.current)}
+              {doI18n(
+                "pages:core-client-rcl:internet_required",
+                i18nRef.current,
+              )}
             </Alert>
           )}
         </Stack>
       </Paper>
 
       {/* ───────────── Right Panel Preview ───────────── */}
-      <Paper elevation={2} sx={{ p: 2, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <Paper
+        elevation={2}
+        sx={{
+          p: 2,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h6" gutterBottom>
           {doI18n("pages:core-client-rcl:live_preview", i18nRef.current)}
         </Typography>
@@ -221,7 +259,11 @@ export default function PanDownloadDemo() {
               {doI18n("pages:core-client-rcl:network_status", i18nRef.current)}
             </Typography>
             <Chip
-              label={isOnline ? doI18n("pages:core-client-rcl:online", i18nRef.current) : doI18n("pages:core-client-rcl:offline", i18nRef.current)}
+              label={
+                isOnline
+                  ? doI18n("pages:core-client-rcl:online", i18nRef.current)
+                  : doI18n("pages:core-client-rcl:offline", i18nRef.current)
+              }
               color={isOnline ? "success" : "warning"}
               size="small"
             />
@@ -231,14 +273,25 @@ export default function PanDownloadDemo() {
 
           {!isOnline && (
             <Alert severity="warning">
-              {doI18n("pages:core-client-rcl:internet_required", i18nRef.current)}
+              {doI18n(
+                "pages:core-client-rcl:internet_required",
+                i18nRef.current,
+              )}
             </Alert>
           )}
         </Stack>
       </Paper>
 
       {/* ───────────── Legacy Preview ───────────── */}
-      <Paper elevation={2} sx={{ p: 2, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <Paper
+        elevation={2}
+        sx={{
+          p: 2,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h6" gutterBottom>
           {doI18n("pages:core-client-rcl:live_preview", i18nRef.current)}
         </Typography>
@@ -256,11 +309,19 @@ export default function PanDownloadDemo() {
 
       <Box sx={{ flex: 1, minHeight: 0, overflow: "auto" }}>
         <Button onClick={() => setOpenDialoguePanDownload(true)}>
-          {doI18n("pages:core-client-rcl:pan_download_in_dialogue", i18nRef.current)}
+          {doI18n(
+            "pages:core-client-rcl:pan_download_in_dialogue",
+            i18nRef.current,
+          )}
         </Button>
-        <PanDialog isOpen={openDialoguePanDownload} closeFn={() => setOpenDialoguePanDownload(false)}>
-          <DialogContent>
-            <PanDownload theme={theme} {...panDownloadProps} />
+        <PanDialog
+          isOpen={openDialoguePanDownload}
+          closeFn={() => setOpenDialoguePanDownload(false)}
+        >
+          <DialogContent sx={{overflow : 'hidden'}}>
+            <Box sx={{ height: "calc(100vh - 200px)" }}>
+              <PanDownload theme={theme} {...panDownloadProps} />
+            </Box>
           </DialogContent>
         </PanDialog>
       </Box>
