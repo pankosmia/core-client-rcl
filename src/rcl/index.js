@@ -22,10 +22,10 @@ import languagesContext from './contexts/languagesContext';
 import messagesContext from './contexts/messagesContext';
 import netContext from './contexts/netContext';
 import typographyContext from './contexts/typographyContext';
-import PanLanguagePicker from './PanDialogInternals/PanLanguagePicker';
-import PanVersificationPicker from './PanDialogInternals/PanVersificationPicker';
-import PanBookPicker from './PanDialogInternals/PanBookPicker';
-import PanStepperPicker from './PanDialogInternals/PanStepperPicker';
+import PanLanguagePicker from './PanLanguagePicker';
+import PanVersificationPicker from './PanVersificationPicker';
+import PanBookPicker from './PanBookPicker';
+import PanStepperPicker from './PanStepperPicker';
 import InternetWarningDialog from './InternetWarningDialog';
 export {
     authContext,
