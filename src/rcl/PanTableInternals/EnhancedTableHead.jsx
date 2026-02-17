@@ -52,6 +52,11 @@ export default function EnhancedTableHead(props) {
                         align={c.alignRight ? 'right' : 'left'}
                         padding={c.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === c.field ? order : false}
+                        sx={{
+                            width: c.width || 'auto',
+                            minWidth: c.minWidth || 'none',
+                            flex: c.flex || 'none',
+                        }}
                     >
                         <Box sx={{ 
                             display: 'flex', 
