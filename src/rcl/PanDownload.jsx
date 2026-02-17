@@ -130,10 +130,7 @@ export default function PanDownload({
     if (!isDownloading && catalog.length > 0) {
       const downloadStatus = async () => {
         const newIsDownloading = {};
-        console.log(catalog);
-        console.log(metadataSummaries)
         for (const e of catalog) {
-          console.log(e)
           if (metadataSummaries[`${e.source}/${e.name}`]) {
             const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
             const metadataTime = metadataResponse.timestamp;
