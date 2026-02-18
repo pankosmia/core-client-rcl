@@ -173,7 +173,7 @@ export default function PanTable({
 
   return (
     <Wrapper {...wrapperProps}>
-    <Box sx={{ height: "100%", width: "100%", }}>
+    <Box sx={filterPreset ?{ width: "100%", height:"calc(100% - 40px)"} :{height:"100%", width: "100%", }}>
       {filterPreset && (
         <Box>
           <Stack direction="row" spacing={1}>
