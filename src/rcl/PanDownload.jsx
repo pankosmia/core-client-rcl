@@ -1,6 +1,6 @@
 import PanTable from "./PanTable";
 import { CircularProgress, Box, ThemeProvider } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
 import Update from "@mui/icons-material/Update";
@@ -60,10 +60,12 @@ export default function PanDownload({
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
   const [activeFilterIndex, setActiveFilterIndex] = useState(0);
+  const requestIdRef = useRef(0);
+
   const [catalog, setCatalog] = useState([]);
   const [isDownloading, setIsDownloading] = useState(null);
   const [metadataSummaries, setMetadataSummaries] = useState({});
-
+  const [loading, setLoading] = useState(true);
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -72,7 +74,14 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter: downloadedType==="burrito" ? (row) => {return row?.source?.startsWith(path) ?? false} : (row) => {return row?.metadata_types === "rc" || false}
+          filter:
+            downloadedType === "burrito"
+              ? (row) => {
+                  return row?.source?.startsWith(path) ?? false;
+                }
+              : (row) => {
+                  return row?.metadata_types === "rc" || false;
+                },
         })),
       };
     }
@@ -115,13 +124,11 @@ export default function PanDownload({
   }, [activeFilterIndex, filterExample]);
 
   useEffect(() => {
-    setCatalog([]);
-    setIsDownloading(null);
-    fetchMetaDataSummaries(setMetadataSummaries, debugRef);
-  }, [sourceWhitelist, activeFilterIndex]);
-
-  useEffect(() => {
     const doCatalog = async () => {
+      setLoading(true);
+      setIsDownloading(null);
+      const requestId = ++requestIdRef.current; // 🔐 unique request
+      fetchMetaDataSummaries(setMetadataSummaries, debugRef);
       let newCatalog = [];
       let source = sourceWhitelist[activeFilterIndex];
       let chemin = source[0].split("/");
@@ -138,6 +145,9 @@ export default function PanDownload({
           debugRef.current,
         );
       }
+
+      if (requestId !== requestIdRef.current) return;
+
       if (response.ok) {
         if (listMode) {
           const newResponse = response.json
@@ -151,9 +161,12 @@ export default function PanDownload({
           newCatalog = [...newCatalog, ...newResponse];
         }
       }
-      setCatalog(newCatalog);
+      if (newCatalog.length > 0) {
+        setLoading(false);
+        setCatalog(newCatalog);
+      }
     };
-    doCatalog().then();
+    doCatalog();
   }, [sourceWhitelist, activeFilterIndex]);
 
   useEffect(() => {
@@ -175,7 +188,7 @@ export default function PanDownload({
       };
       downloadStatus().then();
     }
-  }, [isDownloading, catalog,metadataSummaries]);
+  }, [isDownloading, catalog, metadataSummaries]);
 
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
@@ -369,7 +382,7 @@ export default function PanDownload({
           })}
         </Stack>
       )}
-      {rows && rows.length > 0 ? (
+      {!loading ? (
         <PanTable
           columns={columns}
           rows={rows}
