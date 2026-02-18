@@ -190,6 +190,7 @@ function PanTableDemo() {
             theme={theme}
             columns={columns}
             rows={rows}
+            initialState={{ sorting: { field: "author", order:"desc" } }}
             tableTitle={"Filtering only Mark"}
             defaultFilter={(row) =>
               String(row.author).toLowerCase().includes("mark")
@@ -233,6 +234,7 @@ function PanTableDemo() {
           <PanTable
             checkboxSelection
             showColumnFilters
+            initialState={{ sorting: { field: "author", order:"asc" } }}
             theme={theme}
             columns={columns}
             rows={rows}
@@ -240,6 +242,7 @@ function PanTableDemo() {
             onRowSelectionModelChange={(ids) => {
               console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
             }}
+            
           />
         </Grid2>
       </Grid2>
