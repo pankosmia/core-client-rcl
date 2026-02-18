@@ -16,6 +16,22 @@ import { doI18n, postEmptyJson } from "pithekos-lib";
 import debugContext from "./contexts/debugContext";
 import i18nContext from "./contexts/i18nContext";
 import netContext from "./contexts/netContext";
+
+
+/**
+ * Dialog prompting the user to enable internet connectivity.
+ *
+ * Automatically closes if internet access is already enabled.
+ * When accepted, it enables internet access and executes a callback.
+ *
+ * @param {Object} props Component properties
+ * @param {() => void} [props.callBack]
+ *   Function executed after the dialog closes.
+ * @param {boolean} props.internetDialogOpen
+ *   Controls whether the dialog is visible.
+ * @param {(open: boolean) => void} props.setInternetDialogOpen
+ *   State setter used to open or close the dialog.
+ */
 export default function InternetWarningDialog({
   callBack = () => {},
   internetDialogOpen,

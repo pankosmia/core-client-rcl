@@ -18,6 +18,36 @@ const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   setMetadataSummaries(summaries.json);
 };
 
+/**
+ * Displays and manages downloadable DCS resources with filtering and status tracking.
+ *
+ * Provides a table-based interface to browse remote repositories, detect updates,
+ * and trigger download or update actions with user feedback.
+ *
+ * @param {Object} props Component properties
+ *
+ * @param {"burrito" | "legacy"} [props.downloadedType="burrito"]
+ *   Type of remote resource source to query (modern burrito or legacy repositories).
+ *
+ * @param {(params: Object, remoteRepoPath: string, postType: "clone" | "fetch") => Promise<{ ok: boolean }>} props.downloadFunction
+ *   Function responsible for performing the download or update operation.
+ *
+ * @param {Array<[string, string]> | Object} props.sources
+ *   Source definitions used to populate filters and determine which repositories
+ *   are displayed. Can be a flat whitelist or a structured organization map.
+ *
+ * @param {boolean} [props.showColumnFilters]
+ *   Enables column-level filtering in the table.
+ *
+ * @param {string} [props.tableTitle]
+ *   Title displayed above the resource table.
+ *
+ * @param {Object} [props.sx]
+ *   Style overrides applied to the underlying table container.
+ *
+ * @param {import("@mui/material").Theme} [props.theme]
+ *   Optional MUI theme override applied only to this component.
+ */
 export default function PanDownload({
   downloadedType = "burrito",
   downloadFunction,
