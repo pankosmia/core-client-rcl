@@ -1,6 +1,6 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import I18nContext from "../contexts/i18nContext";
+import I18nContext from "./contexts/i18nContext";
 import { doI18n, getAndSetJson } from "pithekos-lib";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";

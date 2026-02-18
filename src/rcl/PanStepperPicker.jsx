@@ -1,9 +1,9 @@
 import { Box, Button, DialogActions, DialogContentText, Step, StepLabel, Stepper } from "@mui/material";
 import { doI18n } from "pithekos-lib";
 import { useContext, useState } from "react";
-import I18nContext from "../contexts/i18nContext";
+import I18nContext from "./contexts/i18nContext";
 
-export default function PanStepperPicker({ steps, renderStepContent,isStepValid,handleCreate }) {
+export default function PanStepperPicker({ steps, renderStepContent, isStepValid, handleCreate,handleClose }) {
 
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
@@ -20,7 +20,7 @@ export default function PanStepperPicker({ steps, renderStepContent,isStepValid,
 
         } if (activeStep === steps.length - 1) {
             try {
-               await handleCreate();
+                await handleCreate();
             } catch (error) {
                 console.error("Error create project", error)
             }
@@ -33,6 +33,7 @@ export default function PanStepperPicker({ steps, renderStepContent,isStepValid,
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
     return (
         <>
             <Stepper sx={{ position: "sticky" }} activeStep={activeStep}>
@@ -61,22 +62,24 @@ export default function PanStepperPicker({ steps, renderStepContent,isStepValid,
                     {renderStepContent(activeStep)}
                 </>
             )}
-            <DialogActions sx={{ px: 3, pb: 2 }}>
+            <DialogActions sx={{
+                justifyContent: "space-between",
+                padding: 0
+            }}>
                 <Button
+                    sx={{ padding: 0 }}
                     color="inherit"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
+                    onClick={activeStep === 0 ? handleClose : handleBack}
                 >
-                    {doI18n("library:panksomia-rcl:back_button", i18nRef.current)}
+                    {activeStep === 0 ? `${doI18n("library:panksomia-rcl:cancel", i18nRef.current)}` : `${doI18n("library:panksomia-rcl:back_button", i18nRef.current)}` }
                 </Button>
-                <Box sx={{ flex: '1 1 auto' }} />
                 <Button
+                    sx={{ padding: 0 }}    
                     onClick={handleNext}
-                disabled={!isStepValid(activeStep)}
+                    disabled={!isStepValid(activeStep)}
                 >
                     {activeStep === steps.length - 1 ? `${doI18n("library:panksomia-rcl:create", i18nRef.current)}` : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`}
                 </Button>
-
             </DialogActions>
         </>
 

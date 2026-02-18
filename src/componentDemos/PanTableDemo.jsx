@@ -58,6 +58,8 @@ function PanTableDemo() {
       numeric: false,
       disablePadding: false,
       alignRight: false,
+      width: 160,
+      flex: 1
     },
     {
       field: "date",
@@ -65,6 +67,8 @@ function PanTableDemo() {
       numeric: true,
       disablePadding: false,
       alignRight: false,
+      width: 100,
+      flex: 0.5
     },
     {
       field: "message",
@@ -72,6 +76,7 @@ function PanTableDemo() {
       numeric: false,
       disablePadding: false,
       alignRight: false,
+      minWidth: 150
     },
     {
       field: "download",
@@ -80,10 +85,10 @@ function PanTableDemo() {
         "pages:core-remote-resources:row_download",
         i18nRef.current
       ),
-      flex: 0.5,
-      minWidth: 120,
       alignRight: false,
       numeric: false,
+      width: 100,
+      flex: 0.5,
 
       renderCell: (params) => {
         return (
@@ -169,8 +174,18 @@ function PanTableDemo() {
 
   return (
     <>
-      <Grid2 container spacing={8} minHeight={600}>
-        <Grid2 item size={12}>
+      <Grid2 
+        container 
+        direction="row"
+        sx={{
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+          pb: 5
+        }} 
+        spacing={8} 
+        minHeight={350}
+      >
+        <Grid2 item size={12} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -179,22 +194,22 @@ function PanTableDemo() {
             defaultFilter={(row) =>
               String(row.author).toLowerCase().includes("mark")
             }
-            sx={{ height: "100%" }}
+            sx={{ height: "100%", width:"30%" }}
           />
         </Grid2>
-        <Grid2 item size={4}>
+        <Grid2 item size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
             rows={rows}
             tableTitle={"Filtering Chips"}
             filterPreset={filterExample}
-            sx={{ height: "50%" }}
+            sx={{ height: "100%" }}
           />
         </Grid2>
       </Grid2>
-      <Grid2 container spacing={8} minHeight={350}>
-        <Grid2 item size={4}>
+      <Grid2 container spacing={8} minHeight={350} sx={{ pb: 5 }}>
+        <Grid2 item size={4} sx={{ pb: 5 }}>
           <PanTable
             showColumnFilters
             theme={theme}
@@ -203,7 +218,7 @@ function PanTableDemo() {
             tableTitle={"Column filter"}
           />
         </Grid2>
-        <Grid2 item size={4}>
+        <Grid2 item size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
