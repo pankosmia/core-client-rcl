@@ -133,7 +133,6 @@ export default function PanDownload({
       let source = sourceWhitelist[activeFilterIndex];
       let chemin = source[0].split("/");
       let response;
-      if (requestId !== requestIdRef.current) return;
       if (downloadedType === "burrito") {
         response = await getJson(
           `/gitea/remote-repos/${source[0]}`,
@@ -146,6 +145,8 @@ export default function PanDownload({
           debugRef.current,
         );
       }
+
+      if (requestId !== requestIdRef.current) return;
 
       if (response.ok) {
         if (listMode) {
