@@ -46,10 +46,11 @@ export default function PanTable({
   sx,
   theme,
   onRowSelectionModelChange,
-  checkboxSelection
+  checkboxSelection,
+  initialState
 }) {
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("date");
+  const [order, setOrder] = useState(initialState?.sorting ? initialState?.sorting?.order : "asc");
+  const [orderBy, setOrderBy] = useState(initialState?.sorting ? initialState?.sorting?.field : "date");
   const [selected, setSelected] = useState([]);
   const [activeFiltersIndices, setActiveFiltersIndices] = useState([]);
 
@@ -175,7 +176,7 @@ export default function PanTable({
     <Wrapper {...wrapperProps}>
     <Box sx={filterPreset ?{ width: "100%", height:"calc(100% - 40px)"} :{height:"100%", width: "100%", }}>
       {filterPreset && (
-        <Box>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
           <Stack direction="row" spacing={1}>
             {filterPreset.map((c, index) => {
               const isActive = activeFiltersIndices.includes(index);
@@ -231,7 +232,7 @@ export default function PanTable({
         <Table
           stickyHeader
           aria-label="pan table"
-          sx={{ height: "100%", width: "100%" }}
+          sx={{ width: "100%" }}
         >
           <EnhancedTableHead
             numSelected={selected.length}
