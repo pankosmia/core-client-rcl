@@ -15,6 +15,7 @@ export default defineConfig({
   build: {
     outDir: 'build',
     emptyOutDir: true,
+    sourcemap:true,
     rollupOptions: {
       external: ["react", "react-dom"],
 /*      output: {
