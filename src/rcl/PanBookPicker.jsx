@@ -108,7 +108,7 @@ export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBook
                         />
                     </FormGroup>
                 )}
-                {addVerses === true && (
+                {addVerses && 
                     <FormGroup>
                         <FormControlLabel
                             control={
@@ -122,7 +122,7 @@ export default function PanBookPicker({ bookCode, setBookCode, bookAbbr, setBook
                             label={doI18n("library:panksomia-rcl:add_versification_checkbox", i18nRef.current)}
                         />
                     </FormGroup>
-                )}
+                }
             </Grid2>
         </>
     );

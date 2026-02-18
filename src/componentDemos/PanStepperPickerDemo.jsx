@@ -96,6 +96,6 @@ export default function PanStepperPickerDemo() {
     };
 
     return (
-        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} />
+        <PanStepperPicker steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate}/>
     )
 }
