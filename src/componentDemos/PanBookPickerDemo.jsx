@@ -6,13 +6,13 @@ import { Grid2 } from "@mui/material";
 
 export default function PanBookPickerDemo() {
     const [bookCodes, setBookCodes] = useState([]);
-    const [open, setOpen] = useState(true)
+    let open = true
     const { debugRef } = useContext(DebugContext);
     const [bookCode, setBookCode] = useState("TIT");
     const [bookTitle, setBookTitle] = useState("Tit");
     const [bookAbbr, setBookAbbr] = useState("Ti");
     const [showVersification, setShowVersification] = useState(true)
-    const [bookName, setBookName] = useState(["COL"]);
+    const booksInProject = ["COL"];
 
     useEffect(
         () => {
@@ -40,7 +40,7 @@ export default function PanBookPickerDemo() {
                     setBookTitle={setBookTitle}
                     showVersification={showVersification}
                     setShowVersification={setShowVersification}
-                    bookProject={bookName}
+                    booksProject={booksInProject}
                 />
             </Grid2>
             <Grid2 item size={12}>
@@ -54,7 +54,7 @@ export default function PanBookPickerDemo() {
                     setBookTitle={setBookTitle}
                     showVersification={showVersification}
                     setShowVersification={setShowVersification}
-                    bookProject={bookName}
+                    booksProject={booksInProject}
                     addVerses={false}
                 />
             </Grid2>
