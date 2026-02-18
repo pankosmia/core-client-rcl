@@ -2,14 +2,19 @@ import { useState } from "react";
 import PanDialog from "../rcl/PanDialog";
 import PanDialogActions from "../rcl/PanDialogActions";
 import { Button, DialogContent, DialogContentText, Checkbox, FormControlLabel, FormGroup, Grid2, Switch, useTheme, createTheme } from "@mui/material";
+import PanStepperPicker from "../rcl/PanStepperPicker";
 
 export default function PanDialogDemo() {
     const [openDialog1, setOpenDialog1] = useState(null);
     const [openDialog2, setOpenDialog2] = useState(null);
     const [openDialog3, setOpenDialog3] = useState(null);
+    const [openDialog4, setOpenDialog4] = useState(null);
 
     const [pointlessInput, setPointlessInput] = useState(false);
     const [fullWidth, setFullWidth] = useState(true);
+     const handleClose = () => {
+        setOpenDialog4(false)
+    }
 
     const actionFn = () => console.log("Doing it!!!");
     const theme = createTheme({
@@ -22,6 +27,97 @@ export default function PanDialogDemo() {
             },
         },
     });
+    const steps = [`Step 1`, ` Step 2 `, `Step 3`];
+
+    const handleCreate = () => {
+        setPointlessInput(false)
+    }
+
+    const renderStepContent = (step) => {
+        switch (step) {
+            case 0:
+                return (
+                    <>
+                        Step 1
+                        < FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={pointlessInput}
+                                        onChange={() => setPointlessInput(!pointlessInput)}
+                                        slotProps={
+                                            {
+                                                input: { 'aria-label': 'pointless-dialog-input' },
+                                            }
+                                        }
+                                    />
+                                } label="Pointless required input"
+                            />
+                        </FormGroup >
+                    </>
+
+                );
+            case 1:
+                return (
+                    <>
+                        Step 2
+                        < FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={pointlessInput}
+                                        onChange={() => setPointlessInput(!pointlessInput)}
+                                        slotProps={
+                                            {
+                                                input: { 'aria-label': 'pointless-dialog-input' },
+                                            }
+                                        }
+                                    />
+                                } label="Pointless required input"
+                            />
+                        </FormGroup >
+                    </>
+                );
+            case 2:
+                return (
+                    <>
+                        Step 3
+                        < FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={pointlessInput}
+                                        onChange={() => setPointlessInput(!pointlessInput)}
+                                        slotProps={
+                                            {
+                                                input: { 'aria-label': 'pointless-dialog-input' },
+                                            }
+                                        }
+                                    />
+                                } label="Pointless required input"
+                            />
+                        </FormGroup >
+                    </>
+
+                );
+            default:
+                return null;
+        }
+    }
+
+    const isStepValid = (step) => {
+        switch (step) {
+            case 0:
+                return (pointlessInput === true)
+            case 1:
+                return (pointlessInput === true)
+            case 2:
+                return (pointlessInput === true)
+            default:
+                return true;
+        }
+    };
+
     return <>
         <Grid2 container spacing={8}>
             <Grid2 item size={4}>
@@ -136,6 +232,31 @@ export default function PanDialogDemo() {
                     </DialogContent>
                     <PanDialogActions
                         closeFn={() => setOpenDialog3(false)}
+                        closeLabel="Don't do it!"
+                        closeOnAction={false}
+                        onlyCloseButton={true}
+                    />
+                </PanDialog>
+            </Grid2>
+            <Grid2 item size={4}>
+                <Button onClick={(event) => {
+                    setOpenDialog4(event.target)
+                }}> Test stepper dialog </Button>
+                <PanDialog
+                    titleLabel="maxWidth Dialog"
+                    isOpen={!!openDialog4}
+                    closeFn={() => setOpenDialog4(false)}
+                    size={"lg"}
+                    fullWidth={fullWidth}
+                >
+                    <DialogContent>
+                        <DialogContentText>
+                            Text within dialog content goes within DialogContentText.
+                        </DialogContentText>
+                        <PanStepperPicker handleClose={handleClose} steps={steps} renderStepContent={renderStepContent} isStepValid={isStepValid} handleCreate={handleCreate} />
+                    </DialogContent>
+                    <PanDialogActions
+                        closeFn={() => setOpenDialog4(false)}
                         closeLabel="Don't do it!"
                         closeOnAction={false}
                         onlyCloseButton={true}
