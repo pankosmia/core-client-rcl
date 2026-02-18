@@ -7,7 +7,7 @@ export default function PanLanguagePickerDemo() {
     language_code: "",
     language_name: "",
   });
-  const [languageIsValid, setLanguageIsValid] = useState(false);
+  const [_languageIsValid, setLanguageIsValid] = useState(false);
 
   const [testValue, setTestValue] = useState("");
 

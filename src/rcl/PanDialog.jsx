@@ -4,7 +4,6 @@ import {
   ThemeProvider,
   Toolbar,
   Typography,
-  DialogContent,
 } from "@mui/material";
 import React from "react";
 

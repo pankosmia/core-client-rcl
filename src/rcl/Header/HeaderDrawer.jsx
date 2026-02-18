@@ -8,11 +8,8 @@ import {
   ListItemText,
   ListItem,
   Switch,
-  Collapse,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useEffect, useState, useRef, useContext } from "react";
 import { doI18n, getJson } from "pithekos-lib";
 import netContext from "../contexts/netContext";
@@ -22,7 +19,6 @@ function HeaderDrawer({ currentId }) {
   const [drawerWidth, setDrawerWidth] = useState("auto");
   const [widthLocked, setWidthLocked] = useState(false);
   const measurementRef = useRef(null);
-  const [showAdvanced, setShowAdvanced] = useState(true);
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PanDialog from "../rcl/PanDialog";
 import PanDialogActions from "../rcl/PanDialogActions";
-import { Button, DialogContent, DialogContentText, Checkbox, FormControlLabel, FormGroup, Grid2, Switch, useTheme, createTheme } from "@mui/material";
+import { Button, DialogContent, DialogContentText, Checkbox, FormControlLabel, FormGroup, Grid2, Switch, createTheme } from "@mui/material";
 import PanStepperPicker from "../rcl/PanStepperPicker";
 
 export default function PanDialogDemo() {

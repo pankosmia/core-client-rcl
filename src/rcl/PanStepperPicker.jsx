@@ -1,4 +1,4 @@
-import { Box, Button, DialogActions, DialogContentText, Step, StepLabel, Stepper } from "@mui/material";
+import { Button, DialogActions, DialogContentText, Step, StepLabel, Stepper } from "@mui/material";
 import { doI18n } from "pithekos-lib";
 import { useContext, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
