@@ -56,6 +56,7 @@ export default function PanDownload({
   tableTitle,
   sx,
   theme,
+  preSelected = [],
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -321,7 +322,7 @@ export default function PanDownload({
         .filter((ce) => ce.flavor)
         .map((ce) => ({
           ...ce,
-          id: `${ce.source}/${ce.name}`, // ✅ stable
+          id: `${ce.source}/${ce.name}`,
           url: ce.latest_zip,
           metadata_types: ce.metadata_types,
           resourceCode: ce.abbreviation.toUpperCase(),
@@ -390,6 +391,7 @@ export default function PanDownload({
           groupOperations={listMode ? operationsDefinitionsExample : null}
           defaultFilter={activeFilter}
           showColumnFilters={showColumnFilters}
+          preSelections={preSelected}
           sx={{ ...sx, height: "100%" }}
         />
       ) : (

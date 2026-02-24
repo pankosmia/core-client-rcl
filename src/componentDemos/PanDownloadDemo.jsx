@@ -51,6 +51,7 @@ export default function PanDownloadDemo() {
     },
   };
 
+  const  preSelectedList = ["git.door43.org/uW/en_tn","git.door43.org/uW/en_tw","git.door43.org/uW/en_ugl"]
   /** Whitelist-only mode */
   const sourceWhitelistOrgs = [
     ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
@@ -81,6 +82,7 @@ export default function PanDownloadDemo() {
       defaultFilterProps,
       downloadFunction: DowloadBurrito,
       showColumnFilters: true,
+      preSelected:preSelectedList
     }),
     [mode, defaultFilterProps],
   );
