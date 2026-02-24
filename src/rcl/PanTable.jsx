@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -47,7 +47,8 @@ export default function PanTable({
   theme,
   onRowSelectionModelChange,
   checkboxSelection,
-  initialState
+  initialState,
+  preSelections,
 }) {
   const [order, setOrder] = useState(initialState?.sorting ? initialState?.sorting?.order : "asc");
   const [orderBy, setOrderBy] = useState(initialState?.sorting ? initialState?.sorting?.field : "date");
@@ -58,11 +59,11 @@ export default function PanTable({
   const wrapperProps = theme ? { theme } : {};
 
   const [columnFilters, setColumnFilters] = useState(() => {
-      const filters = {};
-      columns.forEach((col) => {
-        filters[col.field] = "";
-      });
-      return filters;
+    const filters = {};
+    columns.forEach((col) => {
+      filters[col.field] = "";
+    });
+    return filters;
   });
 
   const handleRequestSort = (event, property) => {
@@ -71,9 +72,15 @@ export default function PanTable({
     setOrderBy(property);
   };
 
+  useEffect(() => {
+    if (preSelections) {
+      setSelected(preSelections)
+    }
+  }, [preSelections])
+
   const handleSelectAllClick = (event) => {
-    const newSelected = event.target.checked 
-      ? visibleRows.map((n) => n.id) 
+    const newSelected = event.target.checked
+      ? visibleRows.map((n) => n.id)
       : [];
     setSelected(newSelected);
     if (onRowSelectionModelChange) {
@@ -98,7 +105,7 @@ export default function PanTable({
       );
     }
     setSelected(newSelected);
-    if (onRowSelectionModelChange){
+    if (onRowSelectionModelChange) {
       onRowSelectionModelChange(newSelected)
     };
   };
@@ -174,127 +181,127 @@ export default function PanTable({
 
   return (
     <Wrapper {...wrapperProps}>
-    <Box sx={filterPreset ?{ width: "100%", height:"calc(100% - 40px)"} :{height:"100%", width: "100%", }}>
-      {filterPreset && (
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
-          <Stack direction="row" spacing={1}>
-            {filterPreset.map((c, index) => {
-              const isActive = activeFiltersIndices.includes(index);
-              return (
-                <Chip
-                  key={c.label}
-                  label={
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: isActive ? 0.5 : 0,
-                      }}
-                    >
-                      <span>{c.label}</span>
-                      {isActive && <HighlightOffIcon sx={{ fontSize: 24 }} />}
-                    </Box>
-                  }
-                  variant={isActive ? "filled" : "outlined"}
-                  color={"secondary"}
-                  onClick={() => handleChipClick(index)}
-                />
-              );
-            })}
-          </Stack>
-        </Box>
-      )}
-      {groupOperations && (
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          selectedIds={selected}
-          clearSelection={handleClearSelection}
-          tableTitle={tableTitle}
-          groupOperations={groupOperations}
-          dataRows={rows}
-        />
-      )}
-      {!groupOperations && tableTitle && (
-        <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
-            {tableTitle}
-          </Typography>
-        </Toolbar>
-      )}
-      <TableContainer component={Paper} sx={sx ? sx : { height: "100%" }}>
-        {" "}
-        {/* Custom sx styles is applied if defined */}
-        <Table
-          stickyHeader
-          aria-label="pan table"
-          sx={{ width: "100%" }}
-        >
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={visibleRows.length}
-            columns={columns}
-            setColumnFilter={updateColumnFilter}
-            columnFilters={columnFilters}
-            showColumnFilters={showColumnFilters}
-            groupOperations={groupOperations}
-            checkboxSelection={checkboxSelection}
-          />
-          <TableBody sx={{ verticalAlign: "top" }}>
-            {visibleRows.map((row, n) => {
-              const isItemSelected = selected.includes(row.id);
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => {
-                    if (checkboxSelection || groupOperations) {
-                      handleClick(event, row.id);
+      <Box sx={filterPreset ? { width: "100%", height: "calc(100% - 40px)" } : { height: "100%", width: "100%", }}>
+        {filterPreset && (
+          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
+            <Stack direction="row" spacing={1}>
+              {filterPreset.map((c, index) => {
+                const isActive = activeFiltersIndices.includes(index);
+                return (
+                  <Chip
+                    key={c.label}
+                    label={
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: isActive ? 0.5 : 0,
+                        }}
+                      >
+                        <span>{c.label}</span>
+                        {isActive && <HighlightOffIcon sx={{ fontSize: 24 }} />}
+                      </Box>
                     }
-                  }}
-                  role="checkbox"
-                  tabIndex={-1}
-                  key={row.id}
-                  selected={isItemSelected}
-                >
-                  {(checkboxSelection || groupOperations) && (
-                    <TableCell padding="checkbox">
-                      <Checkbox color="primary" checked={isItemSelected} />
-                    </TableCell>
-                  )}
-                  {columns.map((col) => (
-                    <TableCell
-                      key={col.field}
-                      align={col.alignRight ? "right" : "left"}
-                      sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
-                    >
-                      {/* Checks if the column has a renderCell, and if it does, it executes the code in it */}
-                      {col.renderCell
-                        ? col.renderCell({ row, id: row.id, field: col.field })
-                        : row[col.field]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              );
-            })}
-            {/* Empty row that occuppies the extra space if there is any */}
-            <TableRow sx={{ height: "100%" }}>
-              <TableCell
-                colSpan={columns.length}
-                sx={{ padding: 0, borderBottom: "none", height: "100%" }}
-              />
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  </Wrapper>
+                    variant={isActive ? "filled" : "outlined"}
+                    color={"secondary"}
+                    onClick={() => handleChipClick(index)}
+                  />
+                );
+              })}
+            </Stack>
+          </Box>
+        )}
+        {groupOperations && (
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            selectedIds={selected}
+            clearSelection={handleClearSelection}
+            tableTitle={tableTitle}
+            groupOperations={groupOperations}
+            dataRows={rows}
+          />
+        )}
+        {!groupOperations && tableTitle && (
+          <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
+            <Typography
+              sx={{ flex: "1 1 100%" }}
+              variant="h6"
+              id="tableTitle"
+              component="div"
+            >
+              {tableTitle}
+            </Typography>
+          </Toolbar>
+        )}
+        <TableContainer component={Paper} sx={sx ? sx : { height: "100%" }}>
+          {" "}
+          {/* Custom sx styles is applied if defined */}
+          <Table
+            stickyHeader
+            aria-label="pan table"
+            sx={{ width: "100%" }}
+          >
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={visibleRows.length}
+              columns={columns}
+              setColumnFilter={updateColumnFilter}
+              columnFilters={columnFilters}
+              showColumnFilters={showColumnFilters}
+              groupOperations={groupOperations}
+              checkboxSelection={checkboxSelection}
+            />
+            <TableBody sx={{ verticalAlign: "top" }}>
+              {visibleRows.map((row, n) => {
+                const isItemSelected = selected.includes(row.id);
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => {
+                      if (checkboxSelection || groupOperations) {
+                        handleClick(event, row.id);
+                      }
+                    }}
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                  >
+                    {(checkboxSelection || groupOperations) && (
+                      <TableCell padding="checkbox">
+                        <Checkbox color="primary" checked={isItemSelected} />
+                      </TableCell>
+                    )}
+                    {columns.map((col) => (
+                      <TableCell
+                        key={col.field}
+                        align={col.alignRight ? "right" : "left"}
+                        sx={{ whiteSpace: "normal", wordBreak: "break-word" }}
+                      >
+                        {/* Checks if the column has a renderCell, and if it does, it executes the code in it */}
+                        {col.renderCell
+                          ? col.renderCell({ row, id: row.id, field: col.field })
+                          : row[col.field]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
+              {/* Empty row that occuppies the extra space if there is any */}
+              <TableRow sx={{ height: "100%" }}>
+                <TableCell
+                  colSpan={columns.length}
+                  sx={{ padding: 0, borderBottom: "none", height: "100%" }}
+                />
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Wrapper>
   );
 }

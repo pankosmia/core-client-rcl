@@ -1,7 +1,7 @@
 import PanTable from "../rcl/PanTable";
 import { useContext } from "react";
 import { Grid2, IconButton, createTheme } from "@mui/material";
-import {  doI18n } from "pithekos-lib";
+import { doI18n } from "pithekos-lib";
 import i18nContext from "../rcl/contexts/i18nContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HandymanIcon from "@mui/icons-material/Handyman";
@@ -174,15 +174,15 @@ function PanTableDemo() {
 
   return (
     <>
-      <Grid2 
-        container 
+      <Grid2
+        container
         direction="row"
         sx={{
           justifyContent: "flex-start",
           alignItems: "flex-start",
           pb: 5
-        }} 
-        spacing={8} 
+        }}
+        spacing={8}
         minHeight={350}
       >
         <Grid2 item size={12} sx={{ pb: 5 }}>
@@ -190,12 +190,12 @@ function PanTableDemo() {
             theme={theme}
             columns={columns}
             rows={rows}
-            initialState={{ sorting: { field: "author", order:"desc" } }}
+            initialState={{ sorting: { field: "author", order: "desc" } }}
             tableTitle={"Filtering only Mark"}
             defaultFilter={(row) =>
               String(row.author).toLowerCase().includes("mark")
             }
-            sx={{ height: "100%", width:"30%" }}
+            sx={{ height: "100%", width: "30%" }}
           />
         </Grid2>
         <Grid2 item size={4} sx={{ pb: 5 }}>
@@ -234,7 +234,7 @@ function PanTableDemo() {
           <PanTable
             checkboxSelection
             showColumnFilters
-            initialState={{ sorting: { field: "author", order:"asc" } }}
+            initialState={{ sorting: { field: "author", order: "asc" } }}
             theme={theme}
             columns={columns}
             rows={rows}
@@ -242,7 +242,23 @@ function PanTableDemo() {
             onRowSelectionModelChange={(ids) => {
               console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
             }}
-            
+
+          />
+        </Grid2>
+        <Grid2 item size={4}>
+          <PanTable
+            checkboxSelection
+            showColumnFilters
+            initialState={{ sorting: { field: "author", order: "asc" } }}
+            theme={theme}
+            columns={columns}
+            rows={rows}
+            preSelections={[0,2]}
+            tableTitle={"Preselections"}
+            onRowSelectionModelChange={(ids) => {
+              console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
+            }}
+
           />
         </Grid2>
       </Grid2>
