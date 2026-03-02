@@ -17,7 +17,7 @@ import {
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EnhancedTableHead from "./PanTableInternals/EnhancedTableHead";
 import EnhancedTableToolbar from "./PanTableInternals/EnhancedTableToolbar";
-
+import { useRef } from "react";
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -50,14 +50,32 @@ export default function PanTable({
   initialState,
   preSelections,
 }) {
-  const [order, setOrder] = useState(initialState?.sorting ? initialState?.sorting?.order : "asc");
-  const [orderBy, setOrderBy] = useState(initialState?.sorting ? initialState?.sorting?.field : "date");
+  const [order, setOrder] = useState(
+    initialState?.sorting ? initialState?.sorting?.order : "asc",
+  );
+  const [orderBy, setOrderBy] = useState(
+    initialState?.sorting ? initialState?.sorting?.field : "date",
+  );
   const [selected, setSelected] = useState([]);
   const [activeFiltersIndices, setActiveFiltersIndices] = useState([]);
 
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
+  const [filterHeight, setFilterHeight] = useState(0);
+  const filterRef = useRef(null);
 
+  useEffect(() => {
+    if (!filterRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setFilterHeight(entry.contentRect.height);
+      }
+    });
+
+    observer.observe(filterRef.current);
+    return () => observer.disconnect();
+  }, [filterPreset]); // re-run if filterPreset changes
   const [columnFilters, setColumnFilters] = useState(() => {
     const filters = {};
     columns.forEach((col) => {
@@ -73,9 +91,9 @@ export default function PanTable({
 
   useEffect(() => {
     if (preSelections) {
-      setSelected(preSelections)
+      setSelected(preSelections);
     }
-  }, [preSelections])
+  }, [preSelections]);
 
   const handleSelectAllClick = (event) => {
     const newSelected = event.target.checked
@@ -105,15 +123,15 @@ export default function PanTable({
     }
     setSelected(newSelected);
     if (onRowSelectionModelChange) {
-      onRowSelectionModelChange(newSelected)
-    };
+      onRowSelectionModelChange(newSelected);
+    }
   };
 
   const handleClearSelection = () => {
     setSelected([]);
     if (onRowSelectionModelChange) {
-      onRowSelectionModelChange([])
-    };
+      onRowSelectionModelChange([]);
+    }
   };
 
   const updateColumnFilter = (field, value) => {
@@ -180,9 +198,15 @@ export default function PanTable({
 
   return (
     <Wrapper {...wrapperProps}>
-      <Box sx={filterPreset ? { width: "100%", height: "calc(100% - 40px)" } : { height: "100%", width: "100%", }}>
+      <Box
+        id={"test"}
+        sx={{
+          width: "100%",
+          height: `calc(100% - ${64 + filterHeight}px)`, // always offset by actual size
+        }}
+      >
         {filterPreset && (
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
+          <Box ref={filterRef} sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
             <Stack direction="row" spacing={1}>
               {filterPreset.map((c, index) => {
                 const isActive = activeFiltersIndices.includes(index);
@@ -235,11 +259,7 @@ export default function PanTable({
         <TableContainer component={Paper} sx={sx ? sx : { height: "100%" }}>
           {" "}
           {/* Custom sx styles is applied if defined */}
-          <Table
-            stickyHeader
-            aria-label="pan table"
-            sx={{ width: "100%" }}
-          >
+          <Table stickyHeader aria-label="pan table" sx={{ width: "100%" }}>
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
@@ -283,7 +303,11 @@ export default function PanTable({
                       >
                         {/* Checks if the column has a renderCell, and if it does, it executes the code in it */}
                         {col.renderCell
-                          ? col.renderCell({ row, id: row.id, field: col.field })
+                          ? col.renderCell({
+                              row,
+                              id: row.id,
+                              field: col.field,
+                            })
                           : row[col.field]}
                       </TableCell>
                     ))}
