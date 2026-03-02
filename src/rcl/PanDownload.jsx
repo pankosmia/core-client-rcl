@@ -67,6 +67,9 @@ export default function PanDownload({
   const [isDownloading, setIsDownloading] = useState(null);
   const [metadataSummaries, setMetadataSummaries] = useState({});
   const [loading, setLoading] = useState(true);
+  const filterRef = useRef(null);
+  const [filterHeight, setFilterHeight] = useState(0);
+
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -118,6 +121,16 @@ export default function PanDownload({
     }
   }, [filterExample, activeFilterIndex]);
 
+  useEffect(() => {
+    if (!filterRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setFilterHeight(entry.contentRect.height);
+      }
+    });
+    observer.observe(filterRef.current);
+    return () => observer.disconnect();
+  }, [filterExample]);
   const activeFilter = useMemo(() => {
     return activeFilterIndex !== null
       ? filterExample[activeFilterIndex]?.filter
@@ -359,10 +372,17 @@ export default function PanDownload({
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
   return (
-    <Wrapper {...wrapperProps}>
+    <Box
+      {...wrapperProps}
+      sx={{
+        height:
+          filterHeight > 0 ? `calc(100% - ${filterHeight + 8}px)` : "100%",
+      }}
+    >
       {/* ───────────── Filter Buttons ───────────── */}
       {filterExample?.length > 0 && (
         <Stack
+          ref={filterRef}
           direction="row"
           spacing={1}
           alignItems="center"
@@ -407,6 +427,6 @@ export default function PanDownload({
           <CircularProgress />
         </Box>
       )}
-    </Wrapper>
+    </Box>
   );
 }

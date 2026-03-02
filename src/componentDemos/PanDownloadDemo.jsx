@@ -320,7 +320,7 @@ export default function PanDownloadDemo() {
           closeFn={() => setOpenDialoguePanDownload(false)}
         >
           <DialogContent sx={{overflow : 'hidden'}}>
-            <Box sx={{ height: "calc(100vh - 200px)" }}>
+            <Box sx={{ height: "calc(100vh - 229px)" }}>
               <PanDownload theme={theme} {...panDownloadProps} />
             </Box>
           </DialogContent>
