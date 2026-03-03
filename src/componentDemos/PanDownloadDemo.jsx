@@ -19,6 +19,7 @@ import PropsPanel from "./PropsPanel";
 import { postEmptyJson } from "pithekos-lib";
 import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
+
 export default function PanDownloadDemo() {
   const [mode, setMode] = useState("list"); // "list" | "whitelist"
   const { enabledRef } = useContext(netContext);
@@ -57,11 +58,11 @@ export default function PanDownloadDemo() {
     "git.door43.org/uW/en_ugl",
   ];
   /** Whitelist-only mode */
-  const sourceWhitelistOrgs = [
+  const sourceWhitelistOrgs = useMemo(() => [
     ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
     ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
     ["git.door43.org/shower", "Aquifer exported content (Door43)"],
-  ];
+  ],[])
 
   const defaultFilterProps = useMemo(() => {
     if (mode === "whitelist" && sourceWhitelistOrgs.length > 0) {

@@ -1,5 +1,5 @@
 import PanTable from "./PanTable";
-import { CircularProgress, Box, ThemeProvider, Button } from "@mui/material";
+import { CircularProgress, Box } from "@mui/material";
 import React, { useMemo, useRef } from "react";
 import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
@@ -416,7 +416,6 @@ export default function PanDownload({
       },
     },
   ];
-  const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
   return (
     <Box {...wrapperProps} sx={{ height: "100%" }}>
