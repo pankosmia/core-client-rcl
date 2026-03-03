@@ -27,7 +27,9 @@
     "whitelist_mode": {
       "en": "Remote Resources (Whitelist Mode)"
     },
-    "legacy_download": { "en": "Legacy Download" },
+    "legacy_download": {
+      "en": "User download"
+    },
     "failed_download": {
       "en": "Failed to download zip"
     },
@@ -45,6 +47,5 @@
     "pan_download_in_dialogue": {
       "en": "PanDownload in PanDialogue"
     }
-   
   }
 }

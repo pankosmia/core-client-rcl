@@ -51,7 +51,11 @@ export default function PanDownloadDemo() {
     },
   };
 
-  const  preSelectedList = ["git.door43.org/uW/en_tn","git.door43.org/uW/en_tw","git.door43.org/uW/en_ugl"]
+  const preSelectedList = [
+    "git.door43.org/uW/en_tn",
+    "git.door43.org/uW/en_tw",
+    "git.door43.org/uW/en_ugl",
+  ];
   /** Whitelist-only mode */
   const sourceWhitelistOrgs = [
     ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
@@ -81,8 +85,11 @@ export default function PanDownloadDemo() {
           : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
       defaultFilterProps,
       downloadFunction: DowloadBurrito,
+      downloadLegacyFunction: DowloadLegacy,
       showColumnFilters: true,
-      preSelected:preSelectedList
+      preSelected: preSelectedList,
+      downloadedType: "org",
+
     }),
     [mode, defaultFilterProps],
   );
@@ -96,8 +103,9 @@ export default function PanDownloadDemo() {
       ),
       defaultFilterProps,
       showColumnFilters: true,
-      downloadedType: "legacy",
-      downloadFunction: DowloadLegacy,
+      downloadedType: "user",
+      downloadFunction: DowloadBurrito,
+      downloadLegacyFunction: DowloadLegacy,
     }),
     [mode, defaultFilterProps],
   );
@@ -319,7 +327,7 @@ export default function PanDownloadDemo() {
           isOpen={openDialoguePanDownload}
           closeFn={() => setOpenDialoguePanDownload(false)}
         >
-          <DialogContent sx={{overflow : 'hidden'}}>
+          <DialogContent sx={{ overflow: "hidden" }}>
             <Box sx={{ height: "calc(100vh - 229px)" }}>
               <PanDownload theme={theme} {...panDownloadProps} />
             </Box>
