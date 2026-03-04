@@ -18,13 +18,14 @@ import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
 import { postEmptyJson } from "pithekos-lib";
 import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
-import { i18nContext } from "../rcl";
+import I18nContext from "../rcl/contexts/i18nContext";
+
 export default function PanDownloadDemo() {
   const [mode, setMode] = useState("list"); // "list" | "whitelist"
   const { enabledRef } = useContext(netContext);
   const isOnline = enabledRef?.current ?? false;
   const { debugRef } = useContext(debugContext);
-  const { i18nRef } = useContext(i18nContext);
+  const { i18nRef } = useContext(I18nContext);
   const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
 
   const theme = createTheme({
@@ -51,13 +52,17 @@ export default function PanDownloadDemo() {
     },
   };
 
-  const  preSelectedList = ["git.door43.org/uW/en_tn","git.door43.org/uW/en_tw","git.door43.org/uW/en_ugl"]
+  const preSelectedList = [
+    "git.door43.org/uW/en_tn",
+    "git.door43.org/uW/en_tw",
+    "git.door43.org/uW/en_ugl",
+  ];
   /** Whitelist-only mode */
-  const sourceWhitelistOrgs = [
+  const sourceWhitelistOrgs = useMemo(() => [
     ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
     ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
     ["git.door43.org/shower", "Aquifer exported content (Door43)"],
-  ];
+  ],[])
 
   const defaultFilterProps = useMemo(() => {
     if (mode === "whitelist" && sourceWhitelistOrgs.length > 0) {
@@ -81,25 +86,28 @@ export default function PanDownloadDemo() {
           : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
       defaultFilterProps,
       downloadFunction: DowloadBurrito,
+      downloadLegacyFunction: DowloadLegacy,
       showColumnFilters: true,
-      preSelected:preSelectedList
+      preSelected: preSelectedList,
+      downloadedType: "org",
     }),
     [mode, defaultFilterProps],
   );
-
+  let legacyTitle = doI18n(
+    "pages:core-client-rcl:legacy_download",
+    i18nRef.current,
+  );
   const panDownloadPropsLegacy = useMemo(
     () => ({
       sources: [["git.door43.org/quentinroca", "Quentin Roca content"]],
-      tableTitle: doI18n(
-        "pages:core-client-rcl:legacy_download",
-        i18nRef.current,
-      ),
+      tableTitle: legacyTitle,
       defaultFilterProps,
       showColumnFilters: true,
-      downloadedType: "legacy",
-      downloadFunction: DowloadLegacy,
+      downloadedType: "user",
+      downloadFunction: DowloadBurrito,
+      downloadLegacyFunction: DowloadLegacy,
     }),
-    [mode, defaultFilterProps],
+    [mode, defaultFilterProps,legacyTitle],
   );
 
   async function DowloadLegacy(params, remoteRepoPath, postType) {
@@ -319,7 +327,7 @@ export default function PanDownloadDemo() {
           isOpen={openDialoguePanDownload}
           closeFn={() => setOpenDialoguePanDownload(false)}
         >
-          <DialogContent sx={{overflow : 'hidden'}}>
+          <DialogContent sx={{ overflow: "hidden" }}>
             <Box sx={{ height: "calc(100vh - 229px)" }}>
               <PanDownload theme={theme} {...panDownloadProps} />
             </Box>

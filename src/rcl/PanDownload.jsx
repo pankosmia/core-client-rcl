@@ -1,5 +1,5 @@
 import PanTable from "./PanTable";
-import { CircularProgress, Box, ThemeProvider } from "@mui/material";
+import { CircularProgress, Box } from "@mui/material";
 import React, { useMemo, useRef } from "react";
 import CloudDownload from "@mui/icons-material/CloudDownload";
 import CloudDone from "@mui/icons-material/CloudDone";
@@ -10,6 +10,7 @@ import { getJson, doI18n } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
+import ExchangeFolderIcon from "../Icons/ExchangeFolderIcon";
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
     "/burrito/metadata/summaries",
@@ -26,8 +27,8 @@ const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
  *
  * @param {Object} props Component properties
  *
- * @param {"burrito" | "legacy"} [props.downloadedType="burrito"]
- *   Type of remote resource source to query (modern burrito or legacy repositories).
+ * @param {"burrito" | "legacy"} [props.downloadedType="org"]
+ *   Type of remote resource source to query (modern org or user repositories).
  *
  * @param {(params: Object, remoteRepoPath: string, postType: "clone" | "fetch") => Promise<{ ok: boolean }>} props.downloadFunction
  *   Function responsible for performing the download or update operation.
@@ -49,8 +50,9 @@ const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
  *   Optional MUI theme override applied only to this component.
  */
 export default function PanDownload({
-  downloadedType = "burrito",
+  downloadedType = "org",
   downloadFunction,
+  downloadLegacyFunction,
   sources,
   showColumnFilters,
   tableTitle,
@@ -78,14 +80,16 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter:
-            downloadedType === "burrito"
-              ? (row) => {
-                  return row?.source?.startsWith(path) ?? false;
-                }
-              : (row) => {
-                  return row?.metadata_types === "rc" || false;
-                },
+          filter: (row) => {
+            return (
+              (row?.metadata_types === "rc" &&
+                downloadLegacyFunction &&
+                row.flavorType === "scripture" &&
+                row.flavor === "textTranslation") ||
+              (row?.metadata_types === "sb" && downloadFunction) ||
+              false
+            );
+          },
         })),
       };
     }
@@ -147,13 +151,13 @@ export default function PanDownload({
       let source = sourceWhitelist[activeFilterIndex];
       let chemin = source[0].split("/");
       let response;
-      if (downloadedType === "burrito") {
+      if (downloadedType === "org") {
         response = await getJson(
           `/gitea/remote-repos/${source[0]}`,
           debugRef.current,
         );
       }
-      if (downloadedType === "legacy") {
+      if (downloadedType === "user") {
         response = await getJson(
           `/gitea/user-remote-repos/${source[0]}`,
           debugRef.current,
@@ -217,11 +221,20 @@ export default function PanDownload({
         )} ${params.row.abbreviation}`,
         { variant: "info" },
       );
-      let fetchResponse = await downloadFunction(
-        params,
-        remoteRepoPath,
-        postType,
-      );
+      let fetchResponse;
+      if (params.row.metadata_types === "sb") {
+        fetchResponse = await downloadFunction(
+          params,
+          remoteRepoPath,
+          postType,
+        );
+      } else if (params.row.metadata_types === "rc") {
+        fetchResponse = await downloadLegacyFunction(
+          params,
+          remoteRepoPath,
+          postType,
+        );
+      }
 
       if (fetchResponse.ok) {
         enqueueSnackbar(
@@ -285,6 +298,30 @@ export default function PanDownload({
         minWidth: 130,
       },
       {
+        field: "metadata_types",
+        headerName: doI18n("library:panksomia-rcl:origin", i18nRef.current),
+        flex: 1.5,
+        minWidth: 80,
+        renderCell: (params) => {
+          if (params.row.metadata_types === "sb") {
+            return (
+              <Chip
+                variant="outlined"
+                color="primary"
+                label={doI18n("library:panksomia-rcl:native", i18nRef.current)}
+              />
+            );
+          } else {
+            return (
+              <Chip
+                variant="outlined"
+                label={doI18n("library:panksomia-rcl:legacy", i18nRef.current)}
+              />
+            );
+          }
+        },
+      },
+      {
         field: "type",
         headerName: doI18n("library:panksomia-rcl:row_type", i18nRef.current),
         flex: 1.5,
@@ -303,14 +340,22 @@ export default function PanDownload({
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
           if (!isDownloading) return <CloudDownload disabled />;
           if (isDownloading[remoteRepoPath] === "notDownloaded")
-            return (
-              <CloudDownload
+            if (params.row.metadata_types === "sb") {
+              return (
+                <CloudDownload
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownloadClick(params, remoteRepoPath, "clone");
+                  }}
+                />
+              );
+            } else {
+              return <ExchangeFolderIcon
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "clone");
-                }}
+                  handleDownloadClick(params, remoteRepoPath, "clone")}}
               />
-            );
+            }
           if (isDownloading[remoteRepoPath] === "updatable")
             return (
               <Update
@@ -341,6 +386,8 @@ export default function PanDownload({
           resourceCode: ce.abbreviation.toUpperCase(),
           language: ce.language_code,
           description: ce.description,
+          flavor: ce.flavor,
+          flavorType: ce.flavor_type,
           type: doI18n(
             `flavors:names:${ce.flavor_type}/${ce.flavor}`,
             i18nRef.current,
@@ -369,16 +416,9 @@ export default function PanDownload({
       },
     },
   ];
-  const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
   return (
-    <Box
-      {...wrapperProps}
-      sx={{
-        height:
-          filterHeight > 0 ? `calc(100% - ${filterHeight + 8}px)` : "100%",
-      }}
-    >
+    <Box {...wrapperProps} sx={{ height: "100%" }}>
       {/* ───────────── Filter Buttons ───────────── */}
       {filterExample?.length > 0 && (
         <Stack
@@ -404,16 +444,23 @@ export default function PanDownload({
         </Stack>
       )}
       {!loading ? (
-        <PanTable
-          columns={columns}
-          rows={rows}
-          tableTitle={tableTitle}
-          groupOperations={listMode ? operationsDefinitionsExample : null}
-          defaultFilter={activeFilter}
-          showColumnFilters={showColumnFilters}
-          preSelections={preSelected}
-          sx={{ ...sx, height: "100%" }}
-        />
+        <Box
+          sx={{
+            height:
+              filterHeight > 0 ? `calc(100% - ${filterHeight + 8}px)` : "100%",
+          }}
+        >
+          <PanTable
+            columns={columns}
+            rows={rows}
+            tableTitle={tableTitle}
+            groupOperations={listMode ? operationsDefinitionsExample : null}
+            defaultFilter={activeFilter}
+            showColumnFilters={showColumnFilters}
+            preSelections={preSelected}
+            sx={{ ...sx, height: "100%" }}
+          />
+        </Box>
       ) : (
         // Centered loading spinner
         <Box

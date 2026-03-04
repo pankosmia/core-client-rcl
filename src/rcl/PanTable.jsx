@@ -63,6 +63,20 @@ export default function PanTable({
   const wrapperProps = theme ? { theme } : {};
   const [filterHeight, setFilterHeight] = useState(0);
   const filterRef = useRef(null);
+  const [filterHeightTitle, setFilterHeightTitle] = useState(0);
+  const filterRefTitle = useRef(null);
+  useEffect(() => {
+    if (!filterRefTitle.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setFilterHeightTitle(entry.contentRect.height);
+      }
+    });
+
+    observer.observe(filterRefTitle.current);
+    return () => observer.disconnect();
+  }, [filterPreset]); // re-run if filterPreset changes
 
   useEffect(() => {
     if (!filterRef.current) return;
@@ -202,11 +216,14 @@ export default function PanTable({
         id={"test"}
         sx={{
           width: "100%",
-          height: `calc(100% - ${64 + filterHeight}px)`, // always offset by actual size
+          height: `calc(100% - ${filterHeight + filterHeightTitle}px)`, // always offset by actual size
         }}
       >
         {filterPreset && (
-          <Box ref={filterRef} sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}>
+          <Box
+            ref={filterRef}
+            sx={{ display: "flex", gap: 1, flexWrap: "wrap", p: 1 }}
+          >
             <Stack direction="row" spacing={1}>
               {filterPreset.map((c, index) => {
                 const isActive = activeFiltersIndices.includes(index);
@@ -234,28 +251,32 @@ export default function PanTable({
             </Stack>
           </Box>
         )}
-        {groupOperations && (
-          <EnhancedTableToolbar
-            numSelected={selected.length}
-            selectedIds={selected}
-            clearSelection={handleClearSelection}
-            tableTitle={tableTitle}
-            groupOperations={groupOperations}
-            dataRows={rows}
-          />
-        )}
-        {!groupOperations && tableTitle && (
-          <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
-            <Typography
-              sx={{ flex: "1 1 100%" }}
-              variant="h6"
-              id="tableTitle"
-              component="div"
-            >
-              {tableTitle}
-            </Typography>
-          </Toolbar>
-        )}
+        <Box ref={filterRefTitle}>
+          {groupOperations && (
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              selectedIds={selected}
+              clearSelection={handleClearSelection}
+              tableTitle={tableTitle}
+              groupOperations={groupOperations}
+              dataRows={rows}
+            />
+          )}
+
+          {!groupOperations && tableTitle && (
+            <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
+              <Typography
+                sx={{ flex: "1 1 100%" }}
+                variant="h6"
+                id="tableTitle"
+                component="div"
+              >
+                {tableTitle}
+              </Typography>
+            </Toolbar>
+          )}
+        </Box>
+
         <TableContainer component={Paper} sx={sx ? sx : { height: "100%" }}>
           {" "}
           {/* Custom sx styles is applied if defined */}
