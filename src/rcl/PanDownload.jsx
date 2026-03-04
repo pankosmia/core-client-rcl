@@ -187,26 +187,27 @@ export default function PanDownload({
     doCatalog();
   }, [sourceWhitelist, activeFilterIndex]);
 
-  useEffect(() => {
-    if (!isDownloading && catalog.length > 0) {
-      const downloadStatus = async () => {
-        const newIsDownloading = {};
-        for (const e of catalog) {
-          if (metadataSummaries[`${e.source}/${e.name}`]) {
-            const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
-            const metadataTime = metadataResponse.timestamp;
-            const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
-            newIsDownloading[`${e.source}/${e.name}`] =
-              remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
-          } else {
-            newIsDownloading[`${e.source}/${e.name}`] = "notDownloaded";
-          }
-        }
-        setIsDownloading(newIsDownloading);
-      };
-      downloadStatus().then();
+useEffect(() => {
+  if (catalog.length === 0) return;
+
+  const downloadStatus = async () => {
+    const newIsDownloading = {};
+    for (const e of catalog) {
+      if (metadataSummaries[`${e.source}/${e.name}`]) {
+        const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
+        const metadataTime = metadataResponse.timestamp;
+        const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
+        newIsDownloading[`${e.source}/${e.name}`] =
+          remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
+      } else {
+        newIsDownloading[`${e.source}/${e.name}`] = "notDownloaded";
+      }
     }
-  }, [isDownloading, catalog, metadataSummaries]);
+    setIsDownloading(newIsDownloading);
+  };
+
+  downloadStatus();
+}, [catalog, metadataSummaries]); 
 
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
@@ -338,6 +339,7 @@ export default function PanDownload({
         minWidth: 120,
         renderCell: (params) => {
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
+          console.log(isDownloading)
           if (!isDownloading) return <CloudDownload disabled />;
           if (isDownloading[remoteRepoPath] === "notDownloaded")
             if (params.row.metadata_types === "sb") {
@@ -373,6 +375,7 @@ export default function PanDownload({
     ],
     [i18nRef, isDownloading, handleDownloadClick],
   );
+  console.log(isDownloading)
   // Rows for the Data Grid
   const rows = useMemo(
     () =>
