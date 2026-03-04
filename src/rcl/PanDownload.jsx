@@ -339,7 +339,6 @@ useEffect(() => {
         minWidth: 120,
         renderCell: (params) => {
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
-          console.log(isDownloading)
           if (!isDownloading) return <CloudDownload disabled />;
           if (isDownloading[remoteRepoPath] === "notDownloaded")
             if (params.row.metadata_types === "sb") {
@@ -375,7 +374,6 @@ useEffect(() => {
     ],
     [i18nRef, isDownloading, handleDownloadClick],
   );
-  console.log(isDownloading)
   // Rows for the Data Grid
   const rows = useMemo(
     () =>
