@@ -30,7 +30,7 @@ function SpSpaPage({ titleKey, widget, margin = 0, children, requireNet = false,
                     alignItems="center"
                     rowSpacing={0.5}
                 >
-                    <BlockOutlined fontSize="large" color="warning" />
+                   <BlockOutlined sx={{fontSize:80}} color="warning" />
                     <p>{doI18n("components:framework:no_entry_if_offline", i18nRef.current)}</p>
                 </Grid2>
             </Grid2>
