@@ -27,6 +27,8 @@ import PanVersificationPicker from './PanVersificationPicker';
 import PanBookPicker from './PanBookPicker';
 import PanStepperPicker from './PanStepperPicker';
 import InternetWarningDialog from './InternetWarningDialog';
+import fallbackTheme from "./fallbackTheme";
+
 export {
     authContext,
     bcvContext,
@@ -56,5 +58,6 @@ export {
     PanLanguagePicker,
     PanVersificationPicker,
     PanBookPicker,
-    PanStepperPicker
+    PanStepperPicker,
+    fallbackTheme
 };
