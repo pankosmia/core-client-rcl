@@ -38,17 +38,15 @@ export default function PanDownloadDemo() {
   /** Structured list mode */
   const demoList = {
     "git.door43.org": {
-      uW: [
-        "en_tn",
-        "en_tw",
-        "en_ugl",
-        "grc_ugnt",
-        "hbo_uhb",
-        "en_ust",
+      "unfoldingWord": ["en_ust", "el-x-koine_ugnt"],
+      "Door43-Catalog": [
         "en_ult",
+        "en_tn",
         "en_ta",
-        "en_uhl",
+        "el-x-koine_ugnt",
+        "en_tw",
       ],
+      "translationCore-Create-BCS": ["or_gst"],
     },
   };
 
@@ -58,11 +56,14 @@ export default function PanDownloadDemo() {
     "git.door43.org/uW/en_ugl",
   ];
   /** Whitelist-only mode */
-  const sourceWhitelistOrgs = useMemo(() => [
-    ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
-    ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
-    ["git.door43.org/shower", "Aquifer exported content (Door43)"],
-  ],[])
+  const sourceWhitelistOrgs = useMemo(
+    () => [
+      ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)"],
+      ["git.door43.org/uW", "unfoldingWord curated content (Door43)"],
+      ["git.door43.org/shower", "Aquifer exported content (Door43)"],
+    ],
+    [],
+  );
 
   const defaultFilterProps = useMemo(() => {
     if (mode === "whitelist" && sourceWhitelistOrgs.length > 0) {
@@ -107,7 +108,7 @@ export default function PanDownloadDemo() {
       downloadFunction: DowloadBurrito,
       downloadLegacyFunction: DowloadLegacy,
     }),
-    [mode, defaultFilterProps,legacyTitle],
+    [mode, defaultFilterProps, legacyTitle],
   );
 
   async function DowloadLegacy(params, remoteRepoPath, postType) {

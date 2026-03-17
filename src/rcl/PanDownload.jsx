@@ -103,7 +103,7 @@ export default function PanDownload({
           whitelist.push([`${org}/${projectKey}`, projectKey]);
         }
       }
-
+      console.log(whitelist);
       return {
         listMode: true,
         sourceWhitelist: whitelist,
@@ -135,6 +135,7 @@ export default function PanDownload({
     observer.observe(filterRef.current);
     return () => observer.disconnect();
   }, [filterExample]);
+
   const activeFilter = useMemo(() => {
     return activeFilterIndex !== null
       ? filterExample[activeFilterIndex]?.filter
@@ -148,35 +149,71 @@ export default function PanDownload({
       const requestId = ++requestIdRef.current; // 🔐 unique request
       fetchMetaDataSummaries(setMetadataSummaries, debugRef);
       let newCatalog = [];
-      let source = sourceWhitelist[activeFilterIndex];
-      let chemin = source[0].split("/");
-      let response;
-      if (downloadedType === "org") {
-        response = await getJson(
-          `/gitea/remote-repos/${source[0]}`,
-          debugRef.current,
-        );
-      }
-      if (downloadedType === "user") {
-        response = await getJson(
-          `/gitea/user-remote-repos/${source[0]}`,
-          debugRef.current,
-        );
-      }
+      if (listMode) {
+        for (let e = 0; e < sourceWhitelist.length; e++) {
+          let source = sourceWhitelist[e];
+          let chemin = source[0].split("/");
+          let response;
+          if (downloadedType === "org") {
+            response = await getJson(
+              `/gitea/remote-repos/${source[0]}`,
+              debugRef.current,
+            );
+          }
+          if (downloadedType === "user") {
+            response = await getJson(
+              `/gitea/user-remote-repos/${source[0]}`,
+              debugRef.current,
+            );
+          }
 
-      if (requestId !== requestIdRef.current) return;
+          if (requestId !== requestIdRef.current) return;
 
-      if (response.ok) {
-        if (listMode) {
-          const newResponse = response.json
-            .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
-            .map((r) => ({ ...r, source: source[0] }));
-          newCatalog = [...newCatalog, ...newResponse];
-        } else {
-          const newResponse = response.json.map((r) => {
-            return { ...r, source: source[0] };
-          });
-          newCatalog = [...newCatalog, ...newResponse];
+          if (response.ok) {
+            if (listMode) {
+              const newResponse = response.json
+                .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
+                .map((r) => ({ ...r, source: source[0] }));
+              newCatalog = [...newCatalog, ...newResponse];
+            } else {
+              const newResponse = response.json.map((r) => {
+                return { ...r, source: source[0] };
+              });
+              newCatalog = [...newCatalog, ...newResponse];
+            }
+          }
+        }
+      } else {
+        let source = sourceWhitelist[activeFilterIndex];
+        let chemin = source[0].split("/");
+        let response;
+        if (downloadedType === "org") {
+          response = await getJson(
+            `/gitea/remote-repos/${source[0]}`,
+            debugRef.current,
+          );
+        }
+        if (downloadedType === "user") {
+          response = await getJson(
+            `/gitea/user-remote-repos/${source[0]}`,
+            debugRef.current,
+          );
+        }
+
+        if (requestId !== requestIdRef.current) return;
+
+        if (response.ok) {
+          if (listMode) {
+            const newResponse = response.json
+              .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
+              .map((r) => ({ ...r, source: source[0] }));
+            newCatalog = [...newCatalog, ...newResponse];
+          } else {
+            const newResponse = response.json.map((r) => {
+              return { ...r, source: source[0] };
+            });
+            newCatalog = [...newCatalog, ...newResponse];
+          }
         }
       }
       if (newCatalog.length > 0) {
@@ -187,27 +224,27 @@ export default function PanDownload({
     doCatalog();
   }, [sourceWhitelist, activeFilterIndex]);
 
-useEffect(() => {
-  if (catalog.length === 0) return;
+  useEffect(() => {
+    if (catalog.length === 0) return;
 
-  const downloadStatus = async () => {
-    const newIsDownloading = {};
-    for (const e of catalog) {
-      if (metadataSummaries[`${e.source}/${e.name}`]) {
-        const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
-        const metadataTime = metadataResponse.timestamp;
-        const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
-        newIsDownloading[`${e.source}/${e.name}`] =
-          remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
-      } else {
-        newIsDownloading[`${e.source}/${e.name}`] = "notDownloaded";
+    const downloadStatus = async () => {
+      const newIsDownloading = {};
+      for (const e of catalog) {
+        if (metadataSummaries[`${e.source}/${e.name}`]) {
+          const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
+          const metadataTime = metadataResponse.timestamp;
+          const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
+          newIsDownloading[`${e.source}/${e.name}`] =
+            remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
+        } else {
+          newIsDownloading[`${e.source}/${e.name}`] = "notDownloaded";
+        }
       }
-    }
-    setIsDownloading(newIsDownloading);
-  };
+      setIsDownloading(newIsDownloading);
+    };
 
-  downloadStatus();
-}, [catalog, metadataSummaries]); 
+    downloadStatus();
+  }, [catalog, metadataSummaries]);
 
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
@@ -351,11 +388,14 @@ useEffect(() => {
                 />
               );
             } else {
-              return <ExchangeFolderIcon
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "clone")}}
-              />
+              return (
+                <ExchangeFolderIcon
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDownloadClick(params, remoteRepoPath, "clone");
+                  }}
+                />
+              );
             }
           if (isDownloading[remoteRepoPath] === "updatable")
             return (
