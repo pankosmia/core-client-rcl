@@ -52,26 +52,24 @@ const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
 export default function PanDownload({
   downloadedType = "org",
   downloadFunction,
-  downloadLegacyFunction,
   sources,
   showColumnFilters,
   tableTitle,
   sx,
   theme,
   preSelected = [],
+  topicsFilter = ["pushing2sb","tc-ready"],
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
   const [activeFilterIndex, setActiveFilterIndex] = useState(0);
   const requestIdRef = useRef(0);
-
   const [catalog, setCatalog] = useState([]);
   const [isDownloading, setIsDownloading] = useState(null);
   const [metadataSummaries, setMetadataSummaries] = useState({});
   const [loading, setLoading] = useState(true);
   const filterRef = useRef(null);
   const [filterHeight, setFilterHeight] = useState(0);
-
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -80,16 +78,7 @@ export default function PanDownload({
         sourceWhitelist: sources,
         filterExample: sources.map(([path, label]) => ({
           label,
-          filter: (row) => {
-            return (
-              (row?.metadata_types === "rc" &&
-                downloadLegacyFunction &&
-                row.flavorType === "scripture" &&
-                row.flavor === "textTranslation") ||
-              (row?.metadata_types === "sb" && downloadFunction) ||
-              false
-            );
-          },
+          filter: (row) => true,
         })),
       };
     }
@@ -103,7 +92,6 @@ export default function PanDownload({
           whitelist.push([`${org}/${projectKey}`, projectKey]);
         }
       }
-      console.log(whitelist);
       return {
         listMode: true,
         sourceWhitelist: whitelist,
@@ -260,20 +248,7 @@ export default function PanDownload({
         { variant: "info" },
       );
       let fetchResponse;
-      if (params.row.metadata_types === "sb") {
-        fetchResponse = await downloadFunction(
-          params,
-          remoteRepoPath,
-          postType,
-        );
-      } else if (params.row.metadata_types === "rc") {
-        fetchResponse = await downloadLegacyFunction(
-          params,
-          remoteRepoPath,
-          postType,
-        );
-      }
-
+      fetchResponse = await downloadFunction(params, remoteRepoPath, postType);
       if (fetchResponse.ok) {
         enqueueSnackbar(
           `${params.row.abbreviation} ${doI18n(
@@ -336,30 +311,6 @@ export default function PanDownload({
         minWidth: 130,
       },
       {
-        field: "metadata_types",
-        headerName: doI18n("library:panksomia-rcl:origin", i18nRef.current),
-        flex: 1.5,
-        minWidth: 80,
-        renderCell: (params) => {
-          if (params.row.metadata_types === "sb") {
-            return (
-              <Chip
-                variant="outlined"
-                color="primary"
-                label={doI18n("library:panksomia-rcl:native", i18nRef.current)}
-              />
-            );
-          } else {
-            return (
-              <Chip
-                variant="outlined"
-                label={doI18n("library:panksomia-rcl:legacy", i18nRef.current)}
-              />
-            );
-          }
-        },
-      },
-      {
         field: "type",
         headerName: doI18n("library:panksomia-rcl:row_type", i18nRef.current),
         flex: 1.5,
@@ -377,26 +328,16 @@ export default function PanDownload({
         renderCell: (params) => {
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
           if (!isDownloading) return <CloudDownload disabled />;
-          if (isDownloading[remoteRepoPath] === "notDownloaded")
-            if (params.row.metadata_types === "sb") {
-              return (
-                <CloudDownload
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDownloadClick(params, remoteRepoPath, "clone");
-                  }}
-                />
-              );
-            } else {
-              return (
-                <ExchangeFolderIcon
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDownloadClick(params, remoteRepoPath, "clone");
-                  }}
-                />
-              );
-            }
+          if (isDownloading[remoteRepoPath] === "notDownloaded") {
+            return (
+              <CloudDownload
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownloadClick(params, remoteRepoPath, "clone");
+                }}
+              />
+            );
+          }
           if (isDownloading[remoteRepoPath] === "updatable")
             return (
               <Update
@@ -429,11 +370,22 @@ export default function PanDownload({
           description: ce.description,
           flavor: ce.flavor,
           flavorType: ce.flavor_type,
+          clone_url: ce.clone_url,
+          ingredients: ce.ingredients,
+          topics: ce.topics,
           type: doI18n(
             `flavors:names:${ce.flavor_type}/${ce.flavor}`,
             i18nRef.current,
           ),
-        })),
+        }))
+        .filter((row) => {
+          return (
+            (row.metadata_types === "rc" &&
+              row.topics.some((topic) => topicsFilter.includes(topic))) ||
+            row.metadata_types === "sb" ||
+            false
+          );
+        }),
     [catalog, i18nRef],
   );
 

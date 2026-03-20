@@ -16,7 +16,7 @@ import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
-import { postEmptyJson } from "pithekos-lib";
+import { getJson, postEmptyJson, postJson } from "pithekos-lib";
 import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
 
@@ -37,24 +37,13 @@ export default function PanDownloadDemo() {
 
   /** Structured list mode */
   const demoList = {
-    "git.door43.org": {
-      "unfoldingWord": ["en_ust", "el-x-koine_ugnt"],
-      "Door43-Catalog": [
-        "en_ult",
-        "en_tn",
-        "en_ta",
-        "el-x-koine_ugnt",
-        "en_tw",
-      ],
+    "qa.door43.org": {
+      unfoldingWord: ["en_ust", "el-x-koine_ugnt", "en_ta"],
       "translationCore-Create-BCS": ["or_gst"],
     },
   };
 
-  const preSelectedList = [
-    "git.door43.org/uW/en_tn",
-    "git.door43.org/uW/en_tw",
-    "git.door43.org/uW/en_ugl",
-  ];
+  const preSelectedList = [];
   /** Whitelist-only mode */
   const sourceWhitelistOrgs = useMemo(
     () => [
@@ -145,12 +134,22 @@ export default function PanDownloadDemo() {
   }
 
   async function DowloadBurrito(params, remoteRepoPath, postType) {
-    const fetchUrl =
+    let fetchUrl =
       postType === "clone"
         ? `/git/clone-repo/${remoteRepoPath}`
         : `/git/pull-repo/origin/${remoteRepoPath}`;
 
-    return await postEmptyJson(fetchUrl, debugRef.current);
+    if (
+      params.row.topics.some((topic) =>
+        ["pushing2sb", "tc-ready"].includes(topic),
+      )
+    ) {
+      if (postType === "clone") fetchUrl += "?branch=main";
+    }
+
+    let response = await postEmptyJson(fetchUrl, debugRef.current);
+
+    return response;
   }
 
   return (
