@@ -64,7 +64,6 @@ export default function PanDownload({
   const { debugRef } = useContext(debugContext);
   const [activeFilterIndex, setActiveFilterIndex] = useState(0);
   const requestIdRef = useRef(0);
-
   const [catalog, setCatalog] = useState([]);
   const [isDownloading, setIsDownloading] = useState(null);
   const [metadataSummaries, setMetadataSummaries] = useState({});

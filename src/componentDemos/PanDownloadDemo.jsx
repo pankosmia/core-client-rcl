@@ -139,8 +139,12 @@ export default function PanDownloadDemo() {
         ? `/git/clone-repo/${remoteRepoPath}`
         : `/git/pull-repo/origin/${remoteRepoPath}`;
 
-    if (params.row.topics.some((topic) => ["pushing2sb","tc-ready"].includes(topic))) {
-      if (postType === "clone") fetchUrl += "?wanted_branch=main";
+    if (
+      params.row.topics.some((topic) =>
+        ["pushing2sb", "tc-ready"].includes(topic),
+      )
+    ) {
+      if (postType === "clone") fetchUrl += "?branch=main";
     }
 
     let response = await postEmptyJson(fetchUrl, debugRef.current);
