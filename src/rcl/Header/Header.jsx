@@ -9,7 +9,7 @@ import { doI18n } from "pithekos-lib";
 import i18nContext from "../contexts/i18nContext";
 import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
-function Header({ titleKey, widget, currentId, theme }) {
+function Header({ titleKey, widget, currentId, theme,showInternetSwitch=true }) {
   const { i18nRef } = useContext(i18nContext);
   const { clientConfigRef } = useContext(clientConfigContext);
   const { enabledRef } = useContext(netContext);
@@ -40,7 +40,7 @@ function Header({ titleKey, widget, currentId, theme }) {
             )}
             <Box sx={{ flexGrow: 1, m: 0, p: 0 }}>{widget}</Box>
             <Box sx={{ m: 0, p: 0 }}>
-              {internetAcces && (
+              {internetAcces && showInternetSwitch && (
                 <InternetSwitch
                   netEnabled={enabledRef.current}
                   i18n={i18nRef.current}

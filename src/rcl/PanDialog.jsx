@@ -5,8 +5,11 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
-
+import InternetSwitch from "./InternetSwitch";
+import React, { useContext } from "react";
+import netContext from "../rcl/contexts/netContext";
+import debugContext from "../rcl/contexts/debugContext";
+import i18nContext from "../rcl/contexts/i18nContext";
 /**
  * Generic dialog wrapper with optional theme support and header bar.
  *
@@ -37,10 +40,13 @@ export default function PanDialog({
   theme,
   size = "md",
   fullWidth = true,
+  showInternetSwitch = false
 }) {
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
-
+  const { enabledRef } = useContext(netContext);
+  const { i18nRef } = useContext(i18nContext);
+  const { debugRef } = useContext(debugContext);
   return (
     <Wrapper {...wrapperProps}>
       <Dialog
@@ -69,10 +75,16 @@ export default function PanDialog({
             backgroundColor: theme?.palette?.secondary?.main,
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{justifyContent:"space-between"}}>
             <Typography variant="h6" component="div">
               {titleLabel}
             </Typography>
+            {showInternetSwitch &&
+              <InternetSwitch
+                i18n={i18nRef.current}
+                netEnabled={enabledRef.current}
+                debug={debugRef.current}
+              />}
           </Toolbar>
         </AppBar>
         {children}
