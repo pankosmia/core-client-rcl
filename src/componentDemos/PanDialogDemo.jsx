@@ -9,10 +9,11 @@ export default function PanDialogDemo() {
     const [openDialog2, setOpenDialog2] = useState(null);
     const [openDialog3, setOpenDialog3] = useState(null);
     const [openDialog4, setOpenDialog4] = useState(null);
+    const [openDialog5, setOpenDialog5] = useState(null);
 
     const [pointlessInput, setPointlessInput] = useState(false);
     const [fullWidth, setFullWidth] = useState(true);
-     const handleClose = () => {
+    const handleClose = () => {
         setOpenDialog4(false)
     }
 
@@ -263,6 +264,47 @@ export default function PanDialogDemo() {
                     />
                 </PanDialog>
             </Grid2>
+            <Grid2 item size={4}>
+                <Button onClick={(event) => {
+                    setOpenDialog5(event.target)
+                }}> Show internet switch </Button>
+                <PanDialog
+                    titleLabel="Show Internet switch"
+                    isOpen={!!openDialog5}
+                    closeFn={() => setOpenDialog5(false)}
+                    size={"lg"}
+                    fullWidth={fullWidth}
+                    showInternetSwitch={true}
+                >
+                    <DialogContent>
+                        <DialogContentText>
+                            Text within dialog content goes within DialogContentText.
+                        </DialogContentText>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={fullWidth}
+                                        onChange={() => setFullWidth(!fullWidth)}
+                                        slotProps={
+                                            {
+                                                input: { 'aria-label': 'maxWith-dialog' },
+                                            }
+                                        }
+                                    />
+                                } label="Full width"
+                            />
+                        </FormGroup>
+                    </DialogContent>
+                    <PanDialogActions
+                        closeFn={() => setOpenDialog5(false)}
+                        closeLabel="Don't do it!"
+                        closeOnAction={false}
+                        onlyCloseButton={true}
+                    />
+                </PanDialog>
+            </Grid2>
+
         </Grid2>
 
     </>
