@@ -10,6 +10,7 @@ import React, { useContext } from "react";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import i18nContext from "../rcl/contexts/i18nContext";
+import clientConfigContext from "../contexts/clientConfigContext";
 /**
  * Generic dialog wrapper with optional theme support and header bar.
  *
@@ -47,6 +48,12 @@ export default function PanDialog({
   const { enabledRef } = useContext(netContext);
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
+  const { clientConfigRef } = useContext(clientConfigContext);
+
+  const internetAcces =
+    clientConfigRef.current["_global"]
+      ?.find((e) => e.id === "internetConfig")
+      ?.fields.find((e) => e.id === "internetConnectionAccess")?.value ?? true;
   return (
     <Wrapper {...wrapperProps}>
       <Dialog
@@ -79,7 +86,7 @@ export default function PanDialog({
             <Typography variant="h6" component="div">
               {titleLabel}
             </Typography>
-            {showInternetSwitch &&
+            {internetAcces && showInternetSwitch &&
               <InternetSwitch
                 i18n={i18nRef.current}
                 netEnabled={enabledRef.current}
