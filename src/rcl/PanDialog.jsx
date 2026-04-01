@@ -50,7 +50,7 @@ export default function PanDialog({
   const { debugRef } = useContext(debugContext);
   const { clientConfigRef } = useContext(clientConfigContext);
 
-  const internetAcces =
+  const internetAccess =
     clientConfigRef.current["_global"]
       ?.find((e) => e.id === "internetConfig")
       ?.fields.find((e) => e.id === "internetConnectionAccess")?.value ?? true;
@@ -86,7 +86,7 @@ export default function PanDialog({
             <Typography variant="h6" component="div">
               {titleLabel}
             </Typography>
-            {internetAcces && showInternetSwitch &&
+            {internetAccess && showInternetSwitch &&
               <InternetSwitch
                 i18n={i18nRef.current}
                 netEnabled={enabledRef.current}

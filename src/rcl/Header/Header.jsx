@@ -13,7 +13,7 @@ function Header({ titleKey, widget, currentId, theme,showInternetSwitch=true }) 
   const { i18nRef } = useContext(i18nContext);
   const { clientConfigRef } = useContext(clientConfigContext);
   const { enabledRef } = useContext(netContext);
-  const internetAcces =
+  const internetAccess =
     clientConfigRef.current["_global"]
       ?.find((e) => e.id === "internetConfig")
       ?.fields.find((e) => e.id === "internetConnectionAccess")?.value ?? true;
@@ -40,7 +40,7 @@ function Header({ titleKey, widget, currentId, theme,showInternetSwitch=true }) 
             )}
             <Box sx={{ flexGrow: 1, m: 0, p: 0 }}>{widget}</Box>
             <Box sx={{ m: 0, p: 0 }}>
-              {internetAcces && showInternetSwitch && (
+              {internetAccess && showInternetSwitch && (
                 <InternetSwitch
                   netEnabled={enabledRef.current}
                   i18n={i18nRef.current}
