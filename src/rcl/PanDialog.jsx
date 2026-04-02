@@ -10,7 +10,7 @@ import React, { useContext } from "react";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import i18nContext from "../rcl/contexts/i18nContext";
-import clientConfigContext from "../contexts/clientConfigContext";
+import clientConfigContext from "../rcl/contexts/clientConfigContext";
 /**
  * Generic dialog wrapper with optional theme support and header bar.
  *
