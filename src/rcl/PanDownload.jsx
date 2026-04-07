@@ -58,7 +58,7 @@ export default function PanDownload({
   sx,
   theme,
   preSelected = [],
-  topicsFilter = ["pushing2sb","tc-ready"],
+  topicsFilter = ["pushing2sb", "tc-ready"],
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);

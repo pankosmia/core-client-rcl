@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Typography,
-  Stack,
-  IconButton,
-  Collapse,
-} from "@mui/material";
+import { Box, Typography, Stack, IconButton, Collapse } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
@@ -37,13 +31,14 @@ function PropValue({ value, name }) {
       <Stack direction="row" alignItems="center" spacing={1}>
         {(isArray || isObject) && (
           <IconButton size="small" onClick={toggle}>
-            {open ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+            {open ? (
+              <ExpandLessIcon fontSize="small" />
+            ) : (
+              <ExpandMoreIcon fontSize="small" />
+            )}
           </IconButton>
         )}
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 500, minWidth: 120 }}
-        >
+        <Typography variant="body2" sx={{ fontWeight: 500, minWidth: 120 }}>
           {name}
         </Typography>
         <Typography variant="body2" sx={{ fontFamily: "monospace" }}>

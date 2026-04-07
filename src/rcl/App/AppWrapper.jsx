@@ -73,7 +73,6 @@ function AppWrapper({
     }
   });
 
-  
   const theme = createTheme(themeSpec);
 
   return (

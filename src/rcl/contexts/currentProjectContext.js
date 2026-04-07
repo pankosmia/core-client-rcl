@@ -1,5 +1,8 @@
-import {createContext} from 'react';
+import { createContext } from "react";
 
-const CurrentProjectContext = createContext({currentProject: null, setCurrentProject: () => {}});
+const CurrentProjectContext = createContext({
+  currentProject: null,
+  setCurrentProject: () => {},
+});
 
 export default CurrentProjectContext;

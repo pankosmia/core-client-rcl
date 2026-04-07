@@ -10,15 +10,15 @@ import PanVersificationPickerDemo from "./PanVersificationPickerDemo";
 import PanBookPickerDemo from "./PanBookPickerDemo";
 import PanStepperPickerDemo from "./PanStepperPickerDemo";
 export {
-    InternetSwitchDemo,
-    AppbarHamburgerDemo,
-    PanDialogDemo,
-    PanTableDemo,
-    PanDownloadDemo,
-    PanFilteredMenuDemo,
-    HeaderDemo,
-    PanLanguagePickerDemo,
-    PanVersificationPickerDemo,
-    PanBookPickerDemo,
-    PanStepperPickerDemo
+  InternetSwitchDemo,
+  AppbarHamburgerDemo,
+  PanDialogDemo,
+  PanTableDemo,
+  PanDownloadDemo,
+  PanFilteredMenuDemo,
+  HeaderDemo,
+  PanLanguagePickerDemo,
+  PanVersificationPickerDemo,
+  PanBookPickerDemo,
+  PanStepperPickerDemo,
 };

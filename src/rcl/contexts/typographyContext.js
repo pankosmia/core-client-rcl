@@ -1,5 +1,8 @@
-import {createContext} from 'react';
+import { createContext } from "react";
 
-const TypographyContext = createContext({typography: {}, setTypography: ()=>{}});
+const TypographyContext = createContext({
+  typography: {},
+  setTypography: () => {},
+});
 
 export default TypographyContext;

@@ -1,5 +1,5 @@
-import {createContext} from 'react';
+import { createContext } from "react";
 
-const BcvContext = createContext({systemBcv: false, setSystemBcv: ()=>{}});
+const BcvContext = createContext({ systemBcv: false, setSystemBcv: () => {} });
 
 export default BcvContext;
