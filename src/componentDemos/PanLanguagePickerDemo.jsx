@@ -40,7 +40,7 @@ export default function PanLanguagePickerDemo() {
       </Button>
 
       <PanLanguagePicker
-        key={pickerKey}                
+        key={pickerKey}
         currentLanguage={currentLanguage}
         setCurrentLanguage={setCurrentLanguage}
         setIsValid={setLanguageIsValid}

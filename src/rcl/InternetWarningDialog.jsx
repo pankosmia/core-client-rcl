@@ -1,4 +1,4 @@
-import React, {useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -14,7 +14,6 @@ import { doI18n, postEmptyJson } from "pithekos-lib";
 import debugContext from "./contexts/debugContext";
 import i18nContext from "./contexts/i18nContext";
 import netContext from "./contexts/netContext";
-
 
 /**
  * Dialog prompting the user to enable internet connectivity.

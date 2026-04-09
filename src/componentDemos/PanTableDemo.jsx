@@ -59,7 +59,7 @@ function PanTableDemo() {
       disablePadding: false,
       alignRight: false,
       width: 160,
-      flex: 1
+      flex: 1,
     },
     {
       field: "date",
@@ -68,7 +68,7 @@ function PanTableDemo() {
       disablePadding: false,
       alignRight: false,
       width: 100,
-      flex: 0.5
+      flex: 0.5,
     },
     {
       field: "message",
@@ -76,14 +76,14 @@ function PanTableDemo() {
       numeric: false,
       disablePadding: false,
       alignRight: false,
-      minWidth: 150
+      minWidth: 150,
     },
     {
       field: "download",
       sortable: false,
       headerName: doI18n(
         "pages:core-remote-resources:row_download",
-        i18nRef.current
+        i18nRef.current,
       ),
       alignRight: false,
       numeric: false,
@@ -139,7 +139,7 @@ function PanTableDemo() {
       icon: CloudDownloadIcon,
       action: (context, allDataRows) => {
         const selectedRowsData = allDataRows.filter((row) =>
-          context.selectedIds.includes(row.id)
+          context.selectedIds.includes(row.id),
         );
         const authors = selectedRowsData.map((row) => row.author).join(", ");
         alert(`Downloading these authors: ${authors}`);
@@ -151,7 +151,7 @@ function PanTableDemo() {
       icon: HandymanIcon,
       action: (context, allDataRows) => {
         const selectedRowsData = allDataRows.filter((row) =>
-          context.selectedIds.includes(row.id)
+          context.selectedIds.includes(row.id),
         );
         const dates = selectedRowsData.map((row) => row.date).join(", ");
         alert(`Archiving these commit dates: ${dates}`);
@@ -163,7 +163,7 @@ function PanTableDemo() {
       icon: DeleteIcon,
       action: (context, allDataRows) => {
         const selectedRowsData = allDataRows.filter((row) =>
-          context.selectedIds.includes(row.id)
+          context.selectedIds.includes(row.id),
         );
         const messages = selectedRowsData.map((row) => row.message).join(", ");
         alert(`Deleting these commit messages: ${messages}`);
@@ -180,7 +180,7 @@ function PanTableDemo() {
         sx={{
           justifyContent: "flex-start",
           alignItems: "flex-start",
-          pb: 5
+          pb: 5,
         }}
         spacing={8}
         minHeight={350}
@@ -240,9 +240,13 @@ function PanTableDemo() {
             rows={rows}
             tableTitle={"Checkboxes and onRowSelectionModelChange"}
             onRowSelectionModelChange={(ids) => {
-              console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
+              console.log(
+                "Selecting the following authors: ",
+                rows
+                  .filter((row) => ids.includes(row.id))
+                  .map((row) => row.author),
+              );
             }}
-
           />
         </Grid2>
         <Grid2 item size={4}>
@@ -253,12 +257,16 @@ function PanTableDemo() {
             theme={theme}
             columns={columns}
             rows={rows}
-            preSelections={[0,2]}
+            preSelections={[0, 2]}
             tableTitle={"Preselections"}
             onRowSelectionModelChange={(ids) => {
-              console.log("Selecting the following authors: ", rows.filter((row) => ids.includes(row.id)).map((row) => row.author))
+              console.log(
+                "Selecting the following authors: ",
+                rows
+                  .filter((row) => ids.includes(row.id))
+                  .map((row) => row.author),
+              );
             }}
-
           />
         </Grid2>
       </Grid2>

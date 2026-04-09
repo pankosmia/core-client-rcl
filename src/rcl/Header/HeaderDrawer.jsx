@@ -72,7 +72,7 @@ function HeaderDrawer({ currentId }) {
         open={drawerIsOpen}
         onClose={() => setDrawerIsOpen(false)}
         slotProps={{
-          paper: { sx: { minWidth:"16rem", overflow: "hidden" } },
+          paper: { sx: { minWidth: "16rem", overflow: "hidden" } },
         }}
       >
         <Box
@@ -123,7 +123,6 @@ function HeaderDrawer({ currentId }) {
                         />
                       </ListItemButton>
                     </ListItem>
-                    
                   ),
                 )}
               </Box>
@@ -143,20 +142,21 @@ function HeaderDrawer({ currentId }) {
                     />
                   </ListItemButton>
                 </ListItem>
-                  <List sx={{width:"100%"}}  disablePadding>
-                    <ListItemButton onClick={toggleDebug}>
-                      <ListItemText
-                        primary={doI18n(
-                          `components:header:beta_mode`,
-                          i18nRef.current,
-                        )} />
-                      <Switch
-                        edge="end"
-                        onChange={toggleDebug}
-                        checked={debugRef.current}
-                      />
-                    </ListItemButton>
-                  </List>
+                <List sx={{ width: "100%" }} disablePadding>
+                  <ListItemButton onClick={toggleDebug}>
+                    <ListItemText
+                      primary={doI18n(
+                        `components:header:beta_mode`,
+                        i18nRef.current,
+                      )}
+                    />
+                    <Switch
+                      edge="end"
+                      onChange={toggleDebug}
+                      checked={debugRef.current}
+                    />
+                  </ListItemButton>
+                </List>
               </Box>
             </Stack>
           </List>

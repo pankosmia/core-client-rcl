@@ -16,7 +16,6 @@ import {
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 function App() {
-
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64,
   );
@@ -38,13 +37,13 @@ function App() {
           <PanLanguagePickerDemo />
         </Demo>
         <Demo title="PanVersificationPicker">
-          <PanVersificationPickerDemo/>
+          <PanVersificationPickerDemo />
         </Demo>
         <Demo title="PanBookPicker">
-          <PanBookPickerDemo/>
+          <PanBookPickerDemo />
         </Demo>
         <Demo title="PanStepperPicker">
-          <PanStepperPickerDemo/>
+          <PanStepperPickerDemo />
         </Demo>
         <Demo title="Appbar Hamburger">
           <AppbarHamburgerDemo />

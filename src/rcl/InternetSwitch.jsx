@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Chip,
-} from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import AirplanemodeInactiveOutlinedIcon from "@mui/icons-material/AirplanemodeInactiveOutlined";
 import AirplanemodeActiveOutlinedIcon from "@mui/icons-material/AirplanemodeActiveOutlined";
 import { doI18n, postEmptyJson } from "pithekos-lib";

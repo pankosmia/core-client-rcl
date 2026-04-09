@@ -22,14 +22,34 @@ import PanDialogButton from "./PanDialogInternals/PanDialogButton";
  * @param {boolean} [props.onlyCloseButton=false]
  *   When true, only the close button is rendered.
  */
-export default function PanDialogActions({ actionFn, actionLabel, closeFn, closeLabel, isDisabled, closeOnAction = true, onlyCloseButton = false }) {
-    return <DialogActions>
-        <PanDialogButton actionFn={closeFn} isDisabled={false} label={closeLabel} />
-        {onlyCloseButton ? null : <PanDialogButton actionFn={() => {
+export default function PanDialogActions({
+  actionFn,
+  actionLabel,
+  closeFn,
+  closeLabel,
+  isDisabled,
+  closeOnAction = true,
+  onlyCloseButton = false,
+}) {
+  return (
+    <DialogActions>
+      <PanDialogButton
+        actionFn={closeFn}
+        isDisabled={false}
+        label={closeLabel}
+      />
+      {onlyCloseButton ? null : (
+        <PanDialogButton
+          actionFn={() => {
             actionFn();
-            if (closeOnAction) { closeFn() };
-
-        }} isDisabled={isDisabled} label={actionLabel}/>}
-
+            if (closeOnAction) {
+              closeFn();
+            }
+          }}
+          isDisabled={isDisabled}
+          label={actionLabel}
+        />
+      )}
     </DialogActions>
+  );
 }

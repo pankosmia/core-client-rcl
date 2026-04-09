@@ -9,7 +9,13 @@ import { doI18n } from "pithekos-lib";
 import i18nContext from "../contexts/i18nContext";
 import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
-function Header({ titleKey, widget, currentId, theme,showInternetSwitch=true }) {
+function Header({
+  titleKey,
+  widget,
+  currentId,
+  theme,
+  showInternetSwitch = true,
+}) {
   const { i18nRef } = useContext(i18nContext);
   const { clientConfigRef } = useContext(clientConfigContext);
   const { enabledRef } = useContext(netContext);

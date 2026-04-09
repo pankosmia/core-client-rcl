@@ -41,7 +41,7 @@ export default function PanDialog({
   theme,
   size = "md",
   fullWidth = true,
-  showInternetSwitch = false
+  showInternetSwitch = false,
 }) {
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
@@ -82,16 +82,17 @@ export default function PanDialog({
             backgroundColor: theme?.palette?.secondary?.main,
           }}
         >
-          <Toolbar sx={{justifyContent:"space-between"}}>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             <Typography variant="h6" component="div">
               {titleLabel}
             </Typography>
-            {internetAccess && showInternetSwitch &&
+            {internetAccess && showInternetSwitch && (
               <InternetSwitch
                 i18n={i18nRef.current}
                 netEnabled={enabledRef.current}
                 debug={debugRef.current}
-              />}
+              />
+            )}
           </Toolbar>
         </AppBar>
         {children}
