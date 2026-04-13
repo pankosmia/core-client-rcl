@@ -16,6 +16,8 @@ export default function PanStepperPicker({
   isStepValid,
   handleCreate,
   handleClose,
+  fieldsRequired,
+  variant
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -65,9 +67,11 @@ export default function PanStepperPicker({
 
       {activeStep !== steps.length && (
         <>
-          <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
-            {doI18n(`library:panksomia-rcl:required_field`, i18nRef.current)}
-          </DialogContentText>
+          {fieldsRequired && 
+            (<DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
+              {doI18n(`library:panksomia-rcl:required_field`, i18nRef.current)}
+            </DialogContentText>)
+          }
           {renderStepContent(activeStep)}
         </>
       )}
@@ -79,11 +83,11 @@ export default function PanStepperPicker({
       >
         <Button
           sx={{ padding: 0 }}
-          color="inherit"
+          color={variant === "tc" ? "secondary" : "inherit"}
           onClick={activeStep === 0 ? handleClose : handleBack}
         >
           {activeStep === 0
-            ? `${doI18n("library:panksomia-rcl:cancel", i18nRef.current)}`
+            ? `${doI18n(`library:panksomia-rcl:${variant === "tc" ? "back_button" : "cancel"}`, i18nRef.current)}`
             : `${doI18n("library:panksomia-rcl:back_button", i18nRef.current)}`}
         </Button>
         <Button
@@ -92,8 +96,9 @@ export default function PanStepperPicker({
           disabled={!isStepValid(activeStep)}
         >
           {activeStep === steps.length - 1
-            ? `${doI18n("library:panksomia-rcl:create", i18nRef.current)}`
-            : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`}
+            ? `${doI18n(`library:panksomia-rcl:${variant === "tc" ? "close" : "create"}`, i18nRef.current)}`
+            : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`
+          }
         </Button>
       </DialogActions>
     </>
