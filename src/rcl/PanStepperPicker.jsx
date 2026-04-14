@@ -88,6 +88,7 @@ export default function PanStepperPicker({
           sx={{ padding: 0 }}
           color={secondaryButtonVariant || "inherit"}
           onClick={activeStep === 0 ? handleClose : handleBack}
+          disabled={activeStep === 0}
         >
           {activeStep === 0
             ? `${doI18n(`library:panksomia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
