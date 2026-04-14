@@ -11,6 +11,8 @@ import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
 import ExchangeFolderIcon from "../Icons/ExchangeFolderIcon";
+import { alpha } from '@mui/material/styles';
+
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
     "/burrito/metadata/summaries",
@@ -451,7 +453,13 @@ export default function PanDownload({
             defaultFilter={activeFilter}
             showColumnFilters={showColumnFilters}
             preSelections={preSelected}
-            sx={{ ...sx, height: "100%" }}
+            sx={{ 
+                ...sx,
+                height: "100%",
+                "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even) .MuiTableCell-root": {
+                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.05),
+                }
+             }}
           />
         </Box>
       ) : (
