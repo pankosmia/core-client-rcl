@@ -1,11 +1,11 @@
 import PanTable from "./PanTable";
 import { CircularProgress, Box } from "@mui/material";
 import React, { useMemo, useRef } from "react";
-import CloudDownload from "@mui/icons-material/CloudDownload";
-import CloudDone from "@mui/icons-material/CloudDone";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
-import { Stack, Chip } from "@mui/material";
+import { Stack, Chip, IconButton } from "@mui/material";
 import { getJson, doI18n } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
@@ -329,29 +329,27 @@ export default function PanDownload({
         minWidth: 120,
         renderCell: (params) => {
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
-          if (!isDownloading) return <CloudDownload disabled />;
-          if (isDownloading[remoteRepoPath] === "notDownloaded") {
-            return (
-              <CloudDownload
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "clone");
-                }}
-              />
-            );
-          }
-          if (isDownloading[remoteRepoPath] === "updatable")
-            return (
-              <Update
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "fetch");
-                }}
-              />
-            );
-          if (isDownloading[remoteRepoPath] === "downloading")
-            return <CircularProgress size="30px" color="secondary" />;
-          return <CloudDone color="disabled" />;
+          const status = isDownloading?.[remoteRepoPath];
+          const isUpdate = status === "updatable";
+          const isDownloadingStatus = status === "downloading";
+          const isDownloaded = status === "downloaded" || !status;
+
+          return (
+            <IconButton 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownloadClick(params, remoteRepoPath, isUpdate ? "fetch" : "clone");
+              }}
+              loading={isDownloadingStatus}
+              disabled={isDownloaded}
+            >
+              {/* Do we need to remove the Update button? */}
+              { isDownloaded 
+                ? <FileDownloadDoneIcon /> 
+                : ( isUpdate ? <Update /> : <FileDownloadIcon /> )
+              }
+            </IconButton>
+          );
         },
       },
     ],
@@ -394,7 +392,7 @@ export default function PanDownload({
   const operationsDefinitionsExample = [
     {
       label: "Download selected",
-      icon: CloudDownload,
+      icon: FileDownloadIcon,
       action: (context, allDataRows) => {
         if (!isDownloading) return; // prevent click before state ready
         let selectedRowsData = allDataRows.filter((row) =>
