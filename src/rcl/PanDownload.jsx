@@ -12,6 +12,7 @@ import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
 import ExchangeFolderIcon from "../Icons/ExchangeFolderIcon";
 import { alpha } from '@mui/material/styles';
+import { Check, RadioButtonUnchecked } from '@mui/icons-material';
 
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
@@ -78,8 +79,9 @@ export default function PanDownload({
       return {
         listMode: false,
         sourceWhitelist: sources,
-        filterExample: sources.map(([path, label]) => ({
+        filterExample: sources.map(([path, label, icon]) => ({
           label,
+          icon: icon || <RadioButtonUnchecked />,
           filter: (row) => true,
         })),
       };
@@ -417,20 +419,51 @@ export default function PanDownload({
         <Stack
           ref={filterRef}
           direction="row"
-          spacing={1}
+          spacing={0}
           alignItems="center"
-          sx={{ mb: 1, flexWrap: "wrap" }}
+          sx={{ mb: 1 }}
         >
           {filterExample.map((f, index) => {
             const isActive = activeFilterIndex === index;
+            const isFirst = index === 0;
+            const isLast = index === filterExample.length - 1;
 
             return (
               <Chip
                 key={f.label}
                 label={f.label}
-                color={isActive ? "secondary" : "default"}
-                variant={isActive ? "filled" : "outlined"}
                 onClick={() => setActiveFilterIndex(index)}
+                color="primary"
+                variant={isActive ? "filled" : "outlined"}
+                icon={isActive ? <Check /> : f.icon}
+                sx={{
+                  borderRadius: 0,
+                  height: 40,
+                  border: "1px solid", 
+                  borderColor: "primary.main",
+                  
+                  ...(!isFirst && { borderLeft: "none" }),
+
+                  ...(isFirst && { 
+                    borderTopLeftRadius: "20px", 
+                    borderBottomLeftRadius: "20px" 
+                  }),
+                  ...(isLast && { 
+                    borderTopRightRadius: "20px", 
+                    borderBottomRightRadius: "20px" 
+                  }),
+
+                  "& .MuiChip-icon": {
+                    width: 20,
+                    marginLeft: "8px",
+                    marginRight: "-4px",
+                  },
+                  
+                  ...(isActive && {
+                    zIndex: 1,
+                    borderColor: "primary.main",
+                  })
+                }}
               />
             );
           })}
