@@ -30,6 +30,8 @@ export default function PanDialogActions({
   isDisabled,
   closeOnAction = true,
   onlyCloseButton = false,
+  actionVariant,
+  closeVariant
 }) {
   return (
     <DialogActions>
@@ -37,6 +39,7 @@ export default function PanDialogActions({
         actionFn={closeFn}
         isDisabled={false}
         label={closeLabel}
+        variant={closeVariant}
       />
       {onlyCloseButton ? null : (
         <PanDialogButton
@@ -48,6 +51,7 @@ export default function PanDialogActions({
           }}
           isDisabled={isDisabled}
           label={actionLabel}
+          variant={actionVariant}
         />
       )}
     </DialogActions>

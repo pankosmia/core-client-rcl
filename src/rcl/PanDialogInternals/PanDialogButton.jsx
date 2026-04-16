@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 
-export default function PanDialogButton({ label, actionFn, isDisabled }) {
+export default function PanDialogButton({ label, actionFn, isDisabled, variant }) {
   return (
-    <Button onClick={actionFn} disabled={isDisabled} color="primary">
+    <Button onClick={actionFn} disabled={isDisabled} color="primary" variant={variant} >
       {label}
     </Button>
   );
