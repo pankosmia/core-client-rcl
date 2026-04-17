@@ -81,6 +81,7 @@ export default function PanDownloadDemo() {
       showColumnFilters: true,
       preSelected: preSelectedList,
       downloadedType: "org",
+      showFilterButtons: mode === "list" ? false : true,
     }),
     [mode, defaultFilterProps],
   );

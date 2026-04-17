@@ -62,6 +62,7 @@ export default function PanDownload({
   theme,
   preSelected = [],
   topicsFilter = ["pushing2sb", "tc-ready"],
+  showFilterButtons
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -415,7 +416,7 @@ export default function PanDownload({
   return (
     <Box {...wrapperProps} sx={{ height: "100%" }}>
       {/* ───────────── Filter Buttons ───────────── */}
-      {filterExample?.length > 0 && (
+      {filterExample?.length && showFilterButtons > 0 && (
         <Stack
           ref={filterRef}
           direction="row"
