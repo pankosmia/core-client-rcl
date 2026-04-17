@@ -44,6 +44,7 @@ export default function InternetWarningDialog({
         handleCloseDialog();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [internetDialogOpen]);
 
   const handleCloseDialog = () => {

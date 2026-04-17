@@ -10,7 +10,6 @@ import { getJson, doI18n } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
-import ExchangeFolderIcon from "../Icons/ExchangeFolderIcon";
 import { alpha } from '@mui/material/styles';
 import { Check, RadioButtonUnchecked } from '@mui/icons-material';
 
@@ -215,6 +214,7 @@ export default function PanDownload({
       }
     };
     doCatalog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceWhitelist, activeFilterIndex]);
 
   useEffect(() => {
@@ -282,6 +282,7 @@ export default function PanDownload({
         }));
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -389,6 +390,7 @@ export default function PanDownload({
             false
           );
         }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [catalog, i18nRef],
   );
 

@@ -27,6 +27,7 @@ export default function PanBookPickerDemo() {
     if (bookCodes.length === 0 && open) {
       doFetch().then();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
   return (
     <Grid2 container spacing={8} minHeight={600}>

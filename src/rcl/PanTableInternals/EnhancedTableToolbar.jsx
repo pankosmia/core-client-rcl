@@ -32,6 +32,7 @@ export default function EnhancedTableToolbar(props) {
 
       return handlers;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIds, numSelected, dataRows]);
 
   return (

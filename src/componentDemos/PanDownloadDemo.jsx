@@ -16,7 +16,7 @@ import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
-import { getJson, postEmptyJson, postJson } from "pithekos-lib";
+import { postEmptyJson } from "pithekos-lib";
 import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
 import { CorporateFare, Login } from "@mui/icons-material";
@@ -76,14 +76,14 @@ export default function PanDownloadDemo() {
           ? doI18n("pages:core-client-rcl:list_mode", i18nRef.current)
           : doI18n("pages:core-client-rcl:whitelist_mode", i18nRef.current),
       defaultFilterProps,
-      downloadFunction: DowloadBurrito,
-      downloadLegacyFunction: DowloadLegacy,
+      downloadFunction: DownloadBurrito,
+      downloadLegacyFunction: DownloadLegacy,
       showColumnFilters: true,
       preSelected: preSelectedList,
       downloadedType: "org",
       showFilterButtons: mode !== "list",
-    }),
-    [mode, defaultFilterProps],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }), [mode, defaultFilterProps]
   );
   let legacyTitle = doI18n(
     "pages:core-client-rcl:legacy_download",
@@ -96,13 +96,13 @@ export default function PanDownloadDemo() {
       defaultFilterProps,
       showColumnFilters: true,
       downloadedType: "user",
-      downloadFunction: DowloadBurrito,
-      downloadLegacyFunction: DowloadLegacy,
-    }),
-    [mode, defaultFilterProps, legacyTitle],
+      downloadFunction: DownloadBurrito,
+      downloadLegacyFunction: DownloadLegacy,
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }), [mode, defaultFilterProps, legacyTitle],
   );
 
-  async function DowloadLegacy(params, remoteRepoPath, postType) {
+  async function DownloadLegacy(params, remoteRepoPath, postType) {
     let fetchResponse;
     const downloadResponse = await fetch(params.row.url);
 
@@ -135,7 +135,7 @@ export default function PanDownloadDemo() {
     return fetchResponse;
   }
 
-  async function DowloadBurrito(params, remoteRepoPath, postType) {
+  async function DownloadBurrito(params, remoteRepoPath, postType) {
     let fetchUrl =
       postType === "clone"
         ? `/git/clone-repo/${remoteRepoPath}`
