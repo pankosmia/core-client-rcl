@@ -416,7 +416,7 @@ export default function PanDownload({
   return (
     <Box {...wrapperProps} sx={{ height: "100%" }}>
       {/* ───────────── Filter Buttons ───────────── */}
-      {filterExample?.length && showFilterButtons > 0 && (
+      {(filterExample?.length && showFilterButtons > 0) && (
         <Stack
           ref={filterRef}
           direction="row"

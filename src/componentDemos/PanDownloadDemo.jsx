@@ -217,6 +217,7 @@ export default function PanDownloadDemo() {
                     ),
               defaultFilterProps,
               showColumnFilters: true,
+              showFilterButtons: mode === "list" ? false : true
             }}
           />
 
