@@ -7,6 +7,7 @@ export default function PanLanguagePickerDemo() {
     language_code: "",
     language_name: "",
   });
+  // eslint-disable-next-line no-unused-vars
   const [_languageIsValid, setLanguageIsValid] = useState(false);
 
   const [testValue, setTestValue] = useState("");

@@ -57,6 +57,7 @@ export default function PanLanguagePicker({
     if (currentLanguage.language_code) {
       setIsValid(!errorLangCode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorLangCode]);
 
   useEffect(() => {
@@ -77,6 +78,7 @@ export default function PanLanguagePicker({
       }
       setFirstOpen(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentBcpList, firstOpen, languageCodes]);
   useEffect(() => {
     if (burritoSelected) {
@@ -91,6 +93,7 @@ export default function PanLanguagePicker({
         )
         .catch((err) => console.error("Error :", err));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, burritoSelected]);
 
   const documents = localRepos.filter(

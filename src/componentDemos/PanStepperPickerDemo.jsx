@@ -92,10 +92,13 @@ export default function PanStepperPickerDemo() {
 
   return (
     <PanStepperPicker
+      requiredFieldsLabel
       steps={steps}
       renderStepContent={renderStepContent}
       isStepValid={isStepValid}
       handleCreate={handleCreate}
+      secondaryButtonVariant="secondary"
+      secondaryActionKey="back_button"
     />
   );
 }

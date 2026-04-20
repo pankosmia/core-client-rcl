@@ -122,6 +122,7 @@ function Spa({ children }) {
     doFetchTypography().then();
     doFetchClientConfig().then();
     doFetchClientInterface().then();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -306,6 +307,7 @@ function Spa({ children }) {
     };
     fetchSSE();
     return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const netValue = { enableNet, setEnableNet, enabledRef };
