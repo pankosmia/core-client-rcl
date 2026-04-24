@@ -1,8 +1,8 @@
 import PanTable from "./PanTable";
-import { CircularProgress, Box } from "@mui/material";
+import { CircularProgress, Box, Typography } from "@mui/material";
 import React, { useMemo, useRef } from "react";
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
 import { Stack, Chip, IconButton } from "@mui/material";
@@ -10,8 +10,8 @@ import { getJson, doI18n } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
-import { alpha } from '@mui/material/styles';
-import { Check, RadioButtonUnchecked } from '@mui/icons-material';
+import { alpha } from "@mui/material/styles";
+import { Check, RadioButtonUnchecked } from "@mui/icons-material";
 
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
@@ -61,7 +61,7 @@ export default function PanDownload({
   theme,
   preSelected = [],
   topicsFilter = ["pushing2sb", "tc-ready"],
-  showFilterButtons
+  showFilterButtons,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -218,7 +218,7 @@ export default function PanDownload({
         setCatalogIsEmpty(true);
         enqueueSnackbar(
           doI18n("library:pankosmia-rcl:catalog_empty", i18nRef.current),
-          { variant: "error" }
+          { variant: "error" },
         );
       }
     };
@@ -348,19 +348,26 @@ export default function PanDownload({
           const isDownloaded = status === "downloaded" || !status;
 
           return (
-            <IconButton 
+            <IconButton
               onClick={(e) => {
                 e.stopPropagation();
-                handleDownloadClick(params, remoteRepoPath, isUpdate ? "fetch" : "clone");
+                handleDownloadClick(
+                  params,
+                  remoteRepoPath,
+                  isUpdate ? "fetch" : "clone",
+                );
               }}
               loading={isDownloadingStatus}
               disabled={isDownloaded}
             >
               {/* Do we need to remove the Update button? */}
-              { isDownloaded 
-                ? <FileDownloadDoneIcon /> 
-                : ( isUpdate ? <Update /> : <FileDownloadIcon /> )
-              }
+              {isDownloaded ? (
+                <FileDownloadDoneIcon />
+              ) : isUpdate ? (
+                <Update />
+              ) : (
+                <FileDownloadIcon />
+              )}
             </IconButton>
           );
         },
@@ -427,7 +434,7 @@ export default function PanDownload({
   return (
     <Box {...wrapperProps} sx={{ height: "100%" }}>
       {/* ───────────── Filter Buttons ───────────── */}
-      {(filterExample?.length > 0 && showFilterButtons) && (
+      {filterExample?.length > 0 && showFilterButtons && (
         <Stack
           ref={filterRef}
           direction="row"
@@ -451,18 +458,18 @@ export default function PanDownload({
                 sx={{
                   borderRadius: 0,
                   height: 40,
-                  border: "1px solid", 
+                  border: "1px solid",
                   borderColor: "primary.main",
-                  
+
                   ...(!isFirst && { borderLeft: "none" }),
 
-                  ...(isFirst && { 
-                    borderTopLeftRadius: "20px", 
-                    borderBottomLeftRadius: "20px" 
+                  ...(isFirst && {
+                    borderTopLeftRadius: "20px",
+                    borderBottomLeftRadius: "20px",
                   }),
-                  ...(isLast && { 
-                    borderTopRightRadius: "20px", 
-                    borderBottomRightRadius: "20px" 
+                  ...(isLast && {
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "20px",
                   }),
 
                   "& .MuiChip-icon": {
@@ -470,18 +477,18 @@ export default function PanDownload({
                     marginLeft: "8px",
                     marginRight: "-4px",
                   },
-                  
+
                   ...(isActive && {
                     zIndex: 1,
                     borderColor: "primary.main",
-                  })
+                  }),
                 }}
               />
             );
           })}
         </Stack>
       )}
-      {(!loading && !catalogIsEmpty) ? (
+      {!loading && !catalogIsEmpty ? (
         <Box
           sx={{
             height:
@@ -496,18 +503,33 @@ export default function PanDownload({
             defaultFilter={activeFilter}
             showColumnFilters={showColumnFilters}
             preSelections={preSelected}
-            sx={{ 
-                ...sx,
-                height: "100%",
-                "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even) .MuiTableCell-root": {
-                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.05),
-                }
-             }}
+            sx={{
+              ...sx,
+              height: "100%",
+              "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even) .MuiTableCell-root":
+                {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.primary.main, 0.05),
+                },
+            }}
           />
         </Box>
-      ) : 
+      ) : (
         // Centered loading spinner
-        !catalogIsEmpty &&
+        !catalogIsEmpty && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%", // take full available height
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )
+      )}
+      {catalogIsEmpty && (
         <Box
           sx={{
             display: "flex",
@@ -516,9 +538,12 @@ export default function PanDownload({
             height: "100%", // take full available height
           }}
         >
-          <CircularProgress />
+          <Typography>
+            {" "}
+            {doI18n("library:pankosmia-rcl:catalog_empty", i18nRef.current)}
+          </Typography>
         </Box>
-      }
+      )}
     </Box>
   );
 }
