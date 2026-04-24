@@ -16,6 +16,7 @@ import netContext from "../contexts/netContext";
 import debugContext from "../contexts/debugContext";
 import i18nContext from "../contexts/i18nContext";
 function HeaderDrawer({ currentId }) {
+  // eslint-disable-next-line no-unused-vars
   const [drawerWidth, setDrawerWidth] = useState("auto");
   const [widthLocked, setWidthLocked] = useState(false);
   const measurementRef = useRef(null);
@@ -39,6 +40,7 @@ function HeaderDrawer({ currentId }) {
       }
     };
     doFetch().then();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debugRef.current]);
   const toggleDebug = (ev) => {
     getJson(`/debug/${debugRef.current ? "disable" : "enable"}`).then(() => {

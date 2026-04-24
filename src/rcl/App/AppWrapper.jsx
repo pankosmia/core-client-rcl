@@ -31,22 +31,23 @@ function AppWrapper({
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
   const { enqueueSnackbar } = useSnackbar();
-  const localHandler = (s) => {
-    const dataBits = s.split("--");
-    if (dataBits.length === 4) {
-      enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
-        variant: dataBits[0],
-        anchorOrigin: { vertical: "bottom", horizontal: "right" },
-      });
-    }
-  };
 
   useEffect(() => {
+    const localHandler = (s) => {
+      const dataBits = s.split("--");
+      if (dataBits.length === 4) {
+        enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
+          variant: dataBits[0],
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        });
+      }
+    };
+
     if (messages.length > 0) {
       messages.forEach((m) => localHandler(m));
       setMessages([]);
     }
-  }, [messages]);
+  }, [messages, enqueueSnackbar]);
 
   const [themeSpec, setThemeSpec] = useState({
     palette: {
@@ -71,7 +72,7 @@ function AppWrapper({
         setter: setThemeSpec,
       }).then();
     }
-  });
+  }, [themeSpec.palette]);
 
   const theme = createTheme(themeSpec);
 

@@ -1,16 +1,18 @@
 import PanTable from "./PanTable";
-import { CircularProgress, Box } from "@mui/material";
+import { CircularProgress, Box, Typography } from "@mui/material";
 import React, { useMemo, useRef } from "react";
-import CloudDownload from "@mui/icons-material/CloudDownload";
-import CloudDone from "@mui/icons-material/CloudDone";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
-import { Stack, Chip } from "@mui/material";
+import { Stack, Chip, IconButton } from "@mui/material";
 import { getJson, doI18n } from "pithekos-lib";
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
-import ExchangeFolderIcon from "../Icons/ExchangeFolderIcon";
+import { alpha } from "@mui/material/styles";
+import { Check, RadioButtonUnchecked } from "@mui/icons-material";
+
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
     "/burrito/metadata/summaries",
@@ -59,6 +61,7 @@ export default function PanDownload({
   theme,
   preSelected = [],
   topicsFilter = ["pushing2sb", "tc-ready"],
+  showFilterButtons,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -70,14 +73,16 @@ export default function PanDownload({
   const [loading, setLoading] = useState(true);
   const filterRef = useRef(null);
   const [filterHeight, setFilterHeight] = useState(0);
+  const [catalogIsEmpty, setCatalogIsEmpty] = useState(false);
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
       return {
         listMode: false,
         sourceWhitelist: sources,
-        filterExample: sources.map(([path, label]) => ({
+        filterExample: sources.map(([path, label, icon]) => ({
           label,
+          icon: icon || <RadioButtonUnchecked />,
           filter: (row) => true,
         })),
       };
@@ -157,7 +162,7 @@ export default function PanDownload({
 
           if (requestId !== requestIdRef.current) return;
 
-          if (response.ok) {
+          if (response.ok && response.json.length > 0) {
             if (listMode) {
               const newResponse = response.json
                 .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
@@ -190,7 +195,7 @@ export default function PanDownload({
 
         if (requestId !== requestIdRef.current) return;
 
-        if (response.ok) {
+        if (response.ok && response.json.length > 0) {
           if (listMode) {
             const newResponse = response.json
               .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
@@ -206,10 +211,19 @@ export default function PanDownload({
       }
       if (newCatalog.length > 0) {
         setLoading(false);
+        setCatalogIsEmpty(false);
         setCatalog(newCatalog);
+      } else {
+        setLoading(false);
+        setCatalogIsEmpty(true);
+        enqueueSnackbar(
+          doI18n("library:pankosmia-rcl:catalog_empty", i18nRef.current),
+          { variant: "error" },
+        );
       }
     };
     doCatalog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sourceWhitelist, activeFilterIndex]);
 
   useEffect(() => {
@@ -277,6 +291,7 @@ export default function PanDownload({
         }));
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -286,7 +301,7 @@ export default function PanDownload({
       {
         field: "resourceCode",
         headerName: doI18n(
-          "library:panksomia-rcl:row_resource_code",
+          "library:pankosmia-rcl:row_resource_code",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -295,7 +310,7 @@ export default function PanDownload({
       {
         field: "language",
         headerName: doI18n(
-          "library:panksomia-rcl:row_language",
+          "library:pankosmia-rcl:row_language",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -304,7 +319,7 @@ export default function PanDownload({
       {
         field: "description",
         headerName: doI18n(
-          "library:panksomia-rcl:row_description",
+          "library:pankosmia-rcl:row_description",
           i18nRef.current,
         ),
         flex: 2,
@@ -312,7 +327,7 @@ export default function PanDownload({
       },
       {
         field: "type",
-        headerName: doI18n("library:panksomia-rcl:row_type", i18nRef.current),
+        headerName: doI18n("library:pankosmia-rcl:row_type", i18nRef.current),
         flex: 1.5,
         minWidth: 80,
       },
@@ -320,36 +335,41 @@ export default function PanDownload({
         field: "download",
         sortable: false,
         headerName: doI18n(
-          "library:panksomia-rcl:row_download",
+          "library:pankosmia-rcl:row_download",
           i18nRef.current,
         ),
         flex: 0.5,
         minWidth: 120,
         renderCell: (params) => {
           const remoteRepoPath = `${params.row.source}/${params.row.name}`;
-          if (!isDownloading) return <CloudDownload disabled />;
-          if (isDownloading[remoteRepoPath] === "notDownloaded") {
-            return (
-              <CloudDownload
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "clone");
-                }}
-              />
-            );
-          }
-          if (isDownloading[remoteRepoPath] === "updatable")
-            return (
-              <Update
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownloadClick(params, remoteRepoPath, "fetch");
-                }}
-              />
-            );
-          if (isDownloading[remoteRepoPath] === "downloading")
-            return <CircularProgress size="30px" color="secondary" />;
-          return <CloudDone color="disabled" />;
+          const status = isDownloading?.[remoteRepoPath];
+          const isUpdate = status === "updatable";
+          const isDownloadingStatus = status === "downloading";
+          const isDownloaded = status === "downloaded" || !status;
+
+          return (
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDownloadClick(
+                  params,
+                  remoteRepoPath,
+                  isUpdate ? "fetch" : "clone",
+                );
+              }}
+              loading={isDownloadingStatus}
+              disabled={isDownloaded}
+            >
+              {/* Do we need to remove the Update button? */}
+              {isDownloaded ? (
+                <FileDownloadDoneIcon />
+              ) : isUpdate ? (
+                <Update />
+              ) : (
+                <FileDownloadIcon />
+              )}
+            </IconButton>
+          );
         },
       },
     ],
@@ -386,13 +406,14 @@ export default function PanDownload({
             false
           );
         }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [catalog, i18nRef],
   );
 
   const operationsDefinitionsExample = [
     {
       label: "Download selected",
-      icon: CloudDownload,
+      icon: FileDownloadIcon,
       action: (context, allDataRows) => {
         if (!isDownloading) return; // prevent click before state ready
         let selectedRowsData = allDataRows.filter((row) =>
@@ -413,30 +434,61 @@ export default function PanDownload({
   return (
     <Box {...wrapperProps} sx={{ height: "100%" }}>
       {/* ───────────── Filter Buttons ───────────── */}
-      {filterExample?.length > 0 && (
+      {filterExample?.length > 0 && showFilterButtons && (
         <Stack
           ref={filterRef}
           direction="row"
-          spacing={1}
+          spacing={0}
           alignItems="center"
-          sx={{ mb: 1, flexWrap: "wrap" }}
+          sx={{ mb: 1 }}
         >
           {filterExample.map((f, index) => {
             const isActive = activeFilterIndex === index;
+            const isFirst = index === 0;
+            const isLast = index === filterExample.length - 1;
 
             return (
               <Chip
                 key={f.label}
                 label={f.label}
-                color={isActive ? "secondary" : "default"}
-                variant={isActive ? "filled" : "outlined"}
                 onClick={() => setActiveFilterIndex(index)}
+                color="primary"
+                variant={isActive ? "filled" : "outlined"}
+                icon={isActive ? <Check /> : f.icon}
+                sx={{
+                  borderRadius: 0,
+                  height: 40,
+                  border: "1px solid",
+                  borderColor: "primary.main",
+
+                  ...(!isFirst && { borderLeft: "none" }),
+
+                  ...(isFirst && {
+                    borderTopLeftRadius: "20px",
+                    borderBottomLeftRadius: "20px",
+                  }),
+                  ...(isLast && {
+                    borderTopRightRadius: "20px",
+                    borderBottomRightRadius: "20px",
+                  }),
+
+                  "& .MuiChip-icon": {
+                    width: 20,
+                    marginLeft: "8px",
+                    marginRight: "-4px",
+                  },
+
+                  ...(isActive && {
+                    zIndex: 1,
+                    borderColor: "primary.main",
+                  }),
+                }}
               />
             );
           })}
         </Stack>
       )}
-      {!loading ? (
+      {!loading && !catalogIsEmpty ? (
         <Box
           sx={{
             height:
@@ -451,11 +503,33 @@ export default function PanDownload({
             defaultFilter={activeFilter}
             showColumnFilters={showColumnFilters}
             preSelections={preSelected}
-            sx={{ ...sx, height: "100%" }}
+            sx={{
+              ...sx,
+              height: "100%",
+              "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even) .MuiTableCell-root":
+                {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.primary.main, 0.05),
+                },
+            }}
           />
         </Box>
       ) : (
         // Centered loading spinner
+        !catalogIsEmpty && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%", // take full available height
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )
+      )}
+      {catalogIsEmpty && (
         <Box
           sx={{
             display: "flex",
@@ -464,7 +538,10 @@ export default function PanDownload({
             height: "100%", // take full available height
           }}
         >
-          <CircularProgress />
+          <Typography>
+            {" "}
+            {doI18n("library:pankosmia-rcl:catalog_empty", i18nRef.current)}
+          </Typography>
         </Box>
       )}
     </Box>
