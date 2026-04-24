@@ -73,6 +73,7 @@ export default function PanDownload({
   const [loading, setLoading] = useState(true);
   const filterRef = useRef(null);
   const [filterHeight, setFilterHeight] = useState(0);
+  const [catalogIsEmpty, setCatalogIsEmpty] = useState(false);
   const { sourceWhitelist, filterExample, listMode } = useMemo(() => {
     // Case 1: whitelist array
     if (Array.isArray(sources)) {
@@ -161,7 +162,7 @@ export default function PanDownload({
 
           if (requestId !== requestIdRef.current) return;
 
-          if (response.ok) {
+          if (response.ok && response.json.length > 0) {
             if (listMode) {
               const newResponse = response.json
                 .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
@@ -194,7 +195,7 @@ export default function PanDownload({
 
         if (requestId !== requestIdRef.current) return;
 
-        if (response.ok) {
+        if (response.ok && response.json.length > 0) {
           if (listMode) {
             const newResponse = response.json
               .filter((r) => sources[chemin[0]][chemin[1]].includes(r.name))
@@ -210,7 +211,15 @@ export default function PanDownload({
       }
       if (newCatalog.length > 0) {
         setLoading(false);
+        setCatalogIsEmpty(false);
         setCatalog(newCatalog);
+      } else {
+        setLoading(false);
+        setCatalogIsEmpty(true);
+        enqueueSnackbar(
+          doI18n("library:pankosmia-rcl:catalog_empty", i18nRef.current),
+          { variant: "error" }
+        );
       }
     };
     doCatalog();
@@ -292,7 +301,7 @@ export default function PanDownload({
       {
         field: "resourceCode",
         headerName: doI18n(
-          "library:panksomia-rcl:row_resource_code",
+          "library:pankosmia-rcl:row_resource_code",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -301,7 +310,7 @@ export default function PanDownload({
       {
         field: "language",
         headerName: doI18n(
-          "library:panksomia-rcl:row_language",
+          "library:pankosmia-rcl:row_language",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -310,7 +319,7 @@ export default function PanDownload({
       {
         field: "description",
         headerName: doI18n(
-          "library:panksomia-rcl:row_description",
+          "library:pankosmia-rcl:row_description",
           i18nRef.current,
         ),
         flex: 2,
@@ -318,7 +327,7 @@ export default function PanDownload({
       },
       {
         field: "type",
-        headerName: doI18n("library:panksomia-rcl:row_type", i18nRef.current),
+        headerName: doI18n("library:pankosmia-rcl:row_type", i18nRef.current),
         flex: 1.5,
         minWidth: 80,
       },
@@ -326,7 +335,7 @@ export default function PanDownload({
         field: "download",
         sortable: false,
         headerName: doI18n(
-          "library:panksomia-rcl:row_download",
+          "library:pankosmia-rcl:row_download",
           i18nRef.current,
         ),
         flex: 0.5,
@@ -472,7 +481,7 @@ export default function PanDownload({
           })}
         </Stack>
       )}
-      {!loading ? (
+      {(!loading && !catalogIsEmpty) ? (
         <Box
           sx={{
             height:
@@ -496,8 +505,9 @@ export default function PanDownload({
              }}
           />
         </Box>
-      ) : (
+      ) : 
         // Centered loading spinner
+        !catalogIsEmpty &&
         <Box
           sx={{
             display: "flex",
@@ -508,7 +518,7 @@ export default function PanDownload({
         >
           <CircularProgress />
         </Box>
-      )}
+      }
     </Box>
   );
 }
