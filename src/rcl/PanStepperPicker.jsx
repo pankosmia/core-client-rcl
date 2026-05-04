@@ -12,6 +12,7 @@ import I18nContext from "./contexts/i18nContext";
 
 export default function PanStepperPicker({
   steps,
+  initialStep = 0,
   renderStepContent,
   isStepValid,
   handleCreate,
@@ -20,9 +21,13 @@ export default function PanStepperPicker({
   primaryButtonVariant,
   primaryActionKey,
   secondaryButtonVariant,
-  secondaryActionKey
+  secondaryActionKey,
 }) {
-  const [activeStep, setActiveStep] = useState(0);
+  const safeInitialStep = Math.min(
+    Math.max(initialStep - 1, 0),
+    steps.length - 1,
+  );
+  const [activeStep, setActiveStep] = useState(safeInitialStep);
   const [skipped, setSkipped] = useState(new Set());
   const { i18nRef } = useContext(I18nContext);
 
@@ -70,11 +75,11 @@ export default function PanStepperPicker({
 
       {activeStep !== steps.length && (
         <>
-          {requiredFieldsLabel && 
-            (<DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
+          {requiredFieldsLabel && (
+            <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
               {doI18n(`library:panksomia-rcl:required_field`, i18nRef.current)}
-            </DialogContentText>)
-          }
+            </DialogContentText>
+          )}
           {renderStepContent(activeStep)}
         </>
       )}
@@ -102,8 +107,7 @@ export default function PanStepperPicker({
         >
           {activeStep === steps.length - 1
             ? `${doI18n(`library:panksomia-rcl:${primaryActionKey || "create"}`, i18nRef.current)}`
-            : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`
-          }
+            : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`}
         </Button>
       </DialogActions>
     </>
