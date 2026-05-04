@@ -94,6 +94,7 @@ export default function PanStepperPickerDemo() {
     <PanStepperPicker
       requiredFieldsLabel
       steps={steps}
+      initialStep={2}
       renderStepContent={renderStepContent}
       isStepValid={isStepValid}
       handleCreate={handleCreate}
