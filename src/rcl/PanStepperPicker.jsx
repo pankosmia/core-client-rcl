@@ -22,6 +22,8 @@ export default function PanStepperPicker({
   primaryActionKey,
   secondaryButtonVariant,
   secondaryActionKey,
+  primaryAction,
+  secondaryAction,
 }) {
   const safeInitialStep = Math.min(
     Math.max(initialStep - 1, 0),
@@ -92,7 +94,9 @@ export default function PanStepperPicker({
         <Button
           sx={{ padding: 0 }}
           color={secondaryButtonVariant || "inherit"}
-          onClick={activeStep === 0 ? handleClose : handleBack}
+          onClick={
+            activeStep === 0 ? handleClose : secondaryAction || handleBack
+          }
           disabled={activeStep === 0}
         >
           {activeStep === 0
@@ -102,7 +106,7 @@ export default function PanStepperPicker({
         <Button
           sx={{ padding: 0 }}
           color={primaryButtonVariant || "inherit"}
-          onClick={handleNext}
+          onClick={primaryAction || handleNext}
           disabled={!isStepValid(activeStep)}
         >
           {activeStep === steps.length - 1
