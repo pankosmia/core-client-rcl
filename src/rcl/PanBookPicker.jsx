@@ -66,7 +66,7 @@ export default function PanBookPicker({
               htmlFor="bookCode"
               sx={sx.inputLabel}
             >
-              {doI18n("library:panksomia-rcl:book_code", i18nRef.current)}
+              {doI18n("library:pankosmia-rcl:book_code", i18nRef.current)}
             </InputLabel>
             <Select
               variant="outlined"
@@ -76,7 +76,7 @@ export default function PanBookPicker({
                 id: "bookCode",
               }}
               value={bookCode}
-              label={doI18n("library:panksomia-rcl:book_code", i18nRef.current)}
+              label={doI18n("library:pankosmia-rcl:book_code", i18nRef.current)}
               onChange={(event) => {
                 setBookCode(event.target.value);
                 setBookAbbr(
@@ -119,7 +119,7 @@ export default function PanBookPicker({
             id="bookAbbr"
             required
             sx={{ width: "100%" }}
-            label={doI18n("library:panksomia-rcl:book_abbr", i18nRef.current)}
+            label={doI18n("library:pankosmia-rcl:book_abbr", i18nRef.current)}
             value={bookAbbr}
             onChange={(event) => {
               setBookAbbr(event.target.value);
@@ -131,7 +131,7 @@ export default function PanBookPicker({
             id="bookTitle"
             required
             sx={{ width: "100%" }}
-            label={doI18n("library:panksomia-rcl:book_title", i18nRef.current)}
+            label={doI18n("library:pankosmia-rcl:book_title", i18nRef.current)}
             value={bookTitle}
             onChange={(event) => {
               setBookTitle(event.target.value);
@@ -149,7 +149,7 @@ export default function PanBookPicker({
                 />
               }
               label={doI18n(
-                "library:panksomia-rcl:protestant_books_only",
+                "library:pankosmia-rcl:protestant_books_only",
                 i18nRef.current,
               )}
             />
@@ -167,7 +167,7 @@ export default function PanBookPicker({
                 />
               }
               label={doI18n(
-                "library:panksomia-rcl:add_versification_checkbox",
+                "library:pankosmia-rcl:add_versification_checkbox",
                 i18nRef.current,
               )}
             />

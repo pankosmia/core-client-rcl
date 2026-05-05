@@ -35,7 +35,7 @@ export default function PanVersificationPicker({
         htmlFor="booksVersification"
         sx={sx.inputLabel}
       >
-        {doI18n("library:panksomia-rcl:versification_scheme", i18nRef.current)}
+        {doI18n("library:pankosmia-rcl:versification_scheme", i18nRef.current)}
       </InputLabel>
       <Select
         variant="outlined"
@@ -47,7 +47,7 @@ export default function PanVersificationPicker({
         }}
         value={versification}
         label={doI18n(
-          "library:panksomia-rcl:versification_scheme",
+          "library:pankosmia-rcl:versification_scheme",
           i18nRef.current,
         )}
         onChange={(event) => {
@@ -65,7 +65,7 @@ export default function PanVersificationPicker({
       </Select>
       <FormHelperText>
         {" "}
-        {doI18n(`library:panksomia-rcl:helper_versification`, i18nRef.current)}
+        {doI18n(`library:pankosmia-rcl:helper_versification`, i18nRef.current)}
       </FormHelperText>
     </FormControl>
   );
