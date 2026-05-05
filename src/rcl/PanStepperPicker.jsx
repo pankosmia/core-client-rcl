@@ -12,6 +12,7 @@ import I18nContext from "./contexts/i18nContext";
 
 export default function PanStepperPicker({
   steps,
+  initialStep = 0,
   renderStepContent,
   isStepValid,
   handleCreate,
@@ -22,7 +23,11 @@ export default function PanStepperPicker({
   secondaryButtonVariant,
   secondaryActionKey,
 }) {
-  const [activeStep, setActiveStep] = useState(0);
+  const safeInitialStep = Math.min(
+    Math.max(initialStep - 1, 0),
+    steps.length - 1,
+  );
+  const [activeStep, setActiveStep] = useState(safeInitialStep);
   const [skipped, setSkipped] = useState(new Set());
   const { i18nRef } = useContext(I18nContext);
 
