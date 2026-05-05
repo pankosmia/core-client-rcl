@@ -20,7 +20,7 @@ export default function PanStepperPicker({
   primaryButtonVariant,
   primaryActionKey,
   secondaryButtonVariant,
-  secondaryActionKey
+  secondaryActionKey,
 }) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -70,11 +70,11 @@ export default function PanStepperPicker({
 
       {activeStep !== steps.length && (
         <>
-          {requiredFieldsLabel && 
-            (<DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
-              {doI18n(`library:panksomia-rcl:required_field`, i18nRef.current)}
-            </DialogContentText>)
-          }
+          {requiredFieldsLabel && (
+            <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
+              {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
+            </DialogContentText>
+          )}
           {renderStepContent(activeStep)}
         </>
       )}
@@ -91,8 +91,8 @@ export default function PanStepperPicker({
           disabled={activeStep === 0}
         >
           {activeStep === 0
-            ? `${doI18n(`library:panksomia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
-            : `${doI18n("library:panksomia-rcl:back_button", i18nRef.current)}`}
+            ? `${doI18n(`library:pankosmia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
+            : `${doI18n("library:pankosmia-rcl:back_button", i18nRef.current)}`}
         </Button>
         <Button
           sx={{ padding: 0 }}
@@ -101,9 +101,8 @@ export default function PanStepperPicker({
           disabled={!isStepValid(activeStep)}
         >
           {activeStep === steps.length - 1
-            ? `${doI18n(`library:panksomia-rcl:${primaryActionKey || "create"}`, i18nRef.current)}`
-            : `${doI18n("library:panksomia-rcl:next_button", i18nRef.current)}`
-          }
+            ? `${doI18n(`library:pankosmia-rcl:${primaryActionKey || "create"}`, i18nRef.current)}`
+            : `${doI18n("library:pankosmia-rcl:next_button", i18nRef.current)}`}
         </Button>
       </DialogActions>
     </>
