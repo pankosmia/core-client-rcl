@@ -31,7 +31,7 @@ export default function PanLanguagePicker({
   const [contentBcpList, setContentBcpList] = useState({});
   const [firstOpen, setFirstOpen] = useState(true);
   const regexLangCode = /^x-[a-z]{3}$/;
-  console.log("data", contentBcpList);
+
   useEffect(() => {
     if (open) {
       getAndSetJson({
