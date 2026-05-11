@@ -31,7 +31,7 @@ export default function PanLanguagePicker({
   const [contentBcpList, setContentBcpList] = useState({});
   const [firstOpen, setFirstOpen] = useState(true);
   const regexLangCode = /^x-[a-z]{3}$/;
-
+  console.log("data", contentBcpList);
   useEffect(() => {
     if (open) {
       getAndSetJson({
@@ -171,6 +171,17 @@ export default function PanLanguagePicker({
                   contentBcpList[option]?.en
                     ? `${contentBcpList[option]?.en} (${option})`
                     : ""
+                }
+                filterOptions={(options, { inputValue }) =>
+                  options.filter((option) => {
+                    const entry = contentBcpList[option];
+                    const input = inputValue.toLowerCase();
+                    return (
+                      entry?.en?.toLowerCase().includes(input) ||
+                      entry?.[option]?.toLowerCase().includes(input) ||
+                      option.toLowerCase().includes(input)
+                    );
+                  })
                 }
                 titleLabel={`${doI18n(
                   "library:pankosmia-rcl:language",
