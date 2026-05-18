@@ -88,7 +88,7 @@ export default function PanStepperPicker({
       <DialogActions
         sx={{
           justifyContent: "space-between",
-          padding: 0,
+          paddingTop: 2,
         }}
       >
         <Button
