@@ -78,7 +78,7 @@ export default function PanStepperPicker({
       {activeStep !== steps.length && (
         <>
           {requiredFieldsLabel && (
-            <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
+            <DialogContentText variant="subtitle2" sx={{ padding: "16px 0px" }}>
               {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
             </DialogContentText>
           )}
@@ -88,7 +88,7 @@ export default function PanStepperPicker({
       <DialogActions
         sx={{
           justifyContent: "space-between",
-          paddingTop: 2,
+          padding: "16px 0px",
         }}
       >
         <Button

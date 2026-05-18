@@ -282,6 +282,7 @@ export default function PanDialogDemo() {
                 renderStepContent={renderStepContent}
                 isStepValid={isStepValid}
                 handleCreate={handleCreate}
+                requiredFieldsLabel
               />
             </DialogContent>
             <PanDialogActions
