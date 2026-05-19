@@ -24,6 +24,7 @@ export default function PanStepperPicker({
   secondaryActionKey,
   primaryAction,
   secondaryAction,
+  isLeftStepperButtonDisabled,
 }) {
   const safeInitialStep = Math.min(
     Math.max(initialStep - 1, 0),
@@ -97,7 +98,7 @@ export default function PanStepperPicker({
           onClick={
             activeStep === 0 ? handleClose : secondaryAction || handleBack
           }
-          disabled={activeStep === 0}
+          disabled={isLeftStepperButtonDisabled && activeStep === 0}
         >
           {activeStep === 0
             ? `${doI18n(`library:pankosmia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
