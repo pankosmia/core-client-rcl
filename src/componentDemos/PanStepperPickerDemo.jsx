@@ -100,6 +100,7 @@ export default function PanStepperPickerDemo() {
       handleCreate={handleCreate}
       secondaryButtonVariant="secondary"
       secondaryActionKey="back_button"
+      isLeftStepperButtonDisabled
       /* primaryAction={() => console.log("Primary action test")}
       secondaryAction={() => console.log("Secondary action test")} */
     />
