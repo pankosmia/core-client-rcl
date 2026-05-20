@@ -74,7 +74,34 @@ function AppWrapper({
     }
   }, [themeSpec.palette]);
 
-  const theme = createTheme(themeSpec);
+  const theme = createTheme(
+    {
+      components: {
+        MuiFab: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+        MuiTab: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+      },
+    },
+    themeSpec,
+  );
 
   return (
     <ThemeProvider theme={theme}>
