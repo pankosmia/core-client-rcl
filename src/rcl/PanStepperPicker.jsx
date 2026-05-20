@@ -24,6 +24,7 @@ export default function PanStepperPicker({
   secondaryActionKey,
   primaryAction,
   secondaryAction,
+  isLeftStepperButtonDisabled,
 }) {
   const safeInitialStep = Math.min(
     Math.max(initialStep - 1, 0),
@@ -78,7 +79,7 @@ export default function PanStepperPicker({
       {activeStep !== steps.length && (
         <>
           {requiredFieldsLabel && (
-            <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
+            <DialogContentText variant="subtitle2" sx={{ padding: "16px 0px" }}>
               {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
             </DialogContentText>
           )}
@@ -88,7 +89,7 @@ export default function PanStepperPicker({
       <DialogActions
         sx={{
           justifyContent: "space-between",
-          padding: 0,
+          padding: "16px 0px 0px",
         }}
       >
         <Button
@@ -97,7 +98,7 @@ export default function PanStepperPicker({
           onClick={
             activeStep === 0 ? handleClose : secondaryAction || handleBack
           }
-          disabled={activeStep === 0}
+          disabled={isLeftStepperButtonDisabled && activeStep === 0}
         >
           {activeStep === 0
             ? `${doI18n(`library:pankosmia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
