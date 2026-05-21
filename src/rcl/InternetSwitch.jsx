@@ -22,7 +22,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   const handleInternetToggleClick = (event, newAlignment) => {
     if (alignment === "offline") {
       setInternetDialogOpen(true);
-      setAlignment(newAlignment);
     } else {
       disableInternet();
       setAlignment(newAlignment);
@@ -59,14 +58,25 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
                 },
               }}
             >
-              <DoneOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+              {alignment === "offline" && (
+                <DoneOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+              )}
               {doI18n("components:header:offline_mode", i18nRef.current)}
             </ToggleButton>
 
             <ToggleButton
               value="online"
-              sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
+              sx={{
+                color: "white",
+                "&.Mui-selected": {
+                  color: "white",
+                  backgroundColor: "rgba(156, 39, 176, 0.5)",
+                },
+              }}
             >
+              {alignment === "online" && (
+                <DoneOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
+              )}
               {doI18n("components:header:online_mode", i18nRef.current)}
             </ToggleButton>
           </ToggleButtonGroup>
@@ -89,6 +99,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
       <InternetWarningDialog
         internetDialogOpen={internetDialogOpen}
         setInternetDialogOpen={setInternetDialogOpen}
+        setAlignment={setAlignment}
       />
     </Box>
   );
