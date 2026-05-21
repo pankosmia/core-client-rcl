@@ -47,10 +47,17 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
             color="secondary"
             size="small"
             value={alignment}
+            sx={{ background: "rgba(255, 255, 255,0.3)" }}
           >
             <ToggleButton
               value="offline"
-              sx={{ color: "white", "&.Mui-selected": { color: "white" } }}
+              sx={{
+                color: "white",
+                "&.Mui-selected": {
+                  color: "white",
+                  backgroundColor: "rgba(156, 39, 176, 0.5)",
+                },
+              }}
             >
               <DoneOutlinedIcon fontSize="small" sx={{ mr: 1 }} />
               {doI18n("components:header:offline_mode", i18nRef.current)}
