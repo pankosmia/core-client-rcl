@@ -1,43 +1,123 @@
-import React, { useState } from "react";
-import { Box, Chip } from "@mui/material";
-import AirplanemodeInactiveOutlinedIcon from "@mui/icons-material/AirplanemodeInactiveOutlined";
-import AirplanemodeActiveOutlinedIcon from "@mui/icons-material/AirplanemodeActiveOutlined";
-import { doI18n, postEmptyJson } from "pithekos-lib";
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Grid2 } from "@mui/material";
+import { doI18n, getJson, postEmptyJson } from "pithekos-lib";
 import InternetWarningDialog from "./InternetWarningDialog";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import I18nContext from "./contexts/i18nContext";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import { alpha } from "@mui/material/styles";
+import IconInfo from "./App/IconInfo";
 
-export default function InternetSwitch({ i18n, netEnabled, debug = false }) {
+export default function InternetSwitch({ netEnabled, debug = false }) {
+  const { i18nRef } = useContext(I18nContext);
+
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
+  const [nameProduct, setNameProduct] = useState("");
+  const [alignment, setAlignment] = useState("offline");
+  console.log("alignment", alignment);
 
   const disableInternet = () => {
     postEmptyJson("/net/disable", debug);
   };
 
-  const handleInternetToggleClick = () => {
-    if (!netEnabled) {
+  const handleInternetToggleClick = (event, newAlignment) => {
+    if (newAlignment === "online") {
       setInternetDialogOpen(true);
     } else {
+      setAlignment("offline");
       disableInternet();
     }
   };
 
+  useEffect(() => {
+    getJson("/version")
+      .then((res) => res.json)
+      .then((data) => setNameProduct(data.product_name))
+      .catch((err) => console.error("Error :", err));
+  }, []);
+
   return (
     <Box>
-      <Chip
-        icon={
-          netEnabled ? (
-            <AirplanemodeInactiveOutlinedIcon />
-          ) : (
-            <AirplanemodeActiveOutlinedIcon />
-          )
-        }
-        label={doI18n("components:header:offline_mode", i18n)}
-        onClick={handleInternetToggleClick}
-        color={netEnabled ? "appbar-chip-inactive" : "secondary"}
-        variant="Filled"
-      />
+      <Grid2 container alignItems="center" spacing={1}>
+        <Grid2>
+          <ToggleButtonGroup
+            onChange={(event, newAlignment) => {
+              if (newAlignment !== null) {
+                handleInternetToggleClick(event, newAlignment);
+              }
+            }}
+            exclusive
+            color="secondary"
+            size="small"
+            value={alignment}
+            sx={{
+              background: (theme) => alpha(theme.palette.common.white, 0.3),
+              height: "34px",
+            }}
+          >
+            <ToggleButton
+              disableFocusRipple
+              value="offline"
+              sx={{
+                color: "white",
+                "&.Mui-selected": {
+                  color: "white",
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                  color: "white",
+                },
+              }}
+            >
+              {alignment === "offline" && (
+                <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
+              )}
+              {doI18n("components:header:offline_mode", i18nRef.current)}
+            </ToggleButton>
+
+            <ToggleButton
+              disableFocusRipple
+              value="online"
+              sx={{
+                color: "white",
+                "&.Mui-selected": {
+                  color: "white",
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                  color: "white",
+                },
+              }}
+            >
+              {alignment === "online" && (
+                <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
+              )}
+              {doI18n("components:header:online_mode", i18nRef.current)}
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Grid2>
+
+        <Grid2>
+          <IconInfo
+            tooltipLabel={doI18n(
+              "components:header:tooltip_offline_mode",
+              i18nRef.current,
+            ).replace("{1}", nameProduct)}
+          />
+        </Grid2>
+      </Grid2>
+
       <InternetWarningDialog
         internetDialogOpen={internetDialogOpen}
         setInternetDialogOpen={setInternetDialogOpen}
+        setAlignment={setAlignment}
       />
     </Box>
   );

@@ -33,6 +33,7 @@ export default function InternetWarningDialog({
   callBack = () => {},
   internetDialogOpen,
   setInternetDialogOpen,
+  setAlignment,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -85,7 +86,8 @@ export default function InternetWarningDialog({
         <Button
           onClick={() => {
             enableInternet();
-            handleCloseDialog();
+            setInternetDialogOpen(false);
+            setAlignment("online");
           }}
         >
           {doI18n("components:header:accept", i18nRef.current)}
