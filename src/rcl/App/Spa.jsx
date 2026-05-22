@@ -32,6 +32,7 @@ function Spa({ children }) {
     bookCode: "TIT",
     chapterNum: 1,
     verseNum: 1,
+    endVerseNum: 1
   });
   const bcvRef = useRef(systemBcv);
   const setSystemBcv = (nv) => {
@@ -162,16 +163,18 @@ function Spa({ children }) {
 
   const bcvHandler = (ev) => {
     const bcvBits = ev.data.split("--");
-    if (bcvBits.length === 3) {
+    if (bcvBits.length === 4) {
       const newBcv = {
         bookCode: bcvBits[0],
         chapterNum: parseInt(bcvBits[1]),
         verseNum: parseInt(bcvBits[2]),
+        endVerseNum: parseInt(bcvBits[3]),
       };
       if (
         newBcv.bookCode !== bcvRef.current.bookCode ||
         newBcv.chapterNum !== bcvRef.current.chapterNum ||
-        newBcv.verseNum !== bcvRef.current.verseNum
+        newBcv.verseNum !== bcvRef.current.verseNum ||
+        newBcv.endVerseNum !== bcvRef.current.endVerseNum
       ) {
         setSystemBcv(newBcv);
       }
