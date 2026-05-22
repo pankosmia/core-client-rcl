@@ -15,17 +15,18 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
   const [alignment, setAlignment] = useState("offline");
+  console.log("alignment", alignment);
 
   const disableInternet = () => {
     postEmptyJson("/net/disable", debug);
   };
 
   const handleInternetToggleClick = (event, newAlignment) => {
-    if (alignment === "offline") {
+    if (newAlignment === "online") {
       setInternetDialogOpen(true);
     } else {
+      setAlignment("offline");
       disableInternet();
-      setAlignment(newAlignment);
     }
   };
 
@@ -56,6 +57,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
             }}
           >
             <ToggleButton
+              disableFocusRipple
               value="offline"
               sx={{
                 color: "white",
@@ -63,6 +65,11 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
                   color: "white",
                   backgroundColor: (theme) =>
                     alpha(theme.palette.secondary.main, 1),
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                  color: "white",
                 },
               }}
             >
@@ -73,6 +80,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
             </ToggleButton>
 
             <ToggleButton
+              disableFocusRipple
               value="online"
               sx={{
                 color: "white",
@@ -80,6 +88,11 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
                   color: "white",
                   backgroundColor: (theme) =>
                     alpha(theme.palette.secondary.main, 1),
+                },
+                "&.Mui-selected:hover": {
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 1),
+                  color: "white",
                 },
               }}
             >

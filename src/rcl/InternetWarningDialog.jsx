@@ -86,7 +86,7 @@ export default function InternetWarningDialog({
         <Button
           onClick={() => {
             enableInternet();
-            handleCloseDialog();
+            setInternetDialogOpen(false);
             setAlignment("online");
           }}
         >
