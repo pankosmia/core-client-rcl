@@ -14,8 +14,8 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
 
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
+  const [alignment, setAlignment] = useState("offline");
 
-  const [alignment, setAlignment] = React.useState("offline");
   const disableInternet = () => {
     postEmptyJson("/net/disable", debug);
   };
@@ -41,7 +41,11 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
       <Grid2 container alignItems="center" spacing={1}>
         <Grid2>
           <ToggleButtonGroup
-            onChange={handleInternetToggleClick}
+            onChange={(event, newAlignment) => {
+              if (newAlignment !== null) {
+                handleInternetToggleClick(event, newAlignment);
+              }
+            }}
             exclusive
             color="secondary"
             size="small"
