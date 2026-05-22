@@ -16,7 +16,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   const [nameProduct, setNameProduct] = useState("");
 
   const [alignment, setAlignment] = React.useState("offline");
-  console.log("alignment", alignment);
   const disableInternet = () => {
     postEmptyJson("/net/disable", debug);
   };
@@ -37,7 +36,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
       .catch((err) => console.error("Error :", err));
   }, []);
 
-  console.log("setNameProduct", nameProduct);
   return (
     <Box>
       <Grid2 container alignItems="center" spacing={1}>
@@ -50,6 +48,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
             value={alignment}
             sx={{
               background: (theme) => alpha(theme.palette.common.white, 0.3),
+              height: "34px",
             }}
           >
             <ToggleButton
