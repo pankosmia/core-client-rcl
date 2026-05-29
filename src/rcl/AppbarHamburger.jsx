@@ -24,7 +24,7 @@ export default function AppbarHamburger({ i18n, netEnabled, debug }) {
 
   useEffect(() => {
     const doFetch = async () => {
-      const fetched = await getJson("/list-clients", debug);
+      const fetched = await getJson("/api/list-clients", debug);
       if (fetched.ok) {
         setMenuItems(
           fetched.json.filter(
@@ -37,7 +37,7 @@ export default function AppbarHamburger({ i18n, netEnabled, debug }) {
   }, [debug]);
 
   const toggleDebug = (ev) => {
-    getJson(`/debug/${debug} ? "disable" : "enable"}`).then(() => {
+    getJson(`/api/debug/${debug} ? "disable" : "enable"}`).then(() => {
       ev.stopPropagation();
       ev.preventDefault();
     });

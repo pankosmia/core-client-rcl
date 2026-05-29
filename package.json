@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.1.50",
+  "version": "0.2.0",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "main": "build/pankosmia-rcl.umd.js",

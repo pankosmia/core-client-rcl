@@ -9,7 +9,7 @@ export default function InternetSwitch({ i18n, netEnabled, debug = false }) {
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
 
   const disableInternet = () => {
-    postEmptyJson("/net/disable", debug);
+    postEmptyJson("/api/net/disable", debug);
   };
 
   const handleInternetToggleClick = () => {
