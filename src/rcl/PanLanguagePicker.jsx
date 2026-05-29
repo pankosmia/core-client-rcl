@@ -35,7 +35,7 @@ export default function PanLanguagePicker({
   useEffect(() => {
     if (open) {
       getAndSetJson({
-        url: "/git/list-local-repos",
+        url: "/api/git/list-local-repos",
         setter: setLocalRepos,
       }).then();
     }
