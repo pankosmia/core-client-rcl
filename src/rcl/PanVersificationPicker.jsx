@@ -22,7 +22,7 @@ export default function PanVersificationPicker({
   useEffect(() => {
     if (isOpen) {
       getAndSetJson({
-        url: "/content-utils/versifications",
+        url: "/api/content-utils/versifications",
         setter: setVersificationCodes,
       }).then();
     }
