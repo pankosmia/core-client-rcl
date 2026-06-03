@@ -48,8 +48,16 @@ export default function PanDownloadDemo() {
   /** Whitelist-only mode */
   const sourceWhitelistOrgs = useMemo(
     () => [
-      ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)", <CorporateFare />],
-      ["git.door43.org/uW", "unfoldingWord curated content (Door43)", <Login />],
+      [
+        "git.door43.org/BurritoTruck",
+        "Xenizo curated content (Door43)",
+        <CorporateFare />,
+      ],
+      [
+        "git.door43.org/uW",
+        "unfoldingWord curated content (Door43)",
+        <Login />,
+      ],
       ["git.door43.org/shower", "Aquifer exported content (Door43)"],
     ],
     [],
@@ -83,7 +91,8 @@ export default function PanDownloadDemo() {
       downloadedType: "org",
       showFilterButtons: mode !== "list",
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [mode, defaultFilterProps]
+    }),
+    [mode, defaultFilterProps],
   );
   let legacyTitle = doI18n(
     "pages:core-client-rcl:legacy_download",
@@ -99,7 +108,8 @@ export default function PanDownloadDemo() {
       downloadFunction: DownloadBurrito,
       downloadLegacyFunction: DownloadLegacy,
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [mode, defaultFilterProps, legacyTitle],
+    }),
+    [mode, defaultFilterProps, legacyTitle],
   );
 
   async function DownloadLegacy(params, remoteRepoPath, postType) {
@@ -116,7 +126,7 @@ export default function PanDownloadDemo() {
     const formData = new FormData();
     formData.append("file", zipBlob);
 
-    fetchResponse = await fetch("/temp/bytes", {
+    fetchResponse = await fetch("/api/temp/bytes", {
       method: "POST",
       body: formData,
     });
@@ -138,8 +148,8 @@ export default function PanDownloadDemo() {
   async function DownloadBurrito(params, remoteRepoPath, postType) {
     let fetchUrl =
       postType === "clone"
-        ? `/git/clone-repo/${remoteRepoPath}`
-        : `/git/pull-repo/origin/${remoteRepoPath}`;
+        ? `/api/git/clone-repo/${remoteRepoPath}`
+        : `/api/git/pull-repo/origin/${remoteRepoPath}`;
 
     if (
       params.row.topics.some((topic) =>
@@ -217,7 +227,7 @@ export default function PanDownloadDemo() {
                     ),
               defaultFilterProps,
               showColumnFilters: true,
-              showFilterButtons: mode !== "list"
+              showFilterButtons: mode !== "list",
             }}
           />
 

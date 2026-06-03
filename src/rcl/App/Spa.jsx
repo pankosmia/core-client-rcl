@@ -32,6 +32,7 @@ function Spa({ children }) {
     bookCode: "TIT",
     chapterNum: 1,
     verseNum: 1,
+    endVerseNum: 1,
   });
   const bcvRef = useRef(systemBcv);
   const setSystemBcv = (nv) => {
@@ -70,7 +71,7 @@ function Spa({ children }) {
     _setClientConfig(nv);
   };
   const doFetchClientConfig = async () => {
-    await getJson("/client-config")
+    await getJson("/api/client-config")
       .then((res) => res.json)
       .then((data) => setClientConfig(data))
       .catch((err) => console.error("Error :", err));
@@ -83,13 +84,13 @@ function Spa({ children }) {
     _setClientInterfaces(nv);
   };
   const doFetchClientInterface = async () => {
-    await getJson("/client-interfaces")
+    await getJson("/api/client-interfaces")
       .then((res) => res.json)
       .then((data) => setClientInterfaces(data))
       .catch((err) => console.error("Error :", err));
   };
   const doFetchI18n = async () => {
-    const i18nResponse = await getJson("/i18n/flat", debugRef.current);
+    const i18nResponse = await getJson("/api/i18n/flat", debugRef.current);
     if (i18nResponse.ok) {
       setI18n(i18nResponse.json);
     } else {
@@ -103,7 +104,7 @@ function Spa({ children }) {
 
   const doFetchTypography = async () => {
     const typoResponse = await getJson(
-      "/settings/typography",
+      "/api/settings/typography",
       debugRef.current,
     );
     if (typoResponse.ok) {
@@ -127,7 +128,10 @@ function Spa({ children }) {
 
   useEffect(() => {
     const doFetchBcv = async () => {
-      const bcvResponse = await getJson("/navigation/bcv", debugRef.current);
+      const bcvResponse = await getJson(
+        "/api/navigation/bcv",
+        debugRef.current,
+      );
       if (bcvResponse.ok) {
         const serverOb = bcvResponse.json;
         setSystemBcv({
@@ -162,16 +166,18 @@ function Spa({ children }) {
 
   const bcvHandler = (ev) => {
     const bcvBits = ev.data.split("--");
-    if (bcvBits.length === 3) {
+    if (bcvBits.length === 4) {
       const newBcv = {
         bookCode: bcvBits[0],
         chapterNum: parseInt(bcvBits[1]),
         verseNum: parseInt(bcvBits[2]),
+        endVerseNum: parseInt(bcvBits[3]),
       };
       if (
         newBcv.bookCode !== bcvRef.current.bookCode ||
         newBcv.chapterNum !== bcvRef.current.chapterNum ||
-        newBcv.verseNum !== bcvRef.current.verseNum
+        newBcv.verseNum !== bcvRef.current.verseNum ||
+        newBcv.endVerseNum !== bcvRef.current.endVerseNum
       ) {
         setSystemBcv(newBcv);
       }
@@ -264,7 +270,7 @@ function Spa({ children }) {
   useEffect(() => {
     const controller = new AbortController();
     const fetchSSE = async () => {
-      await fetchEventSource("/notifications", {
+      await fetchEventSource("/api/notifications", {
         method: "GET",
         headers: {
           Accept: "text/event-stream",

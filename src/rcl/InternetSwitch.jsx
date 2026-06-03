@@ -18,7 +18,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   console.log("alignment", alignment);
 
   const disableInternet = () => {
-    postEmptyJson("/net/disable", debug);
+    postEmptyJson("/api/net/disable", debug);
   };
 
   const handleInternetToggleClick = (event, newAlignment) => {

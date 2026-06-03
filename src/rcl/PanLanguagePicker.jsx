@@ -35,7 +35,7 @@ export default function PanLanguagePicker({
   useEffect(() => {
     if (open) {
       getAndSetJson({
-        url: "/git/list-local-repos",
+        url: "/api/git/list-local-repos",
         setter: setLocalRepos,
       }).then();
     }
@@ -44,7 +44,7 @@ export default function PanLanguagePicker({
   useEffect(() => {
     if (open) {
       getAndSetJson({
-        url: "/app-resources/lookups/bcp47-language_codes.json",
+        url: "/api/app-resources/lookups/bcp47-language_codes.json",
         setter: setContentBcpList,
       }).then();
     }
@@ -82,7 +82,7 @@ export default function PanLanguagePicker({
   }, [contentBcpList, firstOpen, languageCodes]);
   useEffect(() => {
     if (burritoSelected) {
-      getJson(`/burrito/metadata/summary/${burritoSelected}`)
+      getJson(`/api/burrito/metadata/summary/${burritoSelected}`)
         .then((res) => res.json)
         .then((data) =>
           setCurrentLanguage({

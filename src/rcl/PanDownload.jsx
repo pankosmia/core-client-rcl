@@ -15,7 +15,7 @@ import { Check, RadioButtonUnchecked } from "@mui/icons-material";
 
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
-    "/burrito/metadata/summaries",
+    "/api/burrito/metadata/summaries",
     debugRef.current,
   );
   setMetadataSummaries(summaries.json);
@@ -149,13 +149,13 @@ export default function PanDownload({
           let response;
           if (downloadedType === "org") {
             response = await getJson(
-              `/gitea/remote-repos/${source[0]}`,
+              `/api/gitea/remote-repos/${source[0]}`,
               debugRef.current,
             );
           }
           if (downloadedType === "user") {
             response = await getJson(
-              `/gitea/user-remote-repos/${source[0]}`,
+              `/api/gitea/user-remote-repos/${source[0]}`,
               debugRef.current,
             );
           }
@@ -182,13 +182,13 @@ export default function PanDownload({
         let response;
         if (downloadedType === "org") {
           response = await getJson(
-            `/gitea/remote-repos/${source[0]}`,
+            `/api/gitea/remote-repos/${source[0]}`,
             debugRef.current,
           );
         }
         if (downloadedType === "user") {
           response = await getJson(
-            `/gitea/user-remote-repos/${source[0]}`,
+            `/api/gitea/user-remote-repos/${source[0]}`,
             debugRef.current,
           );
         }

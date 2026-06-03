@@ -54,7 +54,7 @@ export default function InternetWarningDialog({
   };
 
   const enableInternet = () => {
-    postEmptyJson("/net/enable", debugRef.current);
+    postEmptyJson("/api/net/enable", debugRef.current);
   };
 
   return (

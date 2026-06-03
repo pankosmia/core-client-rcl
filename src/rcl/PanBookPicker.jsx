@@ -33,7 +33,7 @@ export default function PanBookPicker({
   const [clientConfig, setClientConfig] = useState({});
 
   useEffect(() => {
-    getJson("/client-config")
+    getJson("/api/client-config")
       .then((res) => res.json)
       .then((data) => setClientConfig(data))
       .catch((err) => console.error("Error :", err));
