@@ -98,6 +98,13 @@ function AppWrapper({
             },
           },
         },
+        MuiToggleButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
       },
     },
     themeSpec,
