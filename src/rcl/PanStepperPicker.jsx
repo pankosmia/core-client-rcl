@@ -101,7 +101,7 @@ export default function PanStepperPicker({
           disabled={isLeftStepperButtonDisabled && activeStep === 0}
         >
           {activeStep === 0
-            ? `${doI18n(`library:pankosmia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
+            ? `${doI18n(`${secondaryActionKey || "library:pankosmia-rcl:cancel"}`, i18nRef.current)}`
             : `${doI18n("library:pankosmia-rcl:back_button", i18nRef.current)}`}
         </Button>
         <Button
@@ -111,7 +111,7 @@ export default function PanStepperPicker({
           disabled={!isStepValid(activeStep)}
         >
           {activeStep === steps.length - 1
-            ? `${doI18n(`library:pankosmia-rcl:${primaryActionKey || "create"}`, i18nRef.current)}`
+            ? `${doI18n(`${primaryActionKey || "library:pankosmia-rcl:create"}`, i18nRef.current)}`
             : `${doI18n("library:pankosmia-rcl:next_button", i18nRef.current)}`}
         </Button>
       </DialogActions>
