@@ -15,7 +15,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
   const [alignment, setAlignment] = useState("offline");
-  console.log("alignment", alignment);
 
   const disableInternet = () => {
     postEmptyJson("/api/net/disable", debug);
