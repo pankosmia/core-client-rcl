@@ -99,7 +99,7 @@ export default function PanStepperPickerDemo() {
       isStepValid={isStepValid}
       handleCreate={handleCreate}
       secondaryButtonVariant="secondary"
-      secondaryActionKey="back_button"
+      secondaryActionKey="library:pankosmia-rcl:back_button"
       isLeftStepperButtonDisabled
       /* primaryAction={() => console.log("Primary action test")}
       secondaryAction={() => console.log("Secondary action test")} */
