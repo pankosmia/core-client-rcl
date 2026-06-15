@@ -30,7 +30,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   };
 
   useEffect(() => {
-    getJson("/version")
+    getJson("/api/version")
       .then((res) => res.json)
       .then((data) => setNameProduct(data.product_name))
       .catch((err) => console.error("Error :", err));
