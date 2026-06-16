@@ -1,7 +1,7 @@
 import PanTable from "./PanTable";
 import { CircularProgress, Box, Typography } from "@mui/material";
 import React, { useMemo, useRef } from "react";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
@@ -366,7 +366,7 @@ export default function PanDownload({
               ) : isUpdate ? (
                 <Update />
               ) : (
-                <FileDownloadIcon />
+                <FileDownloadOutlinedIcon />
               )}
             </IconButton>
           );
@@ -413,7 +413,7 @@ export default function PanDownload({
   const operationsDefinitionsExample = [
     {
       label: "Download selected",
-      icon: FileDownloadIcon,
+      icon: FileDownloadOutlinedIcon,
       action: (context, allDataRows) => {
         if (!isDownloading) return; // prevent click before state ready
         let selectedRowsData = allDataRows.filter((row) =>

@@ -15,7 +15,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
   const [alignment, setAlignment] = useState("offline");
-  console.log("alignment", alignment);
 
   const disableInternet = () => {
     postEmptyJson("/api/net/disable", debug);
@@ -31,7 +30,7 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
   };
 
   useEffect(() => {
-    getJson("/version")
+    getJson("/api/version")
       .then((res) => res.json)
       .then((data) => setNameProduct(data.product_name))
       .catch((err) => console.error("Error :", err));
