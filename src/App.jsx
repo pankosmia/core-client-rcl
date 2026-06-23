@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { Box } from "@mui/material";
 import {
   PanDownloadDemo,
@@ -15,6 +15,7 @@ import {
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
+import netContext from "./rcl/contexts/netContext";
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64,
@@ -29,7 +30,9 @@ function App() {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [handleWindowResize]);
+  const { enabledRef } = useContext(netContext);
 
+  console.log("enabledRef_APP", enabledRef);
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
       <Demos>

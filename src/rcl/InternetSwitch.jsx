@@ -14,17 +14,16 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
 
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
-  const [alignment, setAlignment] = useState("offline");
+  const alignment = netEnabled ? "online" : "offline";
 
   const disableInternet = () => {
     postEmptyJson("/api/net/disable", debug);
   };
 
   const handleInternetToggleClick = (event, newAlignment) => {
-    if (newAlignment === "online") {
+    if (!netEnabled) {
       setInternetDialogOpen(true);
     } else {
-      setAlignment("offline");
       disableInternet();
     }
   };
@@ -116,7 +115,6 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
       <InternetWarningDialog
         internetDialogOpen={internetDialogOpen}
         setInternetDialogOpen={setInternetDialogOpen}
-        setAlignment={setAlignment}
       />
     </Box>
   );
