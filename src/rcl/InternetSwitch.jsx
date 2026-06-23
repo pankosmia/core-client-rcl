@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Grid2 } from "@mui/material";
-import { doI18n, getJson, postEmptyJson } from "pithekos-lib";
+import { getJson, postEmptyJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import InternetWarningDialog from "./InternetWarningDialog";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";

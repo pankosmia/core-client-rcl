@@ -9,8 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 
-import { doI18n, postEmptyJson } from "pithekos-lib";
-
+import { doI18n } from "pankosmia-lib/i18n";
+import { postEmptyJson } from "pankosmia-lib/http";
 import debugContext from "./contexts/debugContext";
 import i18nContext from "./contexts/i18nContext";
 import netContext from "./contexts/netContext";

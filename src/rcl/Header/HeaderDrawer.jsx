@@ -11,10 +11,12 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState, useRef, useContext } from "react";
-import { doI18n, getJson } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import netContext from "../contexts/netContext";
 import debugContext from "../contexts/debugContext";
 import i18nContext from "../contexts/i18nContext";
+
 function HeaderDrawer({ currentId }) {
   // eslint-disable-next-line no-unused-vars
   const [drawerWidth, setDrawerWidth] = useState("auto");

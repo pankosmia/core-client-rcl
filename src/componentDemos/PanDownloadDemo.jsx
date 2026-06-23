@@ -16,8 +16,8 @@ import { PanDownload, PanDialog } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
-import { postEmptyJson } from "pithekos-lib";
-import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
+import { postEmptyJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
 import { CorporateFare, Login } from "@mui/icons-material";
 

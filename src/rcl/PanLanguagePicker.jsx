@@ -11,7 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import PanFilteredMenu from "./PanFilteredMenu";
-import { doI18n, getAndSetJson, getJson } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
+import { getAndSetJson, getJson } from "pankosmia-lib/http";
+
 import i18nContext from "./contexts/i18nContext";
 import { useContext, useEffect, useState } from "react";
 

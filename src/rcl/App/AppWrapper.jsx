@@ -3,7 +3,7 @@ import { useSnackbar } from "notistack";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { getAndSetJson } from "pithekos-lib";
+import { getAndSetJson } from "pankosmia-lib/http";
 
 import AuthContext from "../contexts/authContext";
 import I18nContext from "../contexts/i18nContext";

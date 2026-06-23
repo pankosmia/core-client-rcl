@@ -1,7 +1,7 @@
 import PanTable from "../rcl/PanTable";
 import { useContext } from "react";
 import { Grid2, IconButton, createTheme } from "@mui/material";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import i18nContext from "../rcl/contexts/i18nContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HandymanIcon from "@mui/icons-material/Handyman";

@@ -5,7 +5,7 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import InternetSwitch from "../InternetSwitch";
 import { ThemeProvider } from "@mui/material";
 import HeaderDrawer from "./HeaderDrawer";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import i18nContext from "../contexts/i18nContext";
 import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
