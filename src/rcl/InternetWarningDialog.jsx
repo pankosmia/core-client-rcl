@@ -33,7 +33,6 @@ export default function InternetWarningDialog({
   callBack = () => {},
   internetDialogOpen,
   setInternetDialogOpen,
-  setPendingAlignment,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
