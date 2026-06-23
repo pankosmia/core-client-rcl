@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Box } from "@mui/material";
 import {
   PanDownloadDemo,
@@ -15,6 +15,7 @@ import {
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
+
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64,
