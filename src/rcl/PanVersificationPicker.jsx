@@ -7,7 +7,9 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
-import { doI18n, getAndSetJson } from "pithekos-lib";
+
+import { getAndSetJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 import sx from "./Selection.styles";
 import ListMenuItem from "./ListMenuItem";
 

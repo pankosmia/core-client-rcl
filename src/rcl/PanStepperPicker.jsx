@@ -6,7 +6,7 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import { useContext, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
 

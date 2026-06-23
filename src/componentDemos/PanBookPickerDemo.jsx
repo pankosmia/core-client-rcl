@@ -1,4 +1,4 @@
-import { getJson } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
 import { useContext, useEffect, useState } from "react";
 import DebugContext from "../rcl/contexts/debugContext";
 import { PanBookPicker } from "../rcl";

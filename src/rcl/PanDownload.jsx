@@ -6,7 +6,9 @@ import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
 import { Stack, Chip, IconButton } from "@mui/material";
-import { getJson, doI18n } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
+
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";

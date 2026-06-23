@@ -9,7 +9,8 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { doI18n, getJson } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
+import { getJson } from "pankosmia-lib/http";
 import I18nContext from "./contexts/i18nContext";
 import { useContext, useEffect, useState } from "react";
 import sx from "./Selection.styles";

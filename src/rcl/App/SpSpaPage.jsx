@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Box, Grid2 } from "@mui/material";
 import BlockOutlined from "@mui/icons-material/BlockOutlined";
 import Header from "../Header/Header";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import netContext from "../contexts/netContext";
 import i18nContext from "../contexts/i18nContext";
 

@@ -8,7 +8,7 @@ import {
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import AppWrapper from "./AppWrapper";
 import dcopy from "deep-copy";
-import { getJson } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
 function Spa({ children }) {
   const [enableNet, _setEnableNet] = useState(false);
   const enabledRef = useRef(enableNet);
