@@ -15,6 +15,8 @@ import DebugContext from "../contexts/debugContext";
 import NetContext from "../contexts/netContext";
 import ClientConfigContext from "../contexts/clientConfigContext";
 import ClientInterfacesContext from "../contexts/clientInterfacesContext";
+import SnippetContext from "../contexts/snippetContext";
+import WordContext from "../contexts/wordContext";
 
 function AppWrapper({
   children,
@@ -27,10 +29,14 @@ function AppWrapper({
   currentProjectValue,
   clientConfigValue,
   clientInterfacesValue,
+  snippetValue,
+  wordValue,
 }) {
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
   const { enqueueSnackbar } = useSnackbar();
+
+  console.log(wordValue, "appwrapper wordvalue");
 
   useEffect(() => {
     const localHandler = (s) => {
@@ -115,23 +121,27 @@ function AppWrapper({
       <ClientConfigContext.Provider value={clientConfigValue}>
         <ClientInterfacesContext.Provider value={clientInterfacesValue}>
           <I18nContext.Provider value={i18nValue}>
-            <TypographyContext.Provider value={typographyValue}>
-              <AuthContext.Provider value={authValue}>
-                <CurrentProjectContext.Provider value={currentProjectValue}>
-                  <BcvContext.Provider value={bcvValue}>
-                    <MessagesContext.Provider value={messageValue}>
-                      <DebugContext.Provider value={debugValue}>
-                        <NetContext.Provider value={netValue}>
-                          <Box sx={{ height: "100vh", overflow: "hidden" }}>
-                            {children}
-                          </Box>
-                        </NetContext.Provider>
-                      </DebugContext.Provider>
-                    </MessagesContext.Provider>
-                  </BcvContext.Provider>
-                </CurrentProjectContext.Provider>
-              </AuthContext.Provider>
-            </TypographyContext.Provider>
+            <SnippetContext.Provider value={snippetValue}>
+              <WordContext.Provider value={wordValue}>
+                <TypographyContext.Provider value={typographyValue}>
+                  <AuthContext.Provider value={authValue}>
+                    <CurrentProjectContext.Provider value={currentProjectValue}>
+                      <BcvContext.Provider value={bcvValue}>
+                        <MessagesContext.Provider value={messageValue}>
+                          <DebugContext.Provider value={debugValue}>
+                            <NetContext.Provider value={netValue}>
+                              <Box sx={{ height: "100vh", overflow: "hidden" }}>
+                                {children}
+                              </Box>
+                            </NetContext.Provider>
+                          </DebugContext.Provider>
+                        </MessagesContext.Provider>
+                      </BcvContext.Provider>
+                    </CurrentProjectContext.Provider>
+                  </AuthContext.Provider>
+                </TypographyContext.Provider>
+              </WordContext.Provider>
+            </SnippetContext.Provider>
           </I18nContext.Provider>
         </ClientInterfacesContext.Provider>
       </ClientConfigContext.Provider>

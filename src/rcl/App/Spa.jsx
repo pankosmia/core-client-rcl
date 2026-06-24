@@ -83,6 +83,21 @@ function Spa({ children }) {
     clientInterfacesRef.current = nv;
     _setClientInterfaces(nv);
   };
+
+  const [snippet, _setSnippet] = useState(null);
+  const snippetRef = useRef(snippet);
+  const setSnippet = (nv) => {
+    snippetRef.current = nv;
+    _setSnippet(nv);
+  };
+
+  const [word, _setWord] = useState(null);
+  const wordRef = useRef(word);
+  const setWord = (nv) => {
+    wordRef.current = nv;
+    _setWord(nv);
+  };
+
   const doFetchClientInterface = async () => {
     await getJson("/api/client-interfaces")
       .then((res) => res.json)
@@ -118,8 +133,27 @@ function Spa({ children }) {
     }
   };
 
+  const doFetchAlignment = async () => {
+    const alignmentResponse = await getJson(
+      "/api/app-state/alignment",
+      debugRef.current,
+    );
+    if (alignmentResponse.ok) {
+      /* setSnippet(alignmentResponse.json.snippet);
+      setWord(alignmentResponse.json.word); */
+      console.log(alignmentResponse.json);
+    } else {
+      enqueueSnackbar(`Could not load alignment: ${alignmentResponse.error}`, {
+        variant: "error",
+        anchorOrigin: { vertical: "bottom", horizontal: "left" },
+        persist: true,
+      });
+    }
+  };
+
   useEffect(() => {
     doFetchI18n().then();
+    doFetchAlignment().then();
     doFetchTypography().then();
     doFetchClientConfig().then();
     doFetchClientInterface().then();
@@ -267,6 +301,10 @@ function Spa({ children }) {
     }
   };
 
+  const alignmentHandler = () => {
+    doFetchAlignment().then();
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const fetchSSE = async () => {
@@ -301,6 +339,8 @@ function Spa({ children }) {
             typographyHandler(event);
           } else if (event.event === "current_project") {
             currentProjectHandler(event);
+          } else if (event.event === "alignment") {
+            alignmentHandler(event);
           }
         },
         onclose() {
@@ -332,6 +372,8 @@ function Spa({ children }) {
     setClientInterfaces,
     clientInterfacesRef,
   };
+  const snippetValue = { snippet, setSnippet, snippetRef };
+  const wordValue = { word, setWord, wordRef };
   const clientConfigValue = { clientConfig, setClientConfig, clientConfigRef };
   debugRef.current && console.log("Rerender Spa");
 
@@ -354,6 +396,8 @@ function Spa({ children }) {
     },
   }));
 
+  console.log(wordValue, "Spa.js wordvalue");
+
   return (
     <SnackbarProvider
       Components={{
@@ -374,6 +418,8 @@ function Spa({ children }) {
         currentProjectValue={currentProjectValue}
         clientConfigValue={clientConfigValue}
         clientInterfacesValue={clientInterfacesValue}
+        snippetValue={snippetValue}
+        wordValue={wordValue}
       >
         {children}
       </AppWrapper>
