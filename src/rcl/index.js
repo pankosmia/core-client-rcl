@@ -28,6 +28,7 @@ import PanBookPicker from "./PanBookPicker";
 import PanStepperPicker from "./PanStepperPicker";
 import InternetWarningDialog from "./InternetWarningDialog";
 import fallbackTheme from "./fallbackTheme";
+import ButtonInfo from "./ButtonInfo";
 
 export {
   authContext,
@@ -60,4 +61,5 @@ export {
   PanBookPicker,
   PanStepperPicker,
   fallbackTheme,
+  ButtonInfo,
 };
