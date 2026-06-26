@@ -36,8 +36,6 @@ function AppWrapper({
   const messageValue = { messages, setMessages };
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(wordValue, "appwrapper wordvalue");
-
   useEffect(() => {
     const localHandler = (s) => {
       const dataBits = s.split("--");

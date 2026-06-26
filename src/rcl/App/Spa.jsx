@@ -302,6 +302,7 @@ function Spa({ children }) {
   };
 
   const alignmentHandler = () => {
+    console.log("alignment handler");
     doFetchAlignment().then();
   };
 
@@ -395,8 +396,6 @@ function Spa({ children }) {
       color: "#2E7D32",
     },
   }));
-
-  console.log(wordValue, "Spa.js wordvalue");
 
   return (
     <SnackbarProvider
