@@ -139,9 +139,15 @@ function Spa({ children }) {
       debugRef.current,
     );
     if (alignmentResponse.ok) {
-      /* setSnippet(alignmentResponse.json.snippet);
-      setWord(alignmentResponse.json.word); */
-      console.log(alignmentResponse.json);
+      const newSnippet = alignmentResponse.json.snippet;
+      const newWord = alignmentResponse.json.word;
+
+      if (newSnippet !== snippetRef.current) {
+        setSnippet(newSnippet);
+      }
+      if (JSON.stringify(newWord) !== JSON.stringify(wordRef.current)) {
+        setWord(newWord);
+      }
     } else {
       enqueueSnackbar(`Could not load alignment: ${alignmentResponse.error}`, {
         variant: "error",
@@ -302,7 +308,6 @@ function Spa({ children }) {
   };
 
   const alignmentHandler = () => {
-    console.log("alignment handler");
     doFetchAlignment().then();
   };
 
