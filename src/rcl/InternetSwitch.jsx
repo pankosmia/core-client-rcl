@@ -8,7 +8,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import I18nContext from "./contexts/i18nContext";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { alpha } from "@mui/material/styles";
-import IconInfo from "./App/IconInfo";
+import ButtonInfo from "./ButtonInfo";
 
 export default function InternetSwitch({ netEnabled, debug = false }) {
   const { i18nRef } = useContext(I18nContext);
@@ -104,8 +104,8 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
         </Grid2>
 
         <Grid2>
-          <IconInfo
-            tooltipLabel={doI18n(
+          <ButtonInfo
+            title={doI18n(
               "components:header:tooltip_offline_mode",
               i18nRef.current,
             ).replace("{1}", nameProduct)}
