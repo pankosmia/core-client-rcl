@@ -12,6 +12,7 @@ import {
   PanVersificationPickerDemo,
   PanBookPickerDemo,
   PanStepperPickerDemo,
+  ButtonInfoDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
@@ -54,6 +55,9 @@ function App() {
         </Demo>
         <Demo title="Internet Switch">
           <InternetSwitchDemo />
+        </Demo>
+        <Demo title="Button Info">
+          <ButtonInfoDemo />
         </Demo>
         <Demo title="PanDialog">
           <PanDialogDemo />

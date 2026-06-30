@@ -1,13 +1,15 @@
 import {
   FormControl,
   FormHelperText,
+  Grid2,
   InputLabel,
   MenuItem,
   Select,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
-
 import { getAndSetJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import sx from "./Selection.styles";
@@ -30,45 +32,63 @@ export default function PanVersificationPicker({
     }
   }, [isOpen]);
   return (
-    <FormControl sx={{ width: "100%" }}>
-      <InputLabel
-        id="booksVersification-label"
-        required
-        htmlFor="booksVersification"
-        sx={sx.inputLabel}
-      >
-        {doI18n("library:pankosmia-rcl:versification_scheme", i18nRef.current)}
-      </InputLabel>
-      <Select
-        variant="outlined"
-        required
-        labelId="booksVersification-label"
-        name="booksVersification"
-        inputProps={{
-          id: "bookVersification",
-        }}
-        value={versification}
-        label={doI18n(
-          "library:pankosmia-rcl:versification_scheme",
-          i18nRef.current,
-        )}
-        onChange={(event) => {
-          setVersification(event.target.value);
-        }}
-        sx={sx.select}
-      >
-        {versificationCodes.map((listItem, n) => (
-          <MenuItem key={n} value={listItem} dense>
-            <ListMenuItem
-              listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
-            />
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText>
+    <Stack spacing={1}>
+      <Typography variant="body1">
         {" "}
-        {doI18n(`library:pankosmia-rcl:helper_versification`, i18nRef.current)}
-      </FormHelperText>
-    </FormControl>
+        {doI18n(
+          "library:pankosmia-rcl:choose_versification",
+          i18nRef.current,
+        )}{" "}
+      </Typography>
+      <Typography variant="body">
+        {doI18n("library:pankosmia-rcl:text_versification", i18nRef.current)}
+      </Typography>
+      <FormControl sx={{ width: "100%" }}>
+        <InputLabel
+          id="booksVersification-label"
+          required
+          htmlFor="booksVersification"
+          sx={sx.inputLabel}
+        >
+          {doI18n(
+            "library:pankosmia-rcl:versification_scheme",
+            i18nRef.current,
+          )}
+        </InputLabel>
+        <Select
+          variant="outlined"
+          required
+          labelId="booksVersification-label"
+          name="booksVersification"
+          inputProps={{
+            id: "bookVersification",
+          }}
+          value={versification}
+          label={doI18n(
+            "library:pankosmia-rcl:versification_scheme",
+            i18nRef.current,
+          )}
+          onChange={(event) => {
+            setVersification(event.target.value);
+          }}
+          sx={sx.select}
+        >
+          {versificationCodes.map((listItem, n) => (
+            <MenuItem key={n} value={listItem} dense>
+              <ListMenuItem
+                listItem={`${listItem.toUpperCase()} - ${doI18n(`scripture:versifications:${listItem}`, i18nRef.current)}`}
+              />
+            </MenuItem>
+          ))}
+        </Select>
+        <FormHelperText>
+          {" "}
+          {doI18n(
+            `library:pankosmia-rcl:helper_versification`,
+            i18nRef.current,
+          )}
+        </FormHelperText>
+      </FormControl>
+    </Stack>
   );
 }
