@@ -29,6 +29,8 @@ import PanStepperPicker from "./PanStepperPicker";
 import InternetWarningDialog from "./InternetWarningDialog";
 import fallbackTheme from "./fallbackTheme";
 import ButtonInfo from "./ButtonInfo";
+import wordContext from "./contexts/wordContext";
+import snippetContext from "./contexts/snippetContext";
 
 export {
   authContext,
@@ -62,4 +64,6 @@ export {
   PanStepperPicker,
   fallbackTheme,
   ButtonInfo,
+  wordContext,
+  snippetContext,
 };
