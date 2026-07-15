@@ -5,6 +5,9 @@
   "homepage": "/clients/core-client-rcl",
   "main": "exported-rcl/pankosmia-rcl.umd.js",
   "module": "exported-rcl/pankosmia-rcl.es.js",
+  "files": [
+    "exported-rcl"
+  ],
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
