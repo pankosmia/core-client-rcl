@@ -33,7 +33,6 @@
     "build:rcl": "vite build --mode rcl",
     "build:package": "vite build",
     "dev": "vite",
-    "prepublishOnly": "rm -rf ./build && npm run build:vite",
     "prepare": "husky"
   },
   "eslintConfig": {
