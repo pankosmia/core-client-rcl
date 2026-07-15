@@ -1,10 +1,13 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": false,
   "homepage": "/clients/core-client-rcl",
-  "main": "build/pankosmia-rcl.umd.js",
-  "module": "build/pankosmia-rcl.es.js",
+  "main": "exported-rcl/pankosmia-rcl.umd.js",
+  "module": "exported-rcl/pankosmia-rcl.es.js",
+  "files": [
+    "exported-rcl"
+  ],
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -16,11 +19,9 @@
     "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
     "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "react-scripts": "^5.0.1"
+    "react-dom": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@vitejs/plugin-react": "^4.3.4",
     "husky": "^9.1.7",
     "prettier": "3.8.1",
@@ -31,12 +32,10 @@
     "react-dom": "^17.0.0 || ^18.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "build:vite": "vite build",
+    "build": "vite build && vite build --mode rcl",
+    "build:rcl": "vite build --mode rcl",
     "build:package": "vite build",
     "dev": "vite",
-    "prepublishOnly": "rm -rf ./build && npm run build:vite",
     "prepare": "husky"
   },
   "eslintConfig": {
