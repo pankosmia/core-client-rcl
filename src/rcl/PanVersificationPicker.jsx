@@ -49,7 +49,7 @@ export default function PanVersificationPicker({
           variant="body2"
           sx={{
             display: "-webkit-box",
-            WebkitLineClamp: isExpanded ? "unset" : 2,
+            WebkitLineClamp: isExpanded ? "unset" : 1,
             WebkitBoxOrient: "vertical",
             overflow: "hidden",
           }}
