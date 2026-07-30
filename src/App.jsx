@@ -37,10 +37,10 @@ function App() {
 
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
-      {product && (
-        <div>{`OS '${product.os}', Server v${product.pkg_version}`}</div>
-      )}
       <Demos>
+        {product && (
+          <div>{`OS '${product.os}', Server v${product.pkg_version}`}</div>
+        )}
         <Demo title="PanLanguagePicker">
           <PanLanguagePickerDemo />
         </Demo>

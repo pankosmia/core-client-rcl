@@ -9,6 +9,7 @@ import { doI18n } from "pankosmia-lib/i18n";
 import i18nContext from "../contexts/i18nContext";
 import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
+import ProductContext from "../contexts/productContext";
 function Header({
   titleKey,
   widget,
@@ -33,10 +34,19 @@ function Header({
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
 
+  let { product } = useContext(ProductContext);
+
   return (
     <Wrapper {...wrapperProps}>
       <Box display="flex-start" sx={{ flexGrow: 1, m: 0, p: 0 }}>
-        <AppBar position="static" sx={{ m: 0, p: 0 }}>
+        <AppBar
+          position="static"
+          sx={{
+            m: 0,
+            p: 0,
+            paddingTop: product && product.os === "android" ? "30px" : "0px",
+          }}
+        >
           <Toolbar variant="dense" sx={{ m: 0, p: 0 }}>
             <HeaderDrawer currentId={currentId} />
             {titleKey && titleKey.length > 0 && (
