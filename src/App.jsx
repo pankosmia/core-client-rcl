@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { Box } from "@mui/material";
 import {
   PanDownloadDemo,
@@ -16,6 +16,7 @@ import {
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
+import ProductContext from "./rcl/contexts/productContext";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
@@ -32,8 +33,13 @@ function App() {
     };
   }, [handleWindowResize]);
 
+  let { product } = useContext(ProductContext);
+
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
+      {product && (
+        <div>{`OS '${product.os}', Server v${product.pkg_version}`}</div>
+      )}
       <Demos>
         <Demo title="PanLanguagePicker">
           <PanLanguagePickerDemo />

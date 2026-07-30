@@ -17,6 +17,7 @@ import ClientConfigContext from "../contexts/clientConfigContext";
 import ClientInterfacesContext from "../contexts/clientInterfacesContext";
 import SnippetContext from "../contexts/snippetContext";
 import WordContext from "../contexts/wordContext";
+import ProductContext from "../contexts/productContext";
 
 function AppWrapper({
   children,
@@ -31,6 +32,7 @@ function AppWrapper({
   clientInterfacesValue,
   snippetValue,
   wordValue,
+  productValue,
 }) {
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
@@ -127,11 +129,15 @@ function AppWrapper({
                       <BcvContext.Provider value={bcvValue}>
                         <MessagesContext.Provider value={messageValue}>
                           <DebugContext.Provider value={debugValue}>
-                            <NetContext.Provider value={netValue}>
-                              <Box sx={{ height: "100vh", overflow: "hidden" }}>
-                                {children}
-                              </Box>
-                            </NetContext.Provider>
+                            <ProductContext.Provider value={productValue}>
+                              <NetContext.Provider value={netValue}>
+                                <Box
+                                  sx={{ height: "100vh", overflow: "hidden" }}
+                                >
+                                  {children}
+                                </Box>
+                              </NetContext.Provider>
+                            </ProductContext.Provider>
                           </DebugContext.Provider>
                         </MessagesContext.Provider>
                       </BcvContext.Provider>

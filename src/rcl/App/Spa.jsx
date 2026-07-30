@@ -98,6 +98,13 @@ function Spa({ children }) {
     _setWord(nv);
   };
 
+  const [product, _setProduct] = useState(null);
+  const productRef = useRef(product);
+  const setProduct = (nv) => {
+    productRef.current = nv;
+    _setProduct(nv);
+  };
+
   const doFetchClientInterface = async () => {
     await getJson("/api/client-interfaces")
       .then((res) => res.json)
@@ -133,6 +140,22 @@ function Spa({ children }) {
     }
   };
 
+  const doFetchProduct = async () => {
+    const productResponse = await getJson("/api/version", debugRef.current);
+    if (productResponse.ok) {
+      setProduct(productResponse.json);
+    } else {
+      enqueueSnackbar(
+        `Could not load version for product: ${productResponse.error}`,
+        {
+          variant: "error",
+          anchorOrigin: { vertical: "bottom", horizontal: "left" },
+          persist: true,
+        },
+      );
+    }
+  };
+
   const doFetchAlignment = async () => {
     const alignmentResponse = await getJson(
       "/api/app-state/alignment",
@@ -163,6 +186,7 @@ function Spa({ children }) {
     doFetchTypography().then();
     doFetchClientConfig().then();
     doFetchClientInterface().then();
+    doFetchProduct().then();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -382,6 +406,7 @@ function Spa({ children }) {
   const wordValue = { word, setWord, wordRef };
   const clientConfigValue = { clientConfig, setClientConfig, clientConfigRef };
   debugRef.current && console.log("Rerender Spa");
+  const productValue = { product, setProduct, productRef };
 
   const CustomSnackbarContent = styled(MaterialDesignContent)(() => ({
     "&.notistack-MuiContent-error": {
@@ -424,6 +449,7 @@ function Spa({ children }) {
         clientInterfacesValue={clientInterfacesValue}
         snippetValue={snippetValue}
         wordValue={wordValue}
+        productValue={productValue}
       >
         {children}
       </AppWrapper>
