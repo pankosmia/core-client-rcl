@@ -31,6 +31,7 @@ import fallbackTheme from "./fallbackTheme";
 import ButtonInfo from "./ButtonInfo";
 import wordContext from "./contexts/wordContext";
 import snippetContext from "./contexts/snippetContext";
+import productContext from "./contexts/productContext";
 
 export {
   authContext,
@@ -41,6 +42,7 @@ export {
   languagesContext,
   messagesContext,
   netContext,
+  productContext,
   typographyContext,
   AppbarHamburger,
   InternetSwitch,
