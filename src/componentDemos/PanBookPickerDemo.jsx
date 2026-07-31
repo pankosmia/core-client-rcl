@@ -2,7 +2,7 @@ import { getJson } from "pankosmia-lib/http";
 import { useContext, useEffect, useState } from "react";
 import DebugContext from "../rcl/contexts/debugContext";
 import { PanBookPicker } from "../rcl";
-import { Grid2 } from "@mui/material";
+import { Grid } from "@mui/material";
 
 export default function PanBookPickerDemo() {
   const [bookCodes, setBookCodes] = useState([]);
@@ -30,8 +30,8 @@ export default function PanBookPickerDemo() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
   return (
-    <Grid2 container spacing={8} minHeight={600}>
-      <Grid2 item size={12}>
+    <Grid container spacing={8} minHeight={600}>
+      <Grid item size={12}>
         <PanBookPicker
           bookCode={bookCode}
           setBookCode={setBookCode}
@@ -44,8 +44,8 @@ export default function PanBookPickerDemo() {
           setShowVersification={setShowVersification}
           booksProject={booksInProject}
         />
-      </Grid2>
-      <Grid2 item size={12}>
+      </Grid>
+      <Grid item size={12}>
         <PanBookPicker
           bookCode={bookCode}
           setBookCode={setBookCode}
@@ -59,7 +59,7 @@ export default function PanBookPickerDemo() {
           booksProject={booksInProject}
           addVerses={false}
         />
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 }

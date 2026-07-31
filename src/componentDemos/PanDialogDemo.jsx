@@ -8,7 +8,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Grid2,
+  Grid,
   Switch,
   createTheme,
   Box,
@@ -127,8 +127,8 @@ export default function PanDialogDemo() {
 
   return (
     <>
-      <Grid2 container spacing={8}>
-        <Grid2 item size={4}>
+      <Grid container spacing={8}>
+        <Grid item size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog1(event.target);
@@ -171,8 +171,8 @@ export default function PanDialogDemo() {
               closeOnAction={false}
             />
           </PanDialog>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid item size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog2(event.target);
@@ -213,8 +213,8 @@ export default function PanDialogDemo() {
               isDisabled={!pointlessInput}
             />
           </PanDialog>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid item size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog3(event.target);
@@ -256,8 +256,8 @@ export default function PanDialogDemo() {
               onlyCloseButton={true}
             />
           </PanDialog>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid item size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog4(event.target);
@@ -293,8 +293,8 @@ export default function PanDialogDemo() {
               onlyCloseButton={true}
             />
           </PanDialog>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid item size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog5(event.target);
@@ -337,8 +337,8 @@ export default function PanDialogDemo() {
               onlyCloseButton={true}
             />
           </PanDialog>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </>
   );
 }
