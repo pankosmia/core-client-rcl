@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import { getAndSetJson } from "pankosmia-lib/http";
-
 import AuthContext from "../contexts/authContext";
 import I18nContext from "../contexts/i18nContext";
 import TypographyContext from "../contexts/typographyContext";
@@ -116,6 +114,21 @@ function AppWrapper({
     themeSpec,
   );
 
+  if (Object.keys(i18nValue.i18n).length === 0) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100%",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <ThemeProvider theme={theme}>
       <ClientConfigContext.Provider value={clientConfigValue}>
