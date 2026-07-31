@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import InternetWarningDialog from "./InternetWarningDialog";
@@ -38,8 +38,8 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
 
   return (
     <Box>
-      <Grid container alignItems="center" spacing={1}>
-        <Grid>
+      <Grid2 container alignItems="center" spacing={1}>
+        <Grid2>
           <ToggleButtonGroup
             onChange={(event, newAlignment) => {
               if (newAlignment !== null) {
@@ -101,17 +101,17 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
               {doI18n("components:header:online_mode", i18nRef.current)}
             </ToggleButton>
           </ToggleButtonGroup>
-        </Grid>
+        </Grid2>
 
-        <Grid>
+        <Grid2>
           <ButtonInfo
             title={doI18n(
               "components:header:tooltip_offline_mode",
               i18nRef.current,
             ).replace("{1}", nameProduct)}
           />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
 
       <InternetWarningDialog
         internetDialogOpen={internetDialogOpen}
