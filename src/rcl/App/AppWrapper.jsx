@@ -19,6 +19,22 @@ import SnippetContext from "../contexts/snippetContext";
 import WordContext from "../contexts/wordContext";
 import ProductContext from "../contexts/productContext";
 
+function PlaceHolder() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100%",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
+
 function AppWrapper({
   children,
   netValue,
@@ -115,21 +131,7 @@ function AppWrapper({
     },
     themeSpec,
   );
-  if (!i18nValue || Object.keys(i18nValue.i18n).length === 0) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          width: "100%",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+
   return (
     <ThemeProvider theme={theme}>
       <ClientConfigContext.Provider value={clientConfigValue}>
@@ -148,7 +150,12 @@ function AppWrapper({
                                 <Box
                                   sx={{ height: "100vh", overflow: "hidden" }}
                                 >
-                                  {children}
+                                  {!i18nValue ||
+                                  Object.keys(i18nValue.i18n).length === 0 ? (
+                                    <PlaceHolder />
+                                  ) : (
+                                    children
+                                  )}
                                 </Box>
                               </NetContext.Provider>
                             </ProductContext.Provider>
