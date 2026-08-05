@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.4.7",
+  "version": "0.4.13",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "main": "exported-rcl/pankosmia-rcl.umd.js",
@@ -18,6 +18,7 @@
     "eslint-config-react-app": "^7.0.1",
     "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
+    "pankosmia-rcl": "^0.4.12",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
   },
