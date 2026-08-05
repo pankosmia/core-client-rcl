@@ -5,6 +5,7 @@ import Header from "../Header/Header";
 import { doI18n } from "pankosmia-lib/i18n";
 import netContext from "../contexts/netContext";
 import i18nContext from "../contexts/i18nContext";
+import productContext from "../contexts/productContext";
 
 function SpSpaPage({
   titleKey,
@@ -16,6 +17,7 @@ function SpSpaPage({
 }) {
   const { enableNet } = useContext(netContext);
   const { i18nRef } = useContext(i18nContext);
+  const { productRef } = useContext(productContext);
 
   if (requireNet && !enableNet) {
     return (
@@ -66,6 +68,12 @@ function SpSpaPage({
           m: margin,
           overflowX: "hidden",
           overflowY: "auto",
+          paddingBottom:
+            productRef &&
+            productRef.current &&
+            productRef.current.os === "android"
+              ? "30px"
+              : "0px",
         }}
       >
         {children}

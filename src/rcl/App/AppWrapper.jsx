@@ -151,14 +151,6 @@ function AppWrapper({
                                   sx={{
                                     height: "100vh",
                                     overflow: "hidden",
-                                    paddingBottom:
-                                      productValue &&
-                                      productValue.productRef &&
-                                      productValue.productRef.current &&
-                                      productValue.productRef.current.os ===
-                                        "android"
-                                        ? "30px"
-                                        : "0px",
                                   }}
                                 >
                                   {!i18nValue ||
