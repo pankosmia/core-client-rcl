@@ -16,6 +16,7 @@ import { doI18n } from "pankosmia-lib/i18n";
 import netContext from "../contexts/netContext";
 import debugContext from "../contexts/debugContext";
 import i18nContext from "../contexts/i18nContext";
+import productContext from "../contexts/productContext";
 
 function HeaderDrawer({ currentId }) {
   // eslint-disable-next-line no-unused-vars
@@ -28,6 +29,7 @@ function HeaderDrawer({ currentId }) {
   const { i18nRef } = useContext(i18nContext);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
+  const { productRef } = useContext(productContext);
 
   useEffect(() => {
     const doFetch = async () => {
@@ -70,7 +72,18 @@ function HeaderDrawer({ currentId }) {
     }
   }, [drawerIsOpen, widthLocked]);
   return (
-    <Box sx={{ m: 0, mr: 2 }}>
+    <Box
+      sx={{
+        m: 0,
+        mr: 2,
+        paddingBottom:
+          productRef &&
+          productRef.current &&
+          productRef.current.os === "android"
+            ? "30px"
+            : "0px",
+      }}
+    >
       <IconButton onClick={(e) => setDrawerIsOpen(true)}>
         <MenuIcon sx={{ color: "#FFF" }} />
       </IconButton>

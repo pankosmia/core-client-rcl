@@ -148,7 +148,18 @@ function AppWrapper({
                             <ProductContext.Provider value={productValue}>
                               <NetContext.Provider value={netValue}>
                                 <Box
-                                  sx={{ height: "100vh", overflow: "hidden" }}
+                                  sx={{
+                                    height: "100vh",
+                                    overflow: "hidden",
+                                    paddingBottom:
+                                      productValue &&
+                                      productValue.productRef &&
+                                      productValue.productRef.current &&
+                                      productValue.productRef.current.os ===
+                                        "android"
+                                        ? "30px"
+                                        : "0px",
+                                  }}
                                 >
                                   {!i18nValue ||
                                   Object.keys(i18nValue.i18n).length === 0 ? (
