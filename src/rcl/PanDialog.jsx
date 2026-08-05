@@ -42,6 +42,7 @@ export default function PanDialog({
   size = "md",
   fullWidth = true,
   showInternetSwitch = false,
+  isLoading = false,
 }) {
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
@@ -54,11 +55,22 @@ export default function PanDialog({
     clientConfigRef.current["_global"]
       ?.find((e) => e.id === "internetConfig")
       ?.fields.find((e) => e.id === "internetConnectionAccess")?.value ?? true;
+
+  const handleClose = (event, reason) => {
+    if (
+      isLoading &&
+      (reason === "backdropClick" || reason === "escapeKeyDown")
+    ) {
+      return;
+    }
+    closeFn();
+  };
+
   return (
     <Wrapper {...wrapperProps}>
       <Dialog
         open={isOpen}
-        onClose={closeFn}
+        onClose={handleClose}
         sx={{ overflow: "hidden" }}
         slotProps={{
           sx: {

@@ -64,6 +64,7 @@ export default function PanDownload({
   preSelected = [],
   topicsFilter = ["pushing2sb", "tc-ready"],
   showFilterButtons,
+  onDownloadingChange,
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -249,6 +250,12 @@ export default function PanDownload({
 
     downloadStatus();
   }, [catalog, metadataSummaries]);
+
+  useEffect(() => {
+    if (!isDownloading) return;
+    const anyDownloading = Object.values(isDownloading).includes("downloading");
+    onDownloadingChange?.(anyDownloading);
+  }, [isDownloading, onDownloadingChange]);
 
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
