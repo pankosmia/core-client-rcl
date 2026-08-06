@@ -32,6 +32,7 @@ import ButtonInfo from "./ButtonInfo";
 import wordContext from "./contexts/wordContext";
 import snippetContext from "./contexts/snippetContext";
 import productContext from "./contexts/productContext";
+import ScrollableBody from "./ScrollableBody";
 
 export {
   authContext,
@@ -68,4 +69,5 @@ export {
   ButtonInfo,
   wordContext,
   snippetContext,
+  ScrollableBody,
 };
