@@ -60,7 +60,7 @@ function Header({
                 <InternetSwitch
                   netEnabled={enabledRef.current}
                   i18n={i18nRef.current}
-                  isAndroid={true}
+                  isAndroid={isAndroid}
                 />
               )}
             </Box>
