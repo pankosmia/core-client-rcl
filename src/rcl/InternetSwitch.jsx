@@ -20,7 +20,6 @@ export default function InternetSwitch({
 
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
-  const alignment = netEnabled ? "online" : "offline";
 
   const disableInternet = () => {
     postEmptyJson("/api/net/disable", debug);
@@ -76,8 +75,13 @@ export default function InternetSwitch({
                   },
                 }}
               >
-                {!isAndroid && !netEnabled ? (
-                  <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
+                {!isAndroid ? (
+                  !netEnabled && (
+                    <DoneOutlinedIcon
+                      fontSize="small"
+                      sx={{ paddingRight: 1 }}
+                    />
+                  )
                 ) : (
                   <AirplanemodeInactiveIcon
                     fontSize="small"
@@ -88,7 +92,7 @@ export default function InternetSwitch({
               </ToggleButton>
             )}
 
-            {isAndroid && netEnabled && (
+            {(!isAndroid || netEnabled) && (
               <ToggleButton
                 disableFocusRipple
                 value={true}
@@ -106,8 +110,13 @@ export default function InternetSwitch({
                   },
                 }}
               >
-                {!isAndroid && netEnabled ? (
-                  <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
+                {!isAndroid ? (
+                  netEnabled && (
+                    <DoneOutlinedIcon
+                      fontSize="small"
+                      sx={{ paddingRight: 1 }}
+                    />
+                  )
                 ) : (
                   <AirplanemodeActiveIcon
                     fontSize="small"
