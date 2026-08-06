@@ -1,11 +1,6 @@
-import { useContext } from "react";
-import { productContext } from "pankosmia-rcl";
 import { Box } from "@mui/material";
 
-export default function ScrollableBody({ children }) {
-  let { productRef } = useContext(productContext);
-  let isAndroid =
-    productRef && productRef.current && productRef.current.os === "android";
+export default function ScrollableBody({ isAndroid, children }) {
   return (
     <Box
       sx={{
