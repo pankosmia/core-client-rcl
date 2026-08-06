@@ -130,7 +130,7 @@ function Spa({ children }) {
       debugRef.current,
     );
     if (typoResponse.ok) {
-      //setTypography(typoResponse.json);
+      setTypography(typoResponse.json);
     } else {
       enqueueSnackbar(`Could not load typography: ${typoResponse.error}`, {
         variant: "error",

@@ -35,7 +35,7 @@ function Header({
   const wrapperProps = theme ? { theme } : {};
 
   let { product } = useContext(ProductContext);
-
+  let isAndroid = product && product.os === "android";
   return (
     <Wrapper {...wrapperProps}>
       <Box display="flex-start" sx={{ flexGrow: 1, m: 0, p: 0 }}>
@@ -44,7 +44,7 @@ function Header({
           sx={{
             m: 0,
             p: 0,
-            paddingTop: product && product.os === "android" ? "30px" : "0px",
+            paddingTop: isAndroid ? "30px" : "0px",
           }}
         >
           <Toolbar variant="dense" sx={{ m: 0, p: 0 }}>
@@ -60,6 +60,7 @@ function Header({
                 <InternetSwitch
                   netEnabled={enabledRef.current}
                   i18n={i18nRef.current}
+                  isAndroid={true}
                 />
               )}
             </Box>
