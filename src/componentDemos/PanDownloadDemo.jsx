@@ -353,7 +353,7 @@ export default function PanDownloadDemo() {
           </DialogContent>
           <PanDialogActions
             closeFn={() => setOpenDialoguePanDownload(false)}
-            closeLabel={doI18n("pages:core-client-rcl:close", i18nRef.current)}
+            closeLabel={doI18n("library:pankosmia-rcl:close", i18nRef.current)}
             closeVariant="contained"
             isLoading={isDownloadingAny}
             loadingLabel={doI18n(
