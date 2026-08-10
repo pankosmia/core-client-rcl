@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import {
   Box,
   Button,
@@ -28,6 +28,7 @@ export default function PanDownloadDemo() {
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(I18nContext);
   const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
+  const [languageLookup, setLanguageLookup] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -90,9 +91,10 @@ export default function PanDownloadDemo() {
       preSelected: preSelectedList,
       downloadedType: "org",
       showFilterButtons: mode !== "list",
+      languageLookup: languageLookup,
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }),
-    [mode, defaultFilterProps],
+    [mode, defaultFilterProps, languageLookup],
   );
   let legacyTitle = doI18n(
     "pages:core-client-rcl:legacy_download",
@@ -163,6 +165,12 @@ export default function PanDownloadDemo() {
 
     return response;
   }
+
+  useEffect(() => {
+    fetch("/api/app-resources/lookups/languages.json")
+      .then((r) => r.json())
+      .then((data) => setLanguageLookup(data));
+  }, []);
 
   return (
     <Box
