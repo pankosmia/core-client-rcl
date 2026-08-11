@@ -65,6 +65,7 @@ export default function PanDownload({
   topicsFilter = ["pushing2sb", "tc-ready"],
   showFilterButtons,
   onDownloadingChange,
+  languageLookup = [],
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -114,6 +115,12 @@ export default function PanDownload({
       filterExample: [],
     };
   }, [sources]);
+
+  const languageEndonymMap = useMemo(() => {
+    return Object.fromEntries(
+      languageLookup.map((lang) => [lang.id, lang.endonym]),
+    );
+  }, [languageLookup]);
 
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
@@ -395,7 +402,7 @@ export default function PanDownload({
           url: ce.latest_zip,
           metadata_types: ce.metadata_types,
           resourceCode: ce.abbreviation.toUpperCase(),
-          language: ce.language_code,
+          language: languageEndonymMap[ce.language_code] ?? ce.language_code,
           description: ce.description,
           flavor: ce.flavor,
           flavorType: ce.flavor_type,
@@ -416,7 +423,7 @@ export default function PanDownload({
           );
         }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [catalog, i18nRef],
+    [catalog, i18nRef, languageEndonymMap],
   );
 
   const operationsDefinitionsExample = [
