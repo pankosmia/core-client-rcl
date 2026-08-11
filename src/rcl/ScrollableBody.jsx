@@ -6,7 +6,7 @@ export default function ScrollableBody({ isAndroid, children }) {
       sx={{
         mb: 2,
         position: "fixed",
-        top: isAndroid ? "94px" : "64px",
+        top: isAndroid ? "78px" : "48px",
         left: isAndroid ? "30px" : 0,
         bottom: isAndroid ? "30px" : 0,
         right: isAndroid ? "30px" : 0,
