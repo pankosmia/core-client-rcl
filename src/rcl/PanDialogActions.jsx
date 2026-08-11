@@ -31,7 +31,9 @@ export default function PanDialogActions({
   closeOnAction = true,
   onlyCloseButton = false,
   actionVariant,
-  closeVariant
+  closeVariant,
+  isLoading,
+  loadingLabel,
 }) {
   return (
     <DialogActions>
@@ -40,6 +42,8 @@ export default function PanDialogActions({
         isDisabled={false}
         label={closeLabel}
         variant={closeVariant}
+        isLoading={isLoading}
+        loadingLabel={loadingLabel}
       />
       {onlyCloseButton ? null : (
         <PanDialogButton

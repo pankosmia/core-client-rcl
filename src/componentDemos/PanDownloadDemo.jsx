@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,7 +12,7 @@ import {
   DialogContent,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import { PanDownload, PanDialog } from "../rcl";
+import { PanDownload, PanDialog, PanDialogActions } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
@@ -28,6 +28,8 @@ export default function PanDownloadDemo() {
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(I18nContext);
   const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
+  const [isDownloadingAny, setIsDownloadingAny] = useState(false);
+  const [languageLookup, setLanguageLookup] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -90,9 +92,10 @@ export default function PanDownloadDemo() {
       preSelected: preSelectedList,
       downloadedType: "org",
       showFilterButtons: mode !== "list",
+      languageLookup: languageLookup,
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }),
-    [mode, defaultFilterProps],
+    [mode, defaultFilterProps, languageLookup],
   );
   let legacyTitle = doI18n(
     "pages:core-client-rcl:legacy_download",
@@ -163,6 +166,12 @@ export default function PanDownloadDemo() {
 
     return response;
   }
+
+  useEffect(() => {
+    fetch("/api/app-resources/lookups/languages.json")
+      .then((r) => r.json())
+      .then((data) => setLanguageLookup(data));
+  }, []);
 
   return (
     <Box
@@ -339,12 +348,28 @@ export default function PanDownloadDemo() {
         <PanDialog
           isOpen={openDialoguePanDownload}
           closeFn={() => setOpenDialoguePanDownload(false)}
+          isLoading={isDownloadingAny}
         >
           <DialogContent sx={{ overflow: "hidden" }}>
             <Box sx={{ height: "calc(100vh - 229px)" }}>
-              <PanDownload theme={theme} {...panDownloadProps} />
+              <PanDownload
+                theme={theme}
+                {...panDownloadProps}
+                onDownloadingChange={setIsDownloadingAny}
+              />
             </Box>
           </DialogContent>
+          <PanDialogActions
+            closeFn={() => setOpenDialoguePanDownload(false)}
+            closeLabel={doI18n("library:pankosmia-rcl:close", i18nRef.current)}
+            closeVariant="contained"
+            isLoading={isDownloadingAny}
+            loadingLabel={doI18n(
+              "pages:core-client-rcl:downloading",
+              i18nRef.current,
+            )}
+            onlyCloseButton={true}
+          />
         </PanDialog>
       </Box>
     </Box>
