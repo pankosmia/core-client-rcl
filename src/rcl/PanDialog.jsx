@@ -10,7 +10,6 @@ import React, { useContext } from "react";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import i18nContext from "../rcl/contexts/i18nContext";
-import ProductContext from "../rcl/contexts/productContext";
 import clientConfigContext from "../rcl/contexts/clientConfigContext";
 /**
  * Generic dialog wrapper with optional theme support and header bar.
@@ -43,6 +42,7 @@ export default function PanDialog({
   size = "md",
   fullWidth = true,
   showInternetSwitch = false,
+  isLoading = false,
 }) {
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
@@ -51,19 +51,27 @@ export default function PanDialog({
   const { debugRef } = useContext(debugContext);
   const { clientConfigRef } = useContext(clientConfigContext);
 
-  let { product } = useContext(ProductContext);
-  let isAndroid = product && product.os === "android";
-
   const internetAccess =
     clientConfigRef.current["_global"]
       ?.find((e) => e.id === "internetConfig")
       ?.fields.find((e) => e.id === "internetConnectionAccess")?.value ?? true;
+
+  const handleClose = (event, reason) => {
+    if (
+      isLoading &&
+      (reason === "backdropClick" || reason === "escapeKeyDown")
+    ) {
+      return;
+    }
+    closeFn();
+  };
+
   return (
     <Wrapper {...wrapperProps}>
       <Dialog
         open={isOpen}
-        onClose={closeFn}
-        sx={{ overflow: "hidden", padding: isAndroid ? "30px" : "0px" }}
+        onClose={handleClose}
+        sx={{ overflow: "hidden" }}
         slotProps={{
           sx: {
             overflow: "hidden !important",
