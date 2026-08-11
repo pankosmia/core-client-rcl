@@ -3,6 +3,11 @@
   "version": "0.4.23",
   "private": false,
   "homepage": "/clients/core-client-rcl",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24",
+    "pnpm": "11.20.0"
+  },
   "main": "exported-rcl/pankosmia-rcl.umd.js",
   "module": "exported-rcl/pankosmia-rcl.es.js",
   "files": [
@@ -14,11 +19,13 @@
     "@microsoft/fetch-event-source": "^2.0.1",
     "@mui/icons-material": "^6.2.1",
     "@mui/material": "^6.2.1",
+    "@mui/utils": "^6.4.9",
     "deep-copy": "^1.4.2",
     "eslint-config-react-app": "^7.0.1",
     "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
     "pankosmia-rcl": "^0.4.12",
+    "prop-types": "^15.8.1",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0"
   },
