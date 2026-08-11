@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import BlockOutlined from "@mui/icons-material/BlockOutlined";
 import Header from "../Header/Header";
 import { doI18n } from "pankosmia-lib/i18n";
@@ -27,18 +27,21 @@ function SpSpaPage({
           overflowY: "auto",
         }}
       >
-        <Grid2
+        <Grid
           container
-          alignItems="center"
-          justifyContent="center"
-          sx={{ minHeight: "100vh" }}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "100vh",
+          }}
         >
-          <Grid2
-            item
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
+          <Grid
             rowSpacing={0.5}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
             <BlockOutlined sx={{ fontSize: 80 }} color="warning" />
             <p>
@@ -47,8 +50,8 @@ function SpSpaPage({
                 i18nRef.current,
               )}
             </p>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Box>
     );
   }

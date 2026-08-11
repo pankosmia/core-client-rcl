@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Box, Grid2 } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { getJson, postEmptyJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import InternetWarningDialog from "./InternetWarningDialog";
@@ -42,8 +42,14 @@ export default function InternetSwitch({
 
   return (
     <Box>
-      <Grid2 container alignItems="center" spacing={1}>
-        <Grid2>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          alignItems: "center",
+        }}
+      >
+        <Grid>
           <ToggleButtonGroup
             onChange={(event) => {
               handleInternetToggleClick(event);
@@ -127,17 +133,17 @@ export default function InternetSwitch({
               </ToggleButton>
             )}
           </ToggleButtonGroup>
-        </Grid2>
+        </Grid>
 
-        <Grid2>
+        <Grid>
           <ButtonInfo
             title={doI18n(
               "components:header:tooltip_offline_mode",
               i18nRef.current,
             ).replace("{1}", nameProduct)}
           />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
 
       <InternetWarningDialog
         internetDialogOpen={internetDialogOpen}

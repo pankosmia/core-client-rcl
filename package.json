@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "packageManager": "pnpm@11.20.0",
@@ -17,17 +17,17 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@microsoft/fetch-event-source": "^2.0.1",
-    "@mui/icons-material": "^6.2.1",
-    "@mui/material": "^6.2.1",
-    "@mui/utils": "^6.4.9",
+    "@mui/icons-material": "^9.3.1",
+    "@mui/material": "^9.3.1",
+    "@mui/utils": "^9.3.0",
     "deep-copy": "^1.4.2",
     "eslint-config-react-app": "^7.0.1",
     "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
     "pankosmia-rcl": "^0.4.12",
     "prop-types": "^15.8.1",
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",

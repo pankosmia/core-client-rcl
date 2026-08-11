@@ -1,6 +1,6 @@
 import PanTable from "../rcl/PanTable";
 import { useContext } from "react";
-import { Grid2, IconButton, createTheme } from "@mui/material";
+import { Grid, IconButton, createTheme } from "@mui/material";
 import { doI18n } from "pankosmia-lib/i18n";
 import i18nContext from "../rcl/contexts/i18nContext";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -174,18 +174,18 @@ function PanTableDemo() {
 
   return (
     <>
-      <Grid2
+      <Grid
         container
         direction="row"
+        spacing={8}
         sx={{
+          minHeight: 350,
           justifyContent: "flex-start",
           alignItems: "flex-start",
           pb: 5,
         }}
-        spacing={8}
-        minHeight={350}
       >
-        <Grid2 item size={12} sx={{ pb: 5 }}>
+        <Grid size={12} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -197,8 +197,8 @@ function PanTableDemo() {
             }
             sx={{ height: "100%", width: "30%" }}
           />
-        </Grid2>
-        <Grid2 item size={4} sx={{ pb: 5 }}>
+        </Grid>
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -207,10 +207,17 @@ function PanTableDemo() {
             filterPreset={filterExample}
             sx={{ height: "100%" }}
           />
-        </Grid2>
-      </Grid2>
-      <Grid2 container spacing={8} minHeight={350} sx={{ pb: 5 }}>
-        <Grid2 item size={4} sx={{ pb: 5 }}>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={8}
+        sx={{
+          minHeight: 350,
+          pb: 5,
+        }}
+      >
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             showColumnFilters
             theme={theme}
@@ -218,8 +225,8 @@ function PanTableDemo() {
             rows={rows}
             tableTitle={"Column filter"}
           />
-        </Grid2>
-        <Grid2 item size={4} sx={{ pb: 5 }}>
+        </Grid>
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -227,10 +234,16 @@ function PanTableDemo() {
             tableTitle={"Group operations"} // Title occupies the space the Toolbar takes, when nothing is selected.
             groupOperations={operationsDefinitionsExample}
           />
-        </Grid2>
-      </Grid2>
-      <Grid2 container spacing={8} minHeight={350}>
-        <Grid2 item size={4}>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        spacing={8}
+        sx={{
+          minHeight: 350,
+        }}
+      >
+        <Grid size={4}>
           <PanTable
             checkboxSelection
             showColumnFilters
@@ -248,8 +261,8 @@ function PanTableDemo() {
               );
             }}
           />
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid size={4}>
           <PanTable
             checkboxSelection
             showColumnFilters
@@ -268,8 +281,8 @@ function PanTableDemo() {
               );
             }}
           />
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
     </>
   );
 }
