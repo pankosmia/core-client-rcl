@@ -3,7 +3,7 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  Grid2,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -58,8 +58,15 @@ export default function PanBookPicker({
 
   return (
     <>
-      <Grid2 container spacing={1} justifyItems="flex-end" alignItems="stretch">
-        <Grid2 item size={4}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          justifyItems: "flex-end",
+          alignItems: "stretch",
+        }}
+      >
+        <Grid size={4}>
           <FormControl sx={{ width: "100%" }}>
             <InputLabel
               id="bookCode-label"
@@ -114,8 +121,8 @@ export default function PanBookPicker({
               )}
             </Select>
           </FormControl>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid size={4}>
           <TextField
             id="bookAbbr"
             required
@@ -126,8 +133,8 @@ export default function PanBookPicker({
               setBookAbbr(event.target.value);
             }}
           />
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid size={4}>
           <TextField
             id="bookTitle"
             required
@@ -138,7 +145,7 @@ export default function PanBookPicker({
               setBookTitle(event.target.value);
             }}
           />
-        </Grid2>
+        </Grid>
         {isProtestantBooksOnlyCheckboxEnabled && (
           <FormGroup>
             <FormControlLabel
@@ -174,7 +181,7 @@ export default function PanBookPicker({
             />
           </FormGroup>
         )}
-      </Grid2>
+      </Grid>
     </>
   );
 }

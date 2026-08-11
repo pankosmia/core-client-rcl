@@ -211,7 +211,13 @@ export default function PanDownloadDemo() {
             <Typography variant="subtitle2">
               {doI18n("pages:core-client-rcl:mode", i18nRef.current)}
             </Typography>
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: "center",
+              }}
+            >
               <Chip label={mode} color="primary" size="small" />
               <Button
                 size="small"

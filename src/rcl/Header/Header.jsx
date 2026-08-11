@@ -38,7 +38,14 @@ function Header({
   let isAndroid = product && product.os === "android";
   return (
     <Wrapper {...wrapperProps}>
-      <Box display="flex-start" sx={{ flexGrow: 1, m: 0, p: 0 }}>
+      <Box
+        sx={{
+          display: "flex-start",
+          flexGrow: 1,
+          m: 0,
+          p: 0,
+        }}
+      >
         <AppBar
           position="static"
           sx={{

@@ -455,8 +455,10 @@ export default function PanDownload({
           ref={filterRef}
           direction="row"
           spacing={0}
-          alignItems="center"
-          sx={{ mb: 1 }}
+          sx={{
+            alignItems: "center",
+            mb: 1,
+          }}
         >
           {filterExample.map((f, index) => {
             const isActive = activeFilterIndex === index;
