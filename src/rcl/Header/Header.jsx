@@ -45,6 +45,8 @@ function Header({
             m: 0,
             p: 0,
             paddingTop: isAndroid ? "30px" : "0px",
+            paddingLeft: isAndroid ? "30px" : "0px",
+            paddingRight: isAndroid ? "30px" : "0px",
           }}
         >
           <Toolbar variant="dense" sx={{ m: 0, p: 0 }}>

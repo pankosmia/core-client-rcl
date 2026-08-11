@@ -83,7 +83,7 @@ export default function InternetSwitch({
                     />
                   )
                 ) : (
-                  <AirplanemodeInactiveIcon
+                  <AirplanemodeActiveIcon
                     fontSize="small"
                     sx={{ paddingRight: 1 }}
                   />
@@ -118,7 +118,7 @@ export default function InternetSwitch({
                     />
                   )
                 ) : (
-                  <AirplanemodeActiveIcon
+                  <AirplanemodeInactiveIcon
                     fontSize="small"
                     sx={{ paddingRight: 1 }}
                   />
