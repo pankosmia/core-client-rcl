@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "packageManager": "pnpm@11.20.0",

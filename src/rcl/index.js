@@ -33,6 +33,7 @@ import wordContext from "./contexts/wordContext";
 import snippetContext from "./contexts/snippetContext";
 import productContext from "./contexts/productContext";
 import ScrollableBody from "./ScrollableBody";
+import ExternalLink from "./ExternalLink";
 
 export {
   authContext,
@@ -70,4 +71,5 @@ export {
   wordContext,
   snippetContext,
   ScrollableBody,
+  ExternalLink,
 };
