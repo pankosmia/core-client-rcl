@@ -119,7 +119,7 @@ export default function PanStepperPickerDemo() {
       <Box sx={{ flex: 1 }}>
         <Button onClick={() => setOpenDialoguePanDownload(true)}>
           {doI18n(
-            "pages:core-client-rcl:pan_download_in_dialogue",
+            "pages:core-client-rcl:open_pan_stepper_inDialogue",
             i18nRef.current,
           )}
         </Button>

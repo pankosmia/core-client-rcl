@@ -13,6 +13,7 @@ import {
   PanBookPickerDemo,
   PanStepperPickerDemo,
   ButtonInfoDemo,
+  ExternalLinkDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
@@ -75,6 +76,9 @@ function App() {
           <PanDownloadDemo />
         </Demo>
       </Demos>
+      <Demo title="ExternalLink">
+        <ExternalLinkDemo />
+      </Demo>
       <Demo title="Header">
         <HeaderDemo />
       </Demo>

@@ -128,7 +128,7 @@ export default function PanDialogDemo() {
   return (
     <>
       <Grid container spacing={8}>
-        <Grid item size={4}>
+        <Grid size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog1(event.target);
@@ -172,7 +172,7 @@ export default function PanDialogDemo() {
             />
           </PanDialog>
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog2(event.target);
@@ -214,7 +214,7 @@ export default function PanDialogDemo() {
             />
           </PanDialog>
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog3(event.target);
@@ -257,7 +257,7 @@ export default function PanDialogDemo() {
             />
           </PanDialog>
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog4(event.target);
@@ -294,7 +294,7 @@ export default function PanDialogDemo() {
             />
           </PanDialog>
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <Button
             onClick={(event) => {
               setOpenDialog5(event.target);

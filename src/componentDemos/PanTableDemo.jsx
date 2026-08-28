@@ -177,15 +177,15 @@ function PanTableDemo() {
       <Grid
         container
         direction="row"
+        spacing={8}
         sx={{
+          minHeight: 350,
           justifyContent: "flex-start",
           alignItems: "flex-start",
           pb: 5,
         }}
-        spacing={8}
-        minHeight={350}
       >
-        <Grid item size={12} sx={{ pb: 5 }}>
+        <Grid size={12} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -198,7 +198,7 @@ function PanTableDemo() {
             sx={{ height: "100%", width: "30%" }}
           />
         </Grid>
-        <Grid item size={4} sx={{ pb: 5 }}>
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -209,8 +209,15 @@ function PanTableDemo() {
           />
         </Grid>
       </Grid>
-      <Grid container spacing={8} minHeight={350} sx={{ pb: 5 }}>
-        <Grid item size={4} sx={{ pb: 5 }}>
+      <Grid
+        container
+        spacing={8}
+        sx={{
+          minHeight: 350,
+          pb: 5,
+        }}
+      >
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             showColumnFilters
             theme={theme}
@@ -219,7 +226,7 @@ function PanTableDemo() {
             tableTitle={"Column filter"}
           />
         </Grid>
-        <Grid item size={4} sx={{ pb: 5 }}>
+        <Grid size={4} sx={{ pb: 5 }}>
           <PanTable
             theme={theme}
             columns={columns}
@@ -229,8 +236,14 @@ function PanTableDemo() {
           />
         </Grid>
       </Grid>
-      <Grid container spacing={8} minHeight={350}>
-        <Grid item size={4}>
+      <Grid
+        container
+        spacing={8}
+        sx={{
+          minHeight: 350,
+        }}
+      >
+        <Grid size={4}>
           <PanTable
             checkboxSelection
             showColumnFilters
@@ -249,7 +262,7 @@ function PanTableDemo() {
             }}
           />
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <PanTable
             checkboxSelection
             showColumnFilters

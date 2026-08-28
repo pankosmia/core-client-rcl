@@ -28,7 +28,14 @@ export default defineConfig(({ mode }) => {
           sourcemap: true,
 
           rollupOptions: {
-            external: ["react", "react-dom", "notistack"],
+            external: [
+              "react",
+              "react-dom",
+              "@mui/material",
+              "@emotion/react",
+              "@emotion/styled",
+              "notistack",
+            ],
             output: {
               name: "pankosmiaRcl",
               globals: {

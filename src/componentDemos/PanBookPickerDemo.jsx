@@ -30,8 +30,14 @@ export default function PanBookPickerDemo() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
   return (
-    <Grid container spacing={8} minHeight={600}>
-      <Grid item size={12}>
+    <Grid
+      container
+      spacing={8}
+      sx={{
+        minHeight: 600,
+      }}
+    >
+      <Grid size={12}>
         <PanBookPicker
           bookCode={bookCode}
           setBookCode={setBookCode}
@@ -45,7 +51,7 @@ export default function PanBookPickerDemo() {
           booksProject={booksInProject}
         />
       </Grid>
-      <Grid item size={12}>
+      <Grid size={12}>
         <PanBookPicker
           bookCode={bookCode}
           setBookCode={setBookCode}
