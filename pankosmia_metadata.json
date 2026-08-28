@@ -52,8 +52,8 @@
       "es": "Descargando"
     },
     "open_pan_stepper_inDialogue": {
-      "en": "PanStepper in PanDialogue",
-      "fr": "PanStepper dans PanDialogue"
+      "en": "PanStepper in PanDialog",
+      "fr": "PanStepper dans PanDialog"
     }
   }
 }
