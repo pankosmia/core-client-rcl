@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
           sourcemap: true,
 
           rollupOptions: {
-            external: ["react", "react-dom"],
+            external: ["react", "react-dom", "notistack"],
             output: {
               name: "pankosmiaRcl",
               globals: {
