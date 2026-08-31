@@ -46,6 +46,14 @@
     },
     "pan_download_in_dialogue": {
       "en": "PanDownload in PanDialogue"
+    },
+    "downloading": {
+      "en": "Downloading",
+      "es": "Descargando"
+    },
+    "open_pan_stepper_inDialogue": {
+      "en": "PanStepper in PanDialog",
+      "fr": "PanStepper dans PanDialog"
     }
   }
 }

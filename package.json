@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.5.1",
+  "version": "0.7.3",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "main": "exported-rcl/pankosmia-rcl.umd.js",
@@ -8,16 +8,32 @@
   "files": [
     "exported-rcl"
   ],
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24",
+    "pnpm": "11.20.0"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@microsoft/fetch-event-source": "^2.0.1",
-    "@mui/icons-material": "^9.2.0",
-    "@mui/material": "^9.0.0",
+    "@mui/icons-material": "^9.3.1",
+    "@mui/material": "^9.3.1",
+    "@mui/utils": "^9.3.0",
     "deep-copy": "^1.4.2",
     "eslint-config-react-app": "^7.0.1",
     "notistack": "^3.0.2",
     "pankosmia-lib": "^0.0.3",
+    "pankosmia-rcl": "^0.4.12",
+    "prop-types": "^15.8.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^9.3.1",
+    "@mui/icons-material": "^9.3.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

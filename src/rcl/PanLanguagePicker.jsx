@@ -150,7 +150,7 @@ export default function PanLanguagePicker({
       </FormControl>
       {languageOption === "BCP47List" && (
         <Grid container spacing={2}>
-          <Grid item size={12}>
+          <Grid size={12}>
             <Typography>
               {doI18n(
                 "library:pankosmia-rcl:description_bcp47_list",
@@ -158,7 +158,7 @@ export default function PanLanguagePicker({
               )}
             </Typography>
           </Grid>
-          <Grid item size={6}>
+          <Grid size={6}>
             {contentBcpList && (
               <PanFilteredMenu
                 value={currentLanguage.language_code ?? null}
@@ -181,7 +181,7 @@ export default function PanLanguagePicker({
               />
             )}
           </Grid>
-          <Grid item size={6}>
+          <Grid size={6}>
             <TextField
               disabled
               id="language_code"
@@ -196,8 +196,10 @@ export default function PanLanguagePicker({
         <Grid
           container
           spacing={1}
-          justifyItems="flex-end"
-          alignItems="stretch"
+          sx={{
+            justifyItems: "flex-end",
+            alignItems: "stretch",
+          }}
         >
           <Typography>
             {doI18n(
@@ -205,7 +207,7 @@ export default function PanLanguagePicker({
               i18nRef.current,
             )}
           </Typography>
-          <Grid item size={12}>
+          <Grid size={12}>
             <FormLabel>
               {doI18n(
                 "library:pankosmia-rcl:title_section_burrito",
@@ -242,7 +244,7 @@ export default function PanLanguagePicker({
               />
             </FormGroup>
           </Grid>
-          <Grid item size={12}>
+          <Grid size={12}>
             <PanFilteredMenu
               data={documents}
               setValue={setBurritoSelected}
@@ -251,7 +253,7 @@ export default function PanLanguagePicker({
             />
           </Grid>
 
-          <Grid item size={6}>
+          <Grid size={6}>
             <TextField
               disabled
               id="language_name"
@@ -260,7 +262,7 @@ export default function PanLanguagePicker({
               value={currentLanguage ? currentLanguage.language_name : null}
             />
           </Grid>
-          <Grid item size={6}>
+          <Grid size={6}>
             <TextField
               disabled
               id="language_code"
@@ -275,10 +277,12 @@ export default function PanLanguagePicker({
         <Grid
           container
           spacing={1}
-          justifyItems="flex-end"
-          alignItems="stretch"
+          sx={{
+            justifyItems: "flex-end",
+            alignItems: "stretch",
+          }}
         >
-          <Grid item size={12}>
+          <Grid size={12}>
             <Typography>
               {doI18n(
                 "library:pankosmia-rcl:description_custom_language",
@@ -286,7 +290,7 @@ export default function PanLanguagePicker({
               )}
             </Typography>
           </Grid>
-          <Grid item size={6}>
+          <Grid size={6}>
             <TextField
               id="language_name"
               required
@@ -302,7 +306,7 @@ export default function PanLanguagePicker({
               }}
             />
           </Grid>
-          <Grid item size={6}>
+          <Grid size={6}>
             <TextField
               id="language_code"
               placeholder="x-abc"

@@ -58,8 +58,15 @@ export default function PanBookPicker({
 
   return (
     <>
-      <Grid container spacing={1} justifyItems="flex-end" alignItems="stretch">
-        <Grid item size={4}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          justifyItems: "flex-end",
+          alignItems: "stretch",
+        }}
+      >
+        <Grid size={4}>
           <FormControl sx={{ width: "100%" }}>
             <InputLabel
               id="bookCode-label"
@@ -115,7 +122,7 @@ export default function PanBookPicker({
             </Select>
           </FormControl>
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <TextField
             id="bookAbbr"
             required
@@ -127,7 +134,7 @@ export default function PanBookPicker({
             }}
           />
         </Grid>
-        <Grid item size={4}>
+        <Grid size={4}>
           <TextField
             id="bookTitle"
             required

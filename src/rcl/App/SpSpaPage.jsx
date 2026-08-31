@@ -29,16 +29,19 @@ function SpSpaPage({
       >
         <Grid
           container
-          alignItems="center"
-          justifyContent="center"
-          sx={{ minHeight: "100vh" }}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "100vh",
+          }}
         >
           <Grid
-            item
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
             rowSpacing={0.5}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
             <BlockOutlined sx={{ fontSize: 80 }} color="warning" />
             <p>

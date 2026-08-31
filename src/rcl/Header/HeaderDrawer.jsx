@@ -16,7 +16,7 @@ import { doI18n } from "pankosmia-lib/i18n";
 import netContext from "../contexts/netContext";
 import debugContext from "../contexts/debugContext";
 import i18nContext from "../contexts/i18nContext";
-
+import productContext from "../contexts/productContext";
 function HeaderDrawer({ currentId }) {
   // eslint-disable-next-line no-unused-vars
   const [drawerWidth, setDrawerWidth] = useState("auto");
@@ -28,6 +28,7 @@ function HeaderDrawer({ currentId }) {
   const { i18nRef } = useContext(i18nContext);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
+  const { productRef } = useContext(productContext);
 
   useEffect(() => {
     const doFetch = async () => {
@@ -69,6 +70,11 @@ function HeaderDrawer({ currentId }) {
       return () => clearTimeout(timeoutId);
     }
   }, [drawerIsOpen, widthLocked]);
+
+  let isAndroid =
+    productRef && productRef.current && productRef.current.os === "android";
+  let androidPadding = isAndroid ? "30px" : "0px";
+
   return (
     <Box sx={{ m: 0, mr: 2 }}>
       <IconButton onClick={(e) => setDrawerIsOpen(true)}>
@@ -77,94 +83,76 @@ function HeaderDrawer({ currentId }) {
       <Drawer
         open={drawerIsOpen}
         onClose={() => setDrawerIsOpen(false)}
-        slotProps={{
-          paper: { sx: { minWidth: "16rem", overflow: "hidden" } },
-        }}
+        sx={{ width: "100%", height: "100%", overflow: "hidden" }}
       >
         <Box
-          sx={{ width: "100%", minHeight: "98vh", m: 0, p: 0 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minWidth: "16rem",
+            overflow: "hidden",
+            minHeight: isAndroid ? "calc(100vh - 60px)" : "100vh",
+            m: 0,
+            p: 0,
+            paddingTop: androidPadding,
+            paddingBottom: androidPadding,
+          }}
           role="presentation"
         >
-          <List sx={{ height: "100%", width: "100%" }}>
-            <Stack
-              direction="column"
-              spacing={0}
-              sx={{
-                height: "100%",
-                width: "100%",
-                justifyContent: "space-between",
-                alignItems: "stretch",
-              }}
-            >
-              <Box sx={{ width: "100%" }}>
-                {menuItems.map((mi, n) =>
-                  mi.id === currentId ? (
-                    <ListItem
-                      key={n}
-                      disablePadding
-                      onClick={() => setDrawerIsOpen(false)}
-                    >
-                      <ListItemButton selected={true}>
-                        <ListItemText
-                          primary={doI18n(
-                            `pages:${mi.id}:title`,
-                            i18nRef.current,
-                          )}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  ) : (
-                    <ListItem key={n} disablePadding>
-                      <ListItemButton
-                        disabled={mi.requires.net && !enabledRef.current}
-                        onClick={() => {
-                          window.location.href = mi.url;
-                        }}
-                      >
-                        <ListItemText
-                          primary={doI18n(
-                            `pages:${mi.id}:title`,
-                            i18nRef.current,
-                          )}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  ),
-                )}
-              </Box>
-              <Box>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    selected={currentId.includes("settings")}
-                    onClick={() => {
-                      window.location.href = "/clients/settings";
-                    }}
-                  >
+          <List sx={{ width: "100%" }}>
+            {menuItems.map((mi, n) =>
+              mi.id === currentId ? (
+                <ListItem
+                  key={n}
+                  disablePadding
+                  onClick={() => setDrawerIsOpen(false)}
+                >
+                  <ListItemButton selected={true}>
                     <ListItemText
-                      primary={doI18n(
-                        "pages:core-settings:title",
-                        i18nRef.current,
-                      )}
+                      primary={doI18n(`pages:${mi.id}:title`, i18nRef.current)}
                     />
                   </ListItemButton>
                 </ListItem>
-                <List sx={{ width: "100%" }} disablePadding>
-                  <ListItemButton onClick={toggleDebug}>
+              ) : (
+                <ListItem key={n} disablePadding>
+                  <ListItemButton
+                    disabled={mi.requires.net && !enabledRef.current}
+                    onClick={() => {
+                      window.location.href = mi.url;
+                    }}
+                  >
                     <ListItemText
-                      primary={doI18n(
-                        `components:header:beta_mode`,
-                        i18nRef.current,
-                      )}
-                    />
-                    <Switch
-                      edge="end"
-                      onChange={toggleDebug}
-                      checked={debugRef.current}
+                      primary={doI18n(`pages:${mi.id}:title`, i18nRef.current)}
                     />
                   </ListItemButton>
-                </List>
-              </Box>
-            </Stack>
+                </ListItem>
+              ),
+            )}
+          </List>
+          <Box sx={{ flexGrow: 1 }} />
+          <List sx={{ width: "100%" }}>
+            <ListItem disablePadding>
+              <ListItemButton
+                selected={currentId.includes("settings")}
+                onClick={() => {
+                  window.location.href = "/clients/settings";
+                }}
+              >
+                <ListItemText
+                  primary={doI18n("pages:core-settings:title", i18nRef.current)}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItemButton onClick={toggleDebug}>
+              <ListItemText
+                primary={doI18n(`components:header:beta_mode`, i18nRef.current)}
+              />
+              <Switch
+                edge="end"
+                onChange={toggleDebug}
+                checked={debugRef.current}
+              />
+            </ListItemButton>
           </List>
         </Box>
       </Drawer>

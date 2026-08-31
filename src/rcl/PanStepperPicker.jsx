@@ -5,11 +5,12 @@ import {
   Step,
   StepLabel,
   Stepper,
+  Box,
 } from "@mui/material";
 import { doI18n } from "pankosmia-lib/i18n";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
-
+import { useRef } from "react";
 export default function PanStepperPicker({
   steps,
   initialStep = 0,
@@ -25,6 +26,8 @@ export default function PanStepperPicker({
   primaryAction,
   secondaryAction,
   isLeftStepperButtonDisabled,
+  CustomHeader,
+  isInDialogue = false,
 }) {
   const safeInitialStep = Math.min(
     Math.max(initialStep - 1, 0),
@@ -33,7 +36,25 @@ export default function PanStepperPicker({
   const [activeStep, setActiveStep] = useState(safeInitialStep);
   const [skipped, setSkipped] = useState(new Set());
   const { i18nRef } = useContext(I18nContext);
+  const customHeaderRef = useRef(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
 
+  useEffect(() => {
+    const element = customHeaderRef.current;
+
+    if (!element) return;
+
+    const updateHeight = () => {
+      setHeaderHeight(element.getBoundingClientRect().height);
+    };
+
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -75,17 +96,25 @@ export default function PanStepperPicker({
           );
         })}
       </Stepper>
-
-      {activeStep !== steps.length && (
-        <>
-          {requiredFieldsLabel && (
-            <DialogContentText variant="subtitle2" sx={{ padding: "16px 0px" }}>
-              {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
-            </DialogContentText>
-          )}
-          {renderStepContent(activeStep)}
-        </>
-      )}
+      <Box ref={customHeaderRef}>
+        {CustomHeader && <CustomHeader />}
+        {requiredFieldsLabel && (
+          <DialogContentText variant="subtitle2" sx={{ padding: "16px 0px" }}>
+            {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
+          </DialogContentText>
+        )}
+      </Box>
+      <Box
+        sx={{
+          maxHeight: isInDialogue
+            ? `calc(100% - ${64}px - ${headerHeight}px)`
+            : "100vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
+      >
+        {activeStep !== steps.length && <>{renderStepContent(activeStep)}</>}
+      </Box>
       <DialogActions
         sx={{
           justifyContent: "space-between",

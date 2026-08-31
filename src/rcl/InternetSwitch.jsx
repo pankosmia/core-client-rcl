@@ -9,13 +9,17 @@ import I18nContext from "./contexts/i18nContext";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { alpha } from "@mui/material/styles";
 import ButtonInfo from "./ButtonInfo";
-
-export default function InternetSwitch({ netEnabled, debug = false }) {
+import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
+import AirplanemodeInactiveIcon from "@mui/icons-material/AirplanemodeInactive";
+export default function InternetSwitch({
+  netEnabled,
+  debug = false,
+  isAndroid,
+}) {
   const { i18nRef } = useContext(I18nContext);
 
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
-  const alignment = netEnabled ? "online" : "offline";
 
   const disableInternet = () => {
     postEmptyJson("/api/net/disable", debug);
@@ -38,68 +42,96 @@ export default function InternetSwitch({ netEnabled, debug = false }) {
 
   return (
     <Box>
-      <Grid container alignItems="center" spacing={1}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          alignItems: "center",
+        }}
+      >
         <Grid>
           <ToggleButtonGroup
-            onChange={(event, newAlignment) => {
-              if (newAlignment !== null) {
-                handleInternetToggleClick(event, newAlignment);
-              }
+            onChange={(event) => {
+              handleInternetToggleClick(event);
             }}
             exclusive
             color="secondary"
             size="small"
-            value={alignment}
+            value={netEnabled}
             sx={{
               background: (theme) => alpha(theme.palette.common.white, 0.3),
               height: "34px",
             }}
           >
-            <ToggleButton
-              disableFocusRipple
-              value="offline"
-              sx={{
-                color: "white",
-                "&.Mui-selected": {
+            {(!isAndroid || !netEnabled) && (
+              <ToggleButton
+                disableFocusRipple
+                value={false}
+                sx={{
                   color: "white",
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 1),
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 1),
-                  color: "white",
-                },
-              }}
-            >
-              {alignment === "offline" && (
-                <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
-              )}
-              {doI18n("components:header:offline_mode", i18nRef.current)}
-            </ToggleButton>
+                  "&.Mui-selected": {
+                    color: "white",
+                    backgroundColor: (theme) =>
+                      alpha(theme.palette.secondary.main, 1),
+                  },
+                  "&.Mui-selected:hover": {
+                    backgroundColor: (theme) =>
+                      alpha(theme.palette.secondary.main, 1),
+                    color: "white",
+                  },
+                }}
+              >
+                {!isAndroid ? (
+                  !netEnabled && (
+                    <DoneOutlinedIcon
+                      fontSize="small"
+                      sx={{ paddingRight: 1 }}
+                    />
+                  )
+                ) : (
+                  <AirplanemodeActiveIcon
+                    fontSize="small"
+                    sx={{ paddingRight: 1 }}
+                  />
+                )}
+                {doI18n("components:header:offline_mode", i18nRef.current)}
+              </ToggleButton>
+            )}
 
-            <ToggleButton
-              disableFocusRipple
-              value="online"
-              sx={{
-                color: "white",
-                "&.Mui-selected": {
+            {(!isAndroid || netEnabled) && (
+              <ToggleButton
+                disableFocusRipple
+                value={true}
+                sx={{
                   color: "white",
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 1),
-                },
-                "&.Mui-selected:hover": {
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 1),
-                  color: "white",
-                },
-              }}
-            >
-              {alignment === "online" && (
-                <DoneOutlinedIcon fontSize="small" sx={{ paddingRight: 1 }} />
-              )}
-              {doI18n("components:header:online_mode", i18nRef.current)}
-            </ToggleButton>
+                  "&.Mui-selected": {
+                    color: "white",
+                    backgroundColor: (theme) =>
+                      alpha(theme.palette.secondary.main, 1),
+                  },
+                  "&.Mui-selected:hover": {
+                    backgroundColor: (theme) =>
+                      alpha(theme.palette.secondary.main, 1),
+                    color: "white",
+                  },
+                }}
+              >
+                {!isAndroid ? (
+                  netEnabled && (
+                    <DoneOutlinedIcon
+                      fontSize="small"
+                      sx={{ paddingRight: 1 }}
+                    />
+                  )
+                ) : (
+                  <AirplanemodeInactiveIcon
+                    fontSize="small"
+                    sx={{ paddingRight: 1 }}
+                  />
+                )}
+                {doI18n("components:header:online_mode", i18nRef.current)}
+              </ToggleButton>
+            )}
           </ToggleButtonGroup>
         </Grid>
 
