@@ -180,13 +180,19 @@ export default function PanLanguagePicker({
                 }}
                 filterOptions={(options, { inputValue }) => {
                   const input = inputValue.toLowerCase();
-                  return options.filter((option) => {
-                    const entry = contentBcpList[option];
-                    return (
-                      entry?.en?.toLowerCase().includes(input) ||
-                      entry?.[option]?.toLowerCase().includes(input)
+                  return options
+                    .filter((option) => {
+                      const entry = contentBcpList[option];
+                      return (
+                        entry?.en?.toLowerCase().includes(input) ||
+                        entry?.[option]?.toLowerCase().includes(input)
+                      );
+                    })
+                    .sort(
+                      (a, b) =>
+                        contentBcpList[a]?.en?.toLowerCase().indexOf(input) -
+                        contentBcpList[b]?.en?.toLowerCase().indexOf(input),
                     );
-                  });
                 }}
                 titleLabel={`${doI18n(
                   "library:pankosmia-rcl:language",
