@@ -245,7 +245,7 @@ export default function PanDownload({
         if (metadataSummaries[`${e.source}/${e.name}`]) {
           const metadataResponse = metadataSummaries[`${e.source}/${e.name}`];
           const metadataTime = metadataResponse.timestamp;
-          const remoteUpdateTime = Date.parse(e.updated_at) / 1000;
+          const remoteUpdateTime = Date.parse(e.released) / 1000;
           newIsDownloading[`${e.source}/${e.name}`] =
             remoteUpdateTime - metadataTime > 0 ? "updatable" : "downloaded";
         } else {
@@ -412,7 +412,12 @@ export default function PanDownload({
           type: doI18n(
             `flavors:names:${ce.flavor_type}/${ce.flavor}`,
             i18nRef.current,
-          ),
+          ).includes("flavors:names")
+            ? `${ce.flavor_type}/${ce.flavor}`
+            : doI18n(
+                `flavors:names:${ce.flavor_type}/${ce.flavor}`,
+                i18nRef.current,
+              ),
         }))
         .filter((row) => {
           return (
