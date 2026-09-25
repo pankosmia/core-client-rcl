@@ -1,4 +1,4 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useContext, useMemo, useEffect } from "react";
 import {
   Box,
   Button,
@@ -12,12 +12,12 @@ import {
   DialogContent,
 } from "@mui/material";
 import { enqueueSnackbar } from "notistack";
-import { PanDownload, PanDialog } from "../rcl";
+import { PanDownload, PanDialog, PanDialogActions } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
-import { postEmptyJson } from "pithekos-lib";
-import { doI18n } from "pithekos-lib"; // assuming doI18n is exported here
+import { postEmptyJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
 import { CorporateFare, Login } from "@mui/icons-material";
 
@@ -28,6 +28,8 @@ export default function PanDownloadDemo() {
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(I18nContext);
   const [openDialoguePanDownload, setOpenDialoguePanDownload] = useState(false);
+  const [isDownloadingAny, setIsDownloadingAny] = useState(false);
+  const [languageLookup, setLanguageLookup] = useState([]);
 
   const theme = createTheme({
     palette: {
@@ -48,8 +50,16 @@ export default function PanDownloadDemo() {
   /** Whitelist-only mode */
   const sourceWhitelistOrgs = useMemo(
     () => [
-      ["git.door43.org/BurritoTruck", "Xenizo curated content (Door43)", <CorporateFare />],
-      ["git.door43.org/uW", "unfoldingWord curated content (Door43)", <Login />],
+      [
+        "git.door43.org/BurritoTruck",
+        "Xenizo curated content (Door43)",
+        <CorporateFare />,
+      ],
+      [
+        "git.door43.org/uW",
+        "unfoldingWord curated content (Door43)",
+        <Login />,
+      ],
       ["git.door43.org/shower", "Aquifer exported content (Door43)"],
     ],
     [],
@@ -82,8 +92,10 @@ export default function PanDownloadDemo() {
       preSelected: preSelectedList,
       downloadedType: "org",
       showFilterButtons: mode !== "list",
+      languageLookup: languageLookup,
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [mode, defaultFilterProps]
+    }),
+    [mode, defaultFilterProps, languageLookup],
   );
   let legacyTitle = doI18n(
     "pages:core-client-rcl:legacy_download",
@@ -99,7 +111,8 @@ export default function PanDownloadDemo() {
       downloadFunction: DownloadBurrito,
       downloadLegacyFunction: DownloadLegacy,
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), [mode, defaultFilterProps, legacyTitle],
+    }),
+    [mode, defaultFilterProps, legacyTitle],
   );
 
   async function DownloadLegacy(params, remoteRepoPath, postType) {
@@ -116,7 +129,7 @@ export default function PanDownloadDemo() {
     const formData = new FormData();
     formData.append("file", zipBlob);
 
-    fetchResponse = await fetch("/temp/bytes", {
+    fetchResponse = await fetch("/api/temp/bytes", {
       method: "POST",
       body: formData,
     });
@@ -138,8 +151,8 @@ export default function PanDownloadDemo() {
   async function DownloadBurrito(params, remoteRepoPath, postType) {
     let fetchUrl =
       postType === "clone"
-        ? `/git/clone-repo/${remoteRepoPath}`
-        : `/git/pull-repo/origin/${remoteRepoPath}`;
+        ? `/api/git/clone-repo/${remoteRepoPath}`
+        : `/api/git/pull-repo/origin/${remoteRepoPath}`;
 
     if (
       params.row.topics.some((topic) =>
@@ -153,6 +166,12 @@ export default function PanDownloadDemo() {
 
     return response;
   }
+
+  useEffect(() => {
+    fetch("/api/app-resources/lookups/languages.json")
+      .then((r) => r.json())
+      .then((data) => setLanguageLookup(data));
+  }, []);
 
   return (
     <Box
@@ -192,7 +211,13 @@ export default function PanDownloadDemo() {
             <Typography variant="subtitle2">
               {doI18n("pages:core-client-rcl:mode", i18nRef.current)}
             </Typography>
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: "center",
+              }}
+            >
               <Chip label={mode} color="primary" size="small" />
               <Button
                 size="small"
@@ -217,7 +242,7 @@ export default function PanDownloadDemo() {
                     ),
               defaultFilterProps,
               showColumnFilters: true,
-              showFilterButtons: mode !== "list"
+              showFilterButtons: mode !== "list",
             }}
           />
 
@@ -329,12 +354,28 @@ export default function PanDownloadDemo() {
         <PanDialog
           isOpen={openDialoguePanDownload}
           closeFn={() => setOpenDialoguePanDownload(false)}
+          isLoading={isDownloadingAny}
         >
           <DialogContent sx={{ overflow: "hidden" }}>
             <Box sx={{ height: "calc(100vh - 229px)" }}>
-              <PanDownload theme={theme} {...panDownloadProps} />
+              <PanDownload
+                theme={theme}
+                {...panDownloadProps}
+                onDownloadingChange={setIsDownloadingAny}
+              />
             </Box>
           </DialogContent>
+          <PanDialogActions
+            closeFn={() => setOpenDialoguePanDownload(false)}
+            closeLabel={doI18n("library:pankosmia-rcl:close", i18nRef.current)}
+            closeVariant="contained"
+            isLoading={isDownloadingAny}
+            loadingLabel={doI18n(
+              "pages:core-client-rcl:downloading",
+              i18nRef.current,
+            )}
+            onlyCloseButton={true}
+          />
         </PanDialog>
       </Box>
     </Box>

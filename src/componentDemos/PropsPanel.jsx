@@ -28,7 +28,13 @@ function PropValue({ value, name }) {
 
   return (
     <Box sx={{ ml: name ? 1 : 0, mb: 0.5 }}>
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: "center",
+        }}
+      >
         {(isArray || isObject) && (
           <IconButton size="small" onClick={toggle}>
             {open ? (

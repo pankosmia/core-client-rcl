@@ -5,10 +5,11 @@ import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import InternetSwitch from "../InternetSwitch";
 import { ThemeProvider } from "@mui/material";
 import HeaderDrawer from "./HeaderDrawer";
-import { doI18n } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
 import i18nContext from "../contexts/i18nContext";
 import netContext from "../contexts/netContext";
 import clientConfigContext from "../contexts/clientConfigContext";
+import ProductContext from "../contexts/productContext";
 function Header({
   titleKey,
   widget,
@@ -33,10 +34,28 @@ function Header({
   const Wrapper = theme ? ThemeProvider : React.Fragment;
   const wrapperProps = theme ? { theme } : {};
 
+  let { product } = useContext(ProductContext);
+  let isAndroid = product && product.os === "android";
   return (
     <Wrapper {...wrapperProps}>
-      <Box display="flex-start" sx={{ flexGrow: 1, m: 0, p: 0 }}>
-        <AppBar position="static" sx={{ m: 0, p: 0 }}>
+      <Box
+        sx={{
+          display: "flex-start",
+          flexGrow: 1,
+          m: 0,
+          p: 0,
+        }}
+      >
+        <AppBar
+          position="static"
+          sx={{
+            m: 0,
+            p: 0,
+            paddingTop: isAndroid ? "30px" : "0px",
+            paddingLeft: isAndroid ? "30px" : "0px",
+            paddingRight: isAndroid ? "30px" : "0px",
+          }}
+        >
           <Toolbar variant="dense" sx={{ m: 0, p: 0 }}>
             <HeaderDrawer currentId={currentId} />
             {titleKey && titleKey.length > 0 && (
@@ -50,6 +69,7 @@ function Header({
                 <InternetSwitch
                   netEnabled={enabledRef.current}
                   i18n={i18nRef.current}
+                  isAndroid={isAndroid}
                 />
               )}
             </Box>

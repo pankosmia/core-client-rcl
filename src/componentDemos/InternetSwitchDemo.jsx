@@ -12,7 +12,7 @@ function InternetSwitchDemo() {
   const { debugRef } = useContext(debugContext);
   const [openDialog, setOpenDialog] = useState(false);
   return (
-    <Box>
+    <Box sx={{ backgroundColor: "lightgray" }}>
       <InternetSwitch
         i18n={i18nRef.current}
         netEnabled={enabledRef.current}

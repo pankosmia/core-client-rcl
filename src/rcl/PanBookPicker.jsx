@@ -3,13 +3,14 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  Grid2,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import { doI18n, getJson } from "pithekos-lib";
+import { doI18n } from "pankosmia-lib/i18n";
+import { getJson } from "pankosmia-lib/http";
 import I18nContext from "./contexts/i18nContext";
 import { useContext, useEffect, useState } from "react";
 import sx from "./Selection.styles";
@@ -33,7 +34,7 @@ export default function PanBookPicker({
   const [clientConfig, setClientConfig] = useState({});
 
   useEffect(() => {
-    getJson("/client-config")
+    getJson("/api/client-config")
       .then((res) => res.json)
       .then((data) => setClientConfig(data))
       .catch((err) => console.error("Error :", err));
@@ -57,8 +58,15 @@ export default function PanBookPicker({
 
   return (
     <>
-      <Grid2 container spacing={1} justifyItems="flex-end" alignItems="stretch">
-        <Grid2 item size={4}>
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          justifyItems: "flex-end",
+          alignItems: "stretch",
+        }}
+      >
+        <Grid size={4}>
           <FormControl sx={{ width: "100%" }}>
             <InputLabel
               id="bookCode-label"
@@ -113,8 +121,8 @@ export default function PanBookPicker({
               )}
             </Select>
           </FormControl>
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid size={4}>
           <TextField
             id="bookAbbr"
             required
@@ -125,8 +133,8 @@ export default function PanBookPicker({
               setBookAbbr(event.target.value);
             }}
           />
-        </Grid2>
-        <Grid2 item size={4}>
+        </Grid>
+        <Grid size={4}>
           <TextField
             id="bookTitle"
             required
@@ -137,7 +145,7 @@ export default function PanBookPicker({
               setBookTitle(event.target.value);
             }}
           />
-        </Grid2>
+        </Grid>
         {isProtestantBooksOnlyCheckboxEnabled && (
           <FormGroup>
             <FormControlLabel
@@ -173,7 +181,7 @@ export default function PanBookPicker({
             />
           </FormGroup>
         )}
-      </Grid2>
+      </Grid>
     </>
   );
 }

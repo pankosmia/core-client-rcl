@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { getAndSetJson } from "pithekos-lib";
+import { getAndSetJson } from "pankosmia-lib/http";
 
 import AuthContext from "../contexts/authContext";
 import I18nContext from "../contexts/i18nContext";
@@ -15,6 +15,25 @@ import DebugContext from "../contexts/debugContext";
 import NetContext from "../contexts/netContext";
 import ClientConfigContext from "../contexts/clientConfigContext";
 import ClientInterfacesContext from "../contexts/clientInterfacesContext";
+import SnippetContext from "../contexts/snippetContext";
+import WordContext from "../contexts/wordContext";
+import ProductContext from "../contexts/productContext";
+
+function PlaceHolder() {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100%",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
 
 function AppWrapper({
   children,
@@ -27,6 +46,9 @@ function AppWrapper({
   currentProjectValue,
   clientConfigValue,
   clientInterfacesValue,
+  snippetValue,
+  wordValue,
+  productValue,
 }) {
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
@@ -68,36 +90,83 @@ function AppWrapper({
       themeSpec.palette.primary.main === "#666"
     ) {
       getAndSetJson({
-        url: "/app-resources/themes/default.json",
+        url: "/api/app-resources/themes/default.json",
         setter: setThemeSpec,
       }).then();
     }
   }, [themeSpec.palette]);
 
-  const theme = createTheme(themeSpec);
+  const theme = createTheme(
+    {
+      components: {
+        MuiFab: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+        MuiTab: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+        MuiToggleButton: {
+          styleOverrides: {
+            root: {
+              textTransform: "none",
+            },
+          },
+        },
+      },
+    },
+    themeSpec,
+  );
 
   return (
     <ThemeProvider theme={theme}>
       <ClientConfigContext.Provider value={clientConfigValue}>
         <ClientInterfacesContext.Provider value={clientInterfacesValue}>
           <I18nContext.Provider value={i18nValue}>
-            <TypographyContext.Provider value={typographyValue}>
-              <AuthContext.Provider value={authValue}>
-                <CurrentProjectContext.Provider value={currentProjectValue}>
-                  <BcvContext.Provider value={bcvValue}>
-                    <MessagesContext.Provider value={messageValue}>
-                      <DebugContext.Provider value={debugValue}>
-                        <NetContext.Provider value={netValue}>
-                          <Box sx={{ height: "100vh", overflow: "hidden" }}>
-                            {children}
-                          </Box>
-                        </NetContext.Provider>
-                      </DebugContext.Provider>
-                    </MessagesContext.Provider>
-                  </BcvContext.Provider>
-                </CurrentProjectContext.Provider>
-              </AuthContext.Provider>
-            </TypographyContext.Provider>
+            <SnippetContext.Provider value={snippetValue}>
+              <WordContext.Provider value={wordValue}>
+                <TypographyContext.Provider value={typographyValue}>
+                  <AuthContext.Provider value={authValue}>
+                    <CurrentProjectContext.Provider value={currentProjectValue}>
+                      <BcvContext.Provider value={bcvValue}>
+                        <MessagesContext.Provider value={messageValue}>
+                          <DebugContext.Provider value={debugValue}>
+                            <ProductContext.Provider value={productValue}>
+                              <NetContext.Provider value={netValue}>
+                                <Box
+                                  sx={{ height: "100vh", overflow: "hidden" }}
+                                >
+                                  {!i18nValue ||
+                                  Object.keys(i18nValue.i18n).length === 0 ? (
+                                    <PlaceHolder />
+                                  ) : (
+                                    children
+                                  )}
+                                </Box>
+                              </NetContext.Provider>
+                            </ProductContext.Provider>
+                          </DebugContext.Provider>
+                        </MessagesContext.Provider>
+                      </BcvContext.Provider>
+                    </CurrentProjectContext.Provider>
+                  </AuthContext.Provider>
+                </TypographyContext.Provider>
+              </WordContext.Provider>
+            </SnippetContext.Provider>
           </I18nContext.Provider>
         </ClientInterfacesContext.Provider>
       </ClientConfigContext.Provider>

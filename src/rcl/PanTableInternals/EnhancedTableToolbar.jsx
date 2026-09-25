@@ -52,10 +52,12 @@ export default function EnhancedTableToolbar(props) {
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
           variant="subtitle1"
           component="div"
+          sx={{
+            color: "inherit",
+            flex: "1 1 100%",
+          }}
         >
           {numSelected} selected
         </Typography>

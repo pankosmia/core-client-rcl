@@ -5,11 +5,12 @@ import {
   Step,
   StepLabel,
   Stepper,
+  Box,
 } from "@mui/material";
-import { doI18n } from "pithekos-lib";
-import { useContext, useState } from "react";
+import { doI18n } from "pankosmia-lib/i18n";
+import { useContext, useEffect, useState } from "react";
 import I18nContext from "./contexts/i18nContext";
-
+import { useRef } from "react";
 export default function PanStepperPicker({
   steps,
   initialStep = 0,
@@ -24,6 +25,9 @@ export default function PanStepperPicker({
   secondaryActionKey,
   primaryAction,
   secondaryAction,
+  isLeftStepperButtonDisabled,
+  CustomHeader,
+  isInDialogue = false,
 }) {
   const safeInitialStep = Math.min(
     Math.max(initialStep - 1, 0),
@@ -32,7 +36,25 @@ export default function PanStepperPicker({
   const [activeStep, setActiveStep] = useState(safeInitialStep);
   const [skipped, setSkipped] = useState(new Set());
   const { i18nRef } = useContext(I18nContext);
+  const customHeaderRef = useRef(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
 
+  useEffect(() => {
+    const element = customHeaderRef.current;
+
+    if (!element) return;
+
+    const updateHeight = () => {
+      setHeaderHeight(element.getBoundingClientRect().height);
+    };
+
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -74,21 +96,29 @@ export default function PanStepperPicker({
           );
         })}
       </Stepper>
-
-      {activeStep !== steps.length && (
-        <>
-          {requiredFieldsLabel && (
-            <DialogContentText variant="subtitle2" sx={{ paddingBottom: 1 }}>
-              {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
-            </DialogContentText>
-          )}
-          {renderStepContent(activeStep)}
-        </>
-      )}
+      <Box ref={customHeaderRef}>
+        {CustomHeader && <CustomHeader />}
+        {requiredFieldsLabel && (
+          <DialogContentText variant="subtitle2" sx={{ padding: "16px 0px" }}>
+            {doI18n(`library:pankosmia-rcl:required_field`, i18nRef.current)}
+          </DialogContentText>
+        )}
+      </Box>
+      <Box
+        sx={{
+          maxHeight: isInDialogue
+            ? `calc(100% - ${64}px - ${headerHeight}px)`
+            : "100vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
+      >
+        {activeStep !== steps.length && <>{renderStepContent(activeStep)}</>}
+      </Box>
       <DialogActions
         sx={{
           justifyContent: "space-between",
-          padding: 0,
+          padding: "16px 0px 0px",
         }}
       >
         <Button
@@ -97,10 +127,10 @@ export default function PanStepperPicker({
           onClick={
             activeStep === 0 ? handleClose : secondaryAction || handleBack
           }
-          disabled={activeStep === 0}
+          disabled={isLeftStepperButtonDisabled && activeStep === 0}
         >
           {activeStep === 0
-            ? `${doI18n(`library:pankosmia-rcl:${secondaryActionKey || "cancel"}`, i18nRef.current)}`
+            ? `${doI18n(`${secondaryActionKey || "library:pankosmia-rcl:cancel"}`, i18nRef.current)}`
             : `${doI18n("library:pankosmia-rcl:back_button", i18nRef.current)}`}
         </Button>
         <Button
@@ -110,7 +140,7 @@ export default function PanStepperPicker({
           disabled={!isStepValid(activeStep)}
         >
           {activeStep === steps.length - 1
-            ? `${doI18n(`library:pankosmia-rcl:${primaryActionKey || "create"}`, i18nRef.current)}`
+            ? `${doI18n(`${primaryActionKey || "library:pankosmia-rcl:create"}`, i18nRef.current)}`
             : `${doI18n("library:pankosmia-rcl:next_button", i18nRef.current)}`}
         </Button>
       </DialogActions>

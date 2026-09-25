@@ -15,8 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 
-import { doI18n, getJson } from "pithekos-lib";
-
+import { getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 export default function AppbarHamburger({ i18n, netEnabled, debug }) {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -24,7 +24,7 @@ export default function AppbarHamburger({ i18n, netEnabled, debug }) {
 
   useEffect(() => {
     const doFetch = async () => {
-      const fetched = await getJson("/list-clients", debug);
+      const fetched = await getJson("/api/list-clients", debug);
       if (fetched.ok) {
         setMenuItems(
           fetched.json.filter(
@@ -37,7 +37,7 @@ export default function AppbarHamburger({ i18n, netEnabled, debug }) {
   }, [debug]);
 
   const toggleDebug = (ev) => {
-    getJson(`/debug/${debug} ? "disable" : "enable"}`).then(() => {
+    getJson(`/api/debug/${debug} ? "disable" : "enable"}`).then(() => {
       ev.stopPropagation();
       ev.preventDefault();
     });

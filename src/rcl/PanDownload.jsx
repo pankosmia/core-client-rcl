@@ -1,12 +1,14 @@
 import PanTable from "./PanTable";
 import { CircularProgress, Box, Typography } from "@mui/material";
 import React, { useMemo, useRef } from "react";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 import Update from "@mui/icons-material/Update";
 import { enqueueSnackbar } from "notistack";
 import { Stack, Chip, IconButton } from "@mui/material";
-import { getJson, doI18n } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
+
 import i18nContext from "./contexts/i18nContext";
 import debugContext from "./contexts/debugContext";
 import { useState, useEffect, useContext, useCallback } from "react";
@@ -15,7 +17,7 @@ import { Check, RadioButtonUnchecked } from "@mui/icons-material";
 
 const fetchMetaDataSummaries = async (setMetadataSummaries, debugRef) => {
   const summaries = await getJson(
-    "/burrito/metadata/summaries",
+    "/api/burrito/metadata/summaries",
     debugRef.current,
   );
   setMetadataSummaries(summaries.json);
@@ -62,6 +64,8 @@ export default function PanDownload({
   preSelected = [],
   topicsFilter = ["pushing2sb", "tc-ready"],
   showFilterButtons,
+  onDownloadingChange,
+  languageLookup = [],
 }) {
   const { i18nRef } = useContext(i18nContext);
   const { debugRef } = useContext(debugContext);
@@ -112,6 +116,12 @@ export default function PanDownload({
     };
   }, [sources]);
 
+  const languageEndonymMap = useMemo(() => {
+    return Object.fromEntries(
+      languageLookup.map((lang) => [lang.id, lang.endonym]),
+    );
+  }, [languageLookup]);
+
   useEffect(() => {
     if (filterExample.length > 0 && activeFilterIndex === null) {
       setActiveFilterIndex(0);
@@ -149,13 +159,13 @@ export default function PanDownload({
           let response;
           if (downloadedType === "org") {
             response = await getJson(
-              `/gitea/remote-repos/${source[0]}`,
+              `/api/gitea/remote-repos/${source[0]}`,
               debugRef.current,
             );
           }
           if (downloadedType === "user") {
             response = await getJson(
-              `/gitea/user-remote-repos/${source[0]}`,
+              `/api/gitea/user-remote-repos/${source[0]}`,
               debugRef.current,
             );
           }
@@ -182,13 +192,13 @@ export default function PanDownload({
         let response;
         if (downloadedType === "org") {
           response = await getJson(
-            `/gitea/remote-repos/${source[0]}`,
+            `/api/gitea/remote-repos/${source[0]}`,
             debugRef.current,
           );
         }
         if (downloadedType === "user") {
           response = await getJson(
-            `/gitea/user-remote-repos/${source[0]}`,
+            `/api/gitea/user-remote-repos/${source[0]}`,
             debugRef.current,
           );
         }
@@ -247,6 +257,12 @@ export default function PanDownload({
 
     downloadStatus();
   }, [catalog, metadataSummaries]);
+
+  useEffect(() => {
+    if (!isDownloading) return;
+    const anyDownloading = Object.values(isDownloading).includes("downloading");
+    onDownloadingChange?.(anyDownloading);
+  }, [isDownloading, onDownloadingChange]);
 
   const handleDownloadClick = useCallback(
     async (params, remoteRepoPath, postType) => {
@@ -366,7 +382,7 @@ export default function PanDownload({
               ) : isUpdate ? (
                 <Update />
               ) : (
-                <FileDownloadIcon />
+                <FileDownloadOutlinedIcon />
               )}
             </IconButton>
           );
@@ -386,7 +402,7 @@ export default function PanDownload({
           url: ce.latest_zip,
           metadata_types: ce.metadata_types,
           resourceCode: ce.abbreviation.toUpperCase(),
-          language: ce.language_code,
+          language: languageEndonymMap[ce.language_code] ?? ce.language_code,
           description: ce.description,
           flavor: ce.flavor,
           flavorType: ce.flavor_type,
@@ -407,13 +423,13 @@ export default function PanDownload({
           );
         }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [catalog, i18nRef],
+    [catalog, i18nRef, languageEndonymMap],
   );
 
   const operationsDefinitionsExample = [
     {
       label: "Download selected",
-      icon: FileDownloadIcon,
+      icon: FileDownloadOutlinedIcon,
       action: (context, allDataRows) => {
         if (!isDownloading) return; // prevent click before state ready
         let selectedRowsData = allDataRows.filter((row) =>
@@ -439,8 +455,10 @@ export default function PanDownload({
           ref={filterRef}
           direction="row"
           spacing={0}
-          alignItems="center"
-          sx={{ mb: 1 }}
+          sx={{
+            alignItems: "center",
+            mb: 1,
+          }}
         >
           {filterExample.map((f, index) => {
             const isActive = activeFilterIndex === index;

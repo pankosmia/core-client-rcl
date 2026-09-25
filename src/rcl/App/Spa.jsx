@@ -8,7 +8,7 @@ import {
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import AppWrapper from "./AppWrapper";
 import dcopy from "deep-copy";
-import { getJson } from "pithekos-lib";
+import { getJson } from "pankosmia-lib/http";
 function Spa({ children }) {
   const [enableNet, _setEnableNet] = useState(false);
   const enabledRef = useRef(enableNet);
@@ -32,6 +32,7 @@ function Spa({ children }) {
     bookCode: "TIT",
     chapterNum: 1,
     verseNum: 1,
+    endVerseNum: 1,
   });
   const bcvRef = useRef(systemBcv);
   const setSystemBcv = (nv) => {
@@ -70,7 +71,7 @@ function Spa({ children }) {
     _setClientConfig(nv);
   };
   const doFetchClientConfig = async () => {
-    await getJson("/client-config")
+    await getJson("/api/client-config")
       .then((res) => res.json)
       .then((data) => setClientConfig(data))
       .catch((err) => console.error("Error :", err));
@@ -82,14 +83,36 @@ function Spa({ children }) {
     clientInterfacesRef.current = nv;
     _setClientInterfaces(nv);
   };
+
+  const [snippet, _setSnippet] = useState(null);
+  const snippetRef = useRef(snippet);
+  const setSnippet = (nv) => {
+    snippetRef.current = nv;
+    _setSnippet(nv);
+  };
+
+  const [word, _setWord] = useState(null);
+  const wordRef = useRef(word);
+  const setWord = (nv) => {
+    wordRef.current = nv;
+    _setWord(nv);
+  };
+
+  const [product, _setProduct] = useState(null);
+  const productRef = useRef(product);
+  const setProduct = (nv) => {
+    productRef.current = nv;
+    _setProduct(nv);
+  };
+
   const doFetchClientInterface = async () => {
-    await getJson("/client-interfaces")
+    await getJson("/api/client-interfaces")
       .then((res) => res.json)
       .then((data) => setClientInterfaces(data))
       .catch((err) => console.error("Error :", err));
   };
   const doFetchI18n = async () => {
-    const i18nResponse = await getJson("/i18n/flat", debugRef.current);
+    const i18nResponse = await getJson("/api/i18n/flat", debugRef.current);
     if (i18nResponse.ok) {
       setI18n(i18nResponse.json);
     } else {
@@ -103,11 +126,11 @@ function Spa({ children }) {
 
   const doFetchTypography = async () => {
     const typoResponse = await getJson(
-      "/settings/typography",
+      "/api/settings/typography",
       debugRef.current,
     );
     if (typoResponse.ok) {
-      setI18n(typoResponse.json);
+      setTypography(typoResponse.json);
     } else {
       enqueueSnackbar(`Could not load typography: ${typoResponse.error}`, {
         variant: "error",
@@ -117,17 +140,62 @@ function Spa({ children }) {
     }
   };
 
+  const doFetchProduct = async () => {
+    const productResponse = await getJson("/api/version", debugRef.current);
+    if (productResponse.ok) {
+      setProduct(productResponse.json);
+    } else {
+      enqueueSnackbar(
+        `Could not load version for product: ${productResponse.error}`,
+        {
+          variant: "error",
+          anchorOrigin: { vertical: "bottom", horizontal: "left" },
+          persist: true,
+        },
+      );
+    }
+  };
+
+  const doFetchAlignment = async () => {
+    const alignmentResponse = await getJson(
+      "/api/app-state/alignment",
+      debugRef.current,
+    );
+    if (alignmentResponse.ok) {
+      const newSnippet = alignmentResponse.json.snippet;
+      const newWord = alignmentResponse.json.word;
+
+      if (newSnippet !== snippetRef.current) {
+        setSnippet(newSnippet);
+      }
+      if (JSON.stringify(newWord) !== JSON.stringify(wordRef.current)) {
+        setWord(newWord);
+      }
+    } else {
+      enqueueSnackbar(`Could not load alignment: ${alignmentResponse.error}`, {
+        variant: "error",
+        anchorOrigin: { vertical: "bottom", horizontal: "left" },
+        persist: true,
+      });
+    }
+  };
+
   useEffect(() => {
     doFetchI18n().then();
+    doFetchAlignment().then();
     doFetchTypography().then();
     doFetchClientConfig().then();
     doFetchClientInterface().then();
+    doFetchProduct().then();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const doFetchBcv = async () => {
-      const bcvResponse = await getJson("/navigation/bcv", debugRef.current);
+      const bcvResponse = await getJson(
+        "/api/navigation/bcv",
+        debugRef.current,
+      );
       if (bcvResponse.ok) {
         const serverOb = bcvResponse.json;
         setSystemBcv({
@@ -162,16 +230,18 @@ function Spa({ children }) {
 
   const bcvHandler = (ev) => {
     const bcvBits = ev.data.split("--");
-    if (bcvBits.length === 3) {
+    if (bcvBits.length === 4) {
       const newBcv = {
         bookCode: bcvBits[0],
         chapterNum: parseInt(bcvBits[1]),
         verseNum: parseInt(bcvBits[2]),
+        endVerseNum: parseInt(bcvBits[3]),
       };
       if (
         newBcv.bookCode !== bcvRef.current.bookCode ||
         newBcv.chapterNum !== bcvRef.current.chapterNum ||
-        newBcv.verseNum !== bcvRef.current.verseNum
+        newBcv.verseNum !== bcvRef.current.verseNum ||
+        newBcv.endVerseNum !== bcvRef.current.endVerseNum
       ) {
         setSystemBcv(newBcv);
       }
@@ -261,10 +331,14 @@ function Spa({ children }) {
     }
   };
 
+  const alignmentHandler = () => {
+    doFetchAlignment().then();
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     const fetchSSE = async () => {
-      await fetchEventSource("/notifications", {
+      await fetchEventSource("/api/notifications", {
         method: "GET",
         headers: {
           Accept: "text/event-stream",
@@ -295,6 +369,8 @@ function Spa({ children }) {
             typographyHandler(event);
           } else if (event.event === "current_project") {
             currentProjectHandler(event);
+          } else if (event.event === "alignment") {
+            alignmentHandler(event);
           }
         },
         onclose() {
@@ -326,8 +402,11 @@ function Spa({ children }) {
     setClientInterfaces,
     clientInterfacesRef,
   };
+  const snippetValue = { snippet, setSnippet, snippetRef };
+  const wordValue = { word, setWord, wordRef };
   const clientConfigValue = { clientConfig, setClientConfig, clientConfigRef };
   debugRef.current && console.log("Rerender Spa");
+  const productValue = { product, setProduct, productRef };
 
   const CustomSnackbarContent = styled(MaterialDesignContent)(() => ({
     "&.notistack-MuiContent-error": {
@@ -368,6 +447,9 @@ function Spa({ children }) {
         currentProjectValue={currentProjectValue}
         clientConfigValue={clientConfigValue}
         clientInterfacesValue={clientInterfacesValue}
+        snippetValue={snippetValue}
+        wordValue={wordValue}
+        productValue={productValue}
       >
         {children}
       </AppWrapper>
