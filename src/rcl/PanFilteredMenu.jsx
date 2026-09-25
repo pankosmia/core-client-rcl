@@ -6,9 +6,12 @@ export default function PanFilteredMenu({
   getOptionLabel,
   value,
   setValue,
+  filterOptions,
 }) {
   return (
     <Autocomplete
+      disableClearable
+      filterOptions={filterOptions}
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
