@@ -40,8 +40,7 @@ export default function PanDownloadDemo() {
 
   /** Structured list mode */
   const demoList = {
-    "git.door43.org": {
-      syllogostest: ["loiseMOBS"],
+    "qa.door43.org": {
       unfoldingWord: ["en_ust", "el-x-koine_ugnt", "en_ta"],
       "translationCore-Create-BCS": ["or_gst"],
     },
