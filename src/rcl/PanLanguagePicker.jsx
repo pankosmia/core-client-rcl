@@ -169,11 +169,15 @@ export default function PanLanguagePicker({
                   })
                 }
                 data={Object.keys(contentBcpList)}
-                getOptionLabel={(option) =>
-                  contentBcpList[option]?.en
-                    ? `${contentBcpList[option]?.en} (${option})`
-                    : ""
-                }
+                getOptionLabel={(option) => {
+                  const { en, ...others } = contentBcpList[option] ?? {};
+                  const otherValues = Object.values(others);
+
+                  if (otherValues.length > 0) {
+                    return `${option} - ${otherValues} - ${en}`;
+                  }
+                  return en ? `${option} - ${en}` : "";
+                }}
                 filterOptions={(options, { inputValue }) =>
                   options.filter((option) => {
                     const entry = contentBcpList[option];
