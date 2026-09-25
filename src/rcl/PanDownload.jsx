@@ -412,7 +412,12 @@ export default function PanDownload({
           type: doI18n(
             `flavors:names:${ce.flavor_type}/${ce.flavor}`,
             i18nRef.current,
-          ),
+          ).includes("flavors:names")
+            ? `${ce.flavor_type}/${ce.flavor}`
+            : doI18n(
+                `flavors:names:${ce.flavor_type}/${ce.flavor}`,
+                i18nRef.current,
+              ),
         }))
         .filter((row) => {
           return (
