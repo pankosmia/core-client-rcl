@@ -14,10 +14,13 @@ import {
   PanStepperPickerDemo,
   ButtonInfoDemo,
   ExternalLinkDemo,
+  PanCopyrightDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
+import { SectionDialogTitle } from "./rcl";
+import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
@@ -81,6 +84,12 @@ function App() {
       </Demo>
       <Demo title="Header">
         <HeaderDemo />
+      </Demo>
+      <Demo title="PanCopyright">
+        <PanCopyrightDemo />
+      </Demo>
+      <Demo title="Section Dialog Title">
+        <SectionDialogTitleDemo />
       </Demo>
     </Box>
   );

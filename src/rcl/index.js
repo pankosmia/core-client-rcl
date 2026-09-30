@@ -34,7 +34,8 @@ import snippetContext from "./contexts/snippetContext";
 import productContext from "./contexts/productContext";
 import ScrollableBody from "./ScrollableBody";
 import ExternalLink from "./ExternalLink";
-
+import PanCopyright from "./PanCopyright";
+import SectionDialogTitle from "./SectionDialogTitle";
 export {
   authContext,
   bcvContext,
@@ -72,4 +73,6 @@ export {
   snippetContext,
   ScrollableBody,
   ExternalLink,
+  SectionDialogTitle,
+  PanCopyright,
 };
