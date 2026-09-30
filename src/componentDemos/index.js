@@ -11,6 +11,7 @@ import PanBookPickerDemo from "./PanBookPickerDemo";
 import PanStepperPickerDemo from "./PanStepperPickerDemo";
 import ButtonInfoDemo from "./ButtonInfoDemo";
 import ExternalLinkDemo from "./ExternalLinkDemo";
+import PanCopyrightDemo from "./PanCopyrightDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -25,4 +26,5 @@ export {
   PanStepperPickerDemo,
   ButtonInfoDemo,
   ExternalLinkDemo,
+  PanCopyrightDemo,
 };
