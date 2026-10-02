@@ -18,6 +18,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EnhancedTableHead from "./PanTableInternals/EnhancedTableHead";
 import EnhancedTableToolbar from "./PanTableInternals/EnhancedTableToolbar";
 import { useRef } from "react";
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -30,10 +31,19 @@ function descendingComparator(a, b, orderBy) {
 
 function getComparator(order, orderBy) {
   return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+    ? (a, b) =>
+        String(b[orderBy] ?? "").localeCompare(
+          String(a[orderBy] ?? ""),
+          undefined,
+          { sensitivity: "base" },
+        )
+    : (a, b) =>
+        String(a[orderBy] ?? "").localeCompare(
+          String(b[orderBy] ?? ""),
+          undefined,
+          { sensitivity: "base" },
+        );
 }
-
 export default function PanTable({
   columns,
   rows,
@@ -53,6 +63,7 @@ export default function PanTable({
   const [order, setOrder] = useState(
     initialState?.sorting ? initialState?.sorting?.order : "asc",
   );
+
   const [orderBy, setOrderBy] = useState(
     initialState?.sorting ? initialState?.sorting?.field : "date",
   );
