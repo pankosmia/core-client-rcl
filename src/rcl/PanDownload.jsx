@@ -416,7 +416,7 @@ export default function PanDownload({
             ? `${doI18n(
                 "library:pankosmia-rcl:unknown",
                 i18nRef.current,
-              )}:${ce.flavor_type}/${ce.flavor}`
+              )}:${ce.flavor}`
             : doI18n(
                 `flavors:names:${ce.flavor_type}/${ce.flavor}`,
                 i18nRef.current,
