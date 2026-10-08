@@ -15,11 +15,11 @@ import {
   ButtonInfoDemo,
   ExternalLinkDemo,
   PanCopyrightDemo,
+  PanAssetInstallDialogDemo,
 } from "./componentDemos";
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
-import { SectionDialogTitle } from "./rcl";
 import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
 
 function App() {
@@ -90,6 +90,9 @@ function App() {
       </Demo>
       <Demo title="Section Dialog Title">
         <SectionDialogTitleDemo />
+      </Demo>
+      <Demo>
+        <PanAssetInstallDialogDemo />
       </Demo>
     </Box>
   );
