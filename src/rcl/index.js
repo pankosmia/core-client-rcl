@@ -36,7 +36,11 @@ import ScrollableBody from "./ScrollableBody";
 import ExternalLink from "./ExternalLink";
 import PanCopyright from "./PanCopyright";
 import SectionDialogTitle from "./SectionDialogTitle";
+import AssetDownloadButton from "./tools/AssetDownloadButton";
+import AssetDownloadDialog from "./tools/AssetDownloadDialog";
 export {
+  AssetDownloadButton,
+  AssetDownloadDialog,
   authContext,
   bcvContext,
   currentProjectContext,
