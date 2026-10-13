@@ -285,8 +285,6 @@ function AppWrapper({
   return (
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
-        //Css CssBaseline give a unified font family if mui theme provider does
-        not do
         <CssBaseline />
         <ClientConfigContext.Provider value={clientConfigValue}>
           <ClientInterfacesContext.Provider value={clientInterfacesValue}>
