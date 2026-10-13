@@ -13,6 +13,8 @@ import ButtonInfoDemo from "./ButtonInfoDemo";
 import ExternalLinkDemo from "./ExternalLinkDemo";
 import PanCopyrightDemo from "./PanCopyrightDemo";
 import PanAssetInstallDialogDemo from "./PanAssetInstallDialogDemo";
+import PanMultitasksDialogDemo from "./V1.0/PanMultitasksDialogDemo";
+import PanBasicDialogDemo from "./V1.0/PanBasicDialogDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -29,4 +31,6 @@ export {
   ExternalLinkDemo,
   PanCopyrightDemo,
   PanAssetInstallDialogDemo,
+  PanMultitasksDialogDemo,
+  PanBasicDialogDemo,
 };
