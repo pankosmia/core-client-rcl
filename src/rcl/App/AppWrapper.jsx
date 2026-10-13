@@ -59,7 +59,6 @@ function AppWrapper({
   const messageValue = { messages, setMessages };
 
   const { enqueueSnackbar } = useSnackbar();
-
   const [fontFamily, setFontFamily] = useState("");
 
   const [fontFamilyCorrespondance, setFontFamilyCorrespondance] =
@@ -108,8 +107,6 @@ function AppWrapper({
           .replace(/['"]/g, "") // remove quotes " or '
           .trim() // remove leading/trailing spaces
           .replace(/\s+/g, " "); // normalize multiple spaces
-
-        //console.log(cleanFamily);
 
         cores[cleanFamily.replaceAll(" ", "")] = cleanFamily;
       });
@@ -172,17 +169,6 @@ function AppWrapper({
     }
   }, [messages, enqueueSnackbar]);
 
-  /*
-   * Build the MUI theme.
-   *
-   * IMPORTANT:
-   * This must NOT have [] as its dependency array.
-   *
-   * The theme depends on:
-   * - themeSpec
-   * - typography direction
-   * - fontFamily
-   */
   useEffect(() => {
     const direction =
       typographyValue?.typography?.direction === "rtl" ? "rtl" : "ltr";
@@ -255,11 +241,7 @@ function AppWrapper({
 
     setTheme(newTheme);
   }, [themeSpec, fontFamily, typographyValue?.typography?.direction]);
-  console.log(fontFamily);
-  console.log(theme);
-  /*
-   * Create the Emotion cache after the theme exists.
-   */
+
   const cache = useMemo(() => {
     if (!theme) {
       return null;
@@ -303,6 +285,8 @@ function AppWrapper({
   return (
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
+        //Css CssBaseline give a unified font family if mui theme provider does
+        not do
         <CssBaseline />
         <ClientConfigContext.Provider value={clientConfigValue}>
           <ClientInterfacesContext.Provider value={clientInterfacesValue}>
