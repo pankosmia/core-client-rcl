@@ -18,7 +18,7 @@ import PanDialogActions from "../../PanDialogActions";
 import CloseIcon from "@mui/icons-material/Close";
 import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../../contexts/i18nContext";
-export default function PanMultitasksDialog({
+export default function PanAdvancedDialog({
   titleLabel,
   isOpen,
   closeFn,
@@ -102,21 +102,8 @@ export default function PanMultitasksDialog({
       </DialogContent>
       {!downSm && <Divider />}
       {!downSm && (
-        <DialogActions
-          sx={{
-            gap: 1,
-            "& > :not(style) ~ :not(style)": {
-              marginRight: "0 !important",
-              marginLeft: "0 !important",
-            },
-          }}
-        >
-          {actionsButtonArray && actionsButtonArray[0]
-            ? actionsButtonArray[0]
-            : null}
-          {actionsButtonArray && actionsButtonArray[1]
-            ? actionsButtonArray[1]
-            : null}
+        <DialogActions>
+          {actionsButtonArray && actionsButtonArray.map((b) => b)}
         </DialogActions>
       )}
     </Dialog>

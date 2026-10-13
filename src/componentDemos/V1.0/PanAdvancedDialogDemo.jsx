@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import PanMultitasksDialog from "../../rcl/v1.0/Dialog/PanMultitasksDialog";
+import PanAdvancedDialog from "../../rcl/v1.0/Dialog/PanAdvancedDialog";
 import {
   Button,
   DialogContent,
@@ -13,7 +13,7 @@ import { postEmptyJson } from "pankosmia-lib/http";
 import PanDialogActions from "../../rcl/PanDialogActions";
 import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
 
-export default function PanMultitasksDialogDemo() {
+export default function PanAdvancedDialogDemo() {
   const [openDialog1, setOpenDialog1] = useState(null);
   const { typographyRef } = useContext(TypographyContext);
   const test = [
@@ -30,9 +30,9 @@ export default function PanMultitasksDialogDemo() {
               setOpenDialog1(event.target);
             }}
           >
-            Test PanMultitaskDialog
+            Test PanAdvancedDialog
           </Button>
-          <PanMultitasksDialog
+          <PanAdvancedDialog
             titleLabel="A Pointless Dialog"
             isOpen={!!openDialog1}
             requiredFieldsLabel={true}
@@ -66,7 +66,7 @@ export default function PanMultitasksDialogDemo() {
               <Typography>{e}</Typography>
             ))}
             x
-          </PanMultitasksDialog>
+          </PanAdvancedDialog>
         </Grid>
       </Grid>
     </>

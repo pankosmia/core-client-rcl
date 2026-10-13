@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
 import { Box, CircularProgress } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -136,16 +136,26 @@ function AppWrapper({
     },
     themeSpec,
   );
-  const rtlCache = createCache({
-    key: "muirtl",
-    stylisPlugins: [prefixer, rtlPlugin],
-  });
+  const cache = useMemo(() => {
+    if (theme.direction === "rtl") {
+      return createCache({
+        key: "muirtl",
+        stylisPlugins: [prefixer, rtlPlugin],
+      });
+    }
+
+    return createCache({
+      key: "mui",
+      stylisPlugins: [prefixer],
+    });
+  }, [theme.direction]);
+
   useEffect(() => {
     document.documentElement.dir = theme.direction;
   }, [theme.direction]);
 
   return (
-    <CacheProvider value={rtlCache}>
+    <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
         <ClientConfigContext.Provider value={clientConfigValue}>
           <ClientInterfacesContext.Provider value={clientInterfacesValue}>

@@ -17,7 +17,7 @@ import {
   ExternalLinkDemo,
   PanCopyrightDemo,
   PanAssetInstallDialogDemo,
-  PanMultitasksDialogDemo,
+  PanAdvancedDialogDemo,
   PanBasicDialogDemo,
 } from "./componentDemos";
 
@@ -132,10 +132,10 @@ function App() {
       {/* 1.0 */}
       {tab === 1 && (
         <>
-          <Demo title="Multitasks Dialog">
-            <PanMultitasksDialogDemo />
+          <Demo title="PanAdvancedDialog">
+            <PanAdvancedDialogDemo />
           </Demo>
-          <Demo title="Basic Dialog">
+          <Demo title="PanBasicDialog">
             <PanBasicDialogDemo />
           </Demo>
         </>

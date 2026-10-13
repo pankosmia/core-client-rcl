@@ -22,6 +22,7 @@ export default function PanBasicDialog({
   dividers = false,
 }) {
   const theme = useTheme();
+  console.log(theme);
   const { i18nRef } = useContext(I18nContext);
   return (
     <Dialog
@@ -79,21 +80,8 @@ export default function PanBasicDialog({
       >
         {children}
       </DialogContent>
-      <DialogActions
-        sx={{
-          gap: 1,
-          "& > :not(style) ~ :not(style)": {
-            marginRight: "0 !important",
-            marginLeft: "0 !important",
-          },
-        }}
-      >
-        {actionsButtonArray && actionsButtonArray[0]
-          ? actionsButtonArray[0]
-          : null}
-        {actionsButtonArray && actionsButtonArray[1]
-          ? actionsButtonArray[1]
-          : null}
+      <DialogActions>
+        {actionsButtonArray && actionsButtonArray.map((b) => b)}
       </DialogActions>
     </Dialog>
   );
