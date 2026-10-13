@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, CssBaseline } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { getAndSetJson } from "pankosmia-lib/http";
@@ -57,24 +57,19 @@ function AppWrapper({
 }) {
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
+
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => {
-    const localHandler = (s) => {
-      const dataBits = s.split("--");
-      if (dataBits.length === 4) {
-        enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
-          variant: dataBits[0],
-          anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        });
-      }
-    };
 
-    if (messages.length > 0) {
-      messages.forEach((m) => localHandler(m));
-      setMessages([]);
-    }
-  }, [messages, enqueueSnackbar]);
+  const [fontFamily, setFontFamily] = useState("");
 
+  const [fontFamilyCorrespondance, setFontFamilyCorrespondance] =
+    useState(null);
+
+  /*
+   * IMPORTANT:
+   * themeSpec must be declared before any useEffect
+   * that uses it.
+   */
   const [themeSpec, setThemeSpec] = useState({
     palette: {
       primary: {
@@ -86,57 +81,190 @@ function AppWrapper({
     },
   });
 
-  useEffect(() => {
-    if (
-      themeSpec.palette &&
-      themeSpec.palette.primary &&
-      themeSpec.palette.primary.main &&
-      themeSpec.palette.primary.main === "#666"
-    ) {
-      getAndSetJson({
-        url: "/api/app-resources/themes/default.json",
-        setter: setThemeSpec,
-      }).then();
-    }
-  }, [themeSpec.palette]);
+  const [theme, setTheme] = useState(null);
 
-  const theme = createTheme(
-    {
-      direction: typographyValue.typography.direction,
-      components: {
-        MuiFab: {
-          styleOverrides: {
-            root: {
-              textTransform: "none",
+  /*
+   * Load the default Pankosmia theme.
+   *
+   * Only do this once.
+   */
+  useEffect(() => {
+    getAndSetJson({
+      url: "/api/app-resources/themes/default.json",
+      setter: setThemeSpec,
+    }).catch((error) => {
+      console.error("Failed to load Pankosmia theme:", error);
+    });
+  }, []);
+
+  /*
+   * Get the fonts available in the browser.
+   */
+  useEffect(() => {
+    let cores = {};
+    document.fonts.ready.then(() => {
+      document.fonts.forEach((f) => {
+        const cleanFamily = f.family
+          .replace(/['"]/g, "") // remove quotes " or '
+          .trim() // remove leading/trailing spaces
+          .replace(/\s+/g, " "); // normalize multiple spaces
+
+        //console.log(cleanFamily);
+
+        cores[cleanFamily.replaceAll(" ", "")] = cleanFamily;
+      });
+
+      setFontFamilyCorrespondance(cores);
+    });
+  }, []);
+
+  /*
+   * Match Pankosmia typography fonts with
+   * fonts available in the browser.
+   */
+  useEffect(() => {
+    if (fontFamilyCorrespondance) {
+      let stringFront = [];
+      let newFont = {};
+      let table =
+        typographyValue.typographyRef.current.font_set.split("Pankosmia");
+      table.shift();
+      table = table.map((e) => "Pankosmia" + e);
+      Object.entries(fontFamilyCorrespondance).forEach(([k, v]) => {
+        let index = table.indexOf(k);
+        if (index >= 0) {
+          newFont[index] = v;
+        }
+      });
+      for (let e = 0; e < Object.keys(table).length; e++) {
+        if (newFont[e]) {
+          stringFront.push(newFont[e]);
+        }
+      }
+      setFontFamily(stringFront);
+    }
+  }, [
+    typographyValue.typographyRef.current?.font_set,
+    fontFamilyCorrespondance,
+  ]);
+
+  /*
+   * Display messages through notistack.
+   */
+  useEffect(() => {
+    const localHandler = (s) => {
+      const dataBits = s.split("--");
+
+      if (dataBits.length === 4) {
+        enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
+          variant: dataBits[0],
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "right",
+          },
+        });
+      }
+    };
+
+    if (messages.length > 0) {
+      messages.forEach((m) => localHandler(m));
+      setMessages([]);
+    }
+  }, [messages, enqueueSnackbar]);
+
+  /*
+   * Build the MUI theme.
+   *
+   * IMPORTANT:
+   * This must NOT have [] as its dependency array.
+   *
+   * The theme depends on:
+   * - themeSpec
+   * - typography direction
+   * - fontFamily
+   */
+  useEffect(() => {
+    const direction =
+      typographyValue?.typography?.direction === "rtl" ? "rtl" : "ltr";
+
+    const newTheme = createTheme(
+      {
+        direction,
+        typography: {
+          ...(themeSpec.typography || {}),
+          fontFamily: fontFamily.length ? fontFamily.join(",") : "inherit",
+        },
+        components: {
+          MuiCssBaseline: {
+            styleOverrides: {
+              html: {
+                fontFamily: fontFamily.length
+                  ? fontFamily.join(",")
+                  : undefined,
+              },
+              body: {
+                fontFamily: fontFamily.length
+                  ? fontFamily.join(",")
+                  : undefined,
+              },
+              "#root": {
+                fontFamily: fontFamily.length
+                  ? fontFamily.join(",")
+                  : undefined,
+              },
+              "*, *::before, *::after": {
+                fontFamily: "inherit",
+              },
             },
           },
-        },
-        MuiButton: {
-          styleOverrides: {
-            root: {
-              textTransform: "none",
+          MuiFab: {
+            styleOverrides: {
+              root: {
+                textTransform: "none",
+              },
             },
           },
-        },
-        MuiTab: {
-          styleOverrides: {
-            root: {
-              textTransform: "none",
+
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                textTransform: "none",
+              },
             },
           },
-        },
-        MuiToggleButton: {
-          styleOverrides: {
-            root: {
-              textTransform: "none",
+
+          MuiTab: {
+            styleOverrides: {
+              root: {
+                textTransform: "none",
+              },
+            },
+          },
+
+          MuiToggleButton: {
+            styleOverrides: {
+              root: {
+                textTransform: "none",
+              },
             },
           },
         },
       },
-    },
-    themeSpec,
-  );
+      themeSpec,
+    );
+
+    setTheme(newTheme);
+  }, [themeSpec, fontFamily, typographyValue?.typography?.direction]);
+  console.log(fontFamily);
+  console.log(theme);
+  /*
+   * Create the Emotion cache after the theme exists.
+   */
   const cache = useMemo(() => {
+    if (!theme) {
+      return null;
+    }
+
     if (theme.direction === "rtl") {
       return createCache({
         key: "muirtl",
@@ -148,15 +276,34 @@ function AppWrapper({
       key: "mui",
       stylisPlugins: [prefixer],
     });
-  }, [theme.direction]);
+  }, [theme]);
 
+  /*
+   * Set document direction.
+   */
   useEffect(() => {
-    document.documentElement.dir = theme.direction;
-  }, [theme.direction]);
+    if (theme?.direction) {
+      document.documentElement.dir = theme.direction;
+    }
+  }, [theme?.direction]);
+
+  /*
+   * VERY IMPORTANT:
+   *
+   * Do not render ThemeProvider with theme={null}.
+   *
+   * This was the cause of:
+   *
+   * Cannot use 'in' operator to search for '$$material' in null
+   */
+  if (!theme || !cache) {
+    return <PlaceHolder />;
+  }
 
   return (
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <ClientConfigContext.Provider value={clientConfigValue}>
           <ClientInterfacesContext.Provider value={clientInterfacesValue}>
             <I18nContext.Provider value={i18nValue}>
@@ -173,9 +320,13 @@ function AppWrapper({
                               <ProductContext.Provider value={productValue}>
                                 <NetContext.Provider value={netValue}>
                                   <Box
-                                    sx={{ height: "100vh", overflow: "hidden" }}
+                                    sx={{
+                                      height: "100vh",
+                                      overflow: "hidden",
+                                    }}
                                   >
                                     {!i18nValue ||
+                                    !i18nValue.i18n ||
                                     Object.keys(i18nValue.i18n).length === 0 ? (
                                       <PlaceHolder />
                                     ) : (
