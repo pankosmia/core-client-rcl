@@ -8,6 +8,7 @@ export default function PanDialogButton({
   variant,
   isLoading,
   loadingLabel,
+  sx,
 }) {
   return (
     <Button
@@ -18,6 +19,7 @@ export default function PanDialogButton({
       }
       color="primary"
       variant={variant}
+      sx={sx}
     >
       {isLoading && loadingLabel ? loadingLabel : label}
     </Button>

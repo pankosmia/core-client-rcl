@@ -38,6 +38,9 @@ import PanCopyright from "./PanCopyright";
 import SectionDialogTitle from "./SectionDialogTitle";
 import AssetDownloadButton from "./tools/AssetDownloadButton";
 import AssetDownloadDialog from "./tools/AssetDownloadDialog";
+import PanAdvancedDialog from "./v1.0/Dialog/PanAdvancedDialog";
+import PanBasicDialog from "./v1.0/Dialog/PanBasicDialog";
+import PanDialogActionsArray from "./v1.0/Dialog/PanDialogActionsArray";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -79,4 +82,7 @@ export {
   ExternalLink,
   SectionDialogTitle,
   PanCopyright,
+  PanAdvancedDialog,
+  PanBasicDialog,
+  PanDialogActionsArray,
 };
