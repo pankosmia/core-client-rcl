@@ -22,7 +22,6 @@ export default function PanBasicDialog({
   dividers = false,
 }) {
   const theme = useTheme();
-  console.log(theme);
   const { i18nRef } = useContext(I18nContext);
   return (
     <Dialog
@@ -66,7 +65,7 @@ export default function PanBasicDialog({
           sx={{
             paddingTop: "20px",
             paddingBottom: "16px",
-            px: 4,
+            px: 3,
           }}
         >
           <Typography variant="subtitle2">

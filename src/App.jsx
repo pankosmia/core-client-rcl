@@ -25,6 +25,7 @@ import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
 import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
+import PanMenuWrapperDemo from "./componentDemos/V1.0/PanMenuWrapperDemo";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
@@ -137,6 +138,9 @@ function App() {
           </Demo>
           <Demo title="PanBasicDialog">
             <PanBasicDialogDemo />
+          </Demo>
+          <Demo title="PanMenuWrapper">
+            <PanMenuWrapperDemo />
           </Demo>
         </>
       )}
