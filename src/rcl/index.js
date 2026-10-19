@@ -41,6 +41,8 @@ import AssetDownloadDialog from "./tools/AssetDownloadDialog";
 import PanAdvancedDialog from "./v1.0/Dialog/PanAdvancedDialog";
 import PanBasicDialog from "./v1.0/Dialog/PanBasicDialog";
 import PanDialogActionsArray from "./v1.0/Dialog/PanDialogActionsArray";
+import PanMenuWrapper from "./v1.0/Menu/PanMenuWrapper";
+
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -85,4 +87,5 @@ export {
   PanAdvancedDialog,
   PanBasicDialog,
   PanDialogActionsArray,
+  PanMenuWrapper,
 };

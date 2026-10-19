@@ -89,7 +89,7 @@ export default function PanAdvancedDialog({
           sx={{
             paddingTop: "20px",
             paddingBottom: "16px",
-            px: 4,
+            px: 3,
           }}
         >
           <Typography variant="subtitle2">

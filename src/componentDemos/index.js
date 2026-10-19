@@ -15,6 +15,7 @@ import PanCopyrightDemo from "./PanCopyrightDemo";
 import PanAssetInstallDialogDemo from "./PanAssetInstallDialogDemo";
 import PanAdvancedDialogDemo from "./V1.0/PanAdvancedDialogDemo";
 import PanBasicDialogDemo from "./V1.0/PanBasicDialogDemo";
+import PanMenuWrapperDemo from "./V1.0/PanMenuWrapperDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -33,4 +34,5 @@ export {
   PanAssetInstallDialogDemo,
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
+  PanMenuWrapperDemo,
 };
