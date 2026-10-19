@@ -18,6 +18,7 @@ import ClientInterfacesContext from "../contexts/clientInterfacesContext";
 import SnippetContext from "../contexts/snippetContext";
 import WordContext from "../contexts/wordContext";
 import ProductContext from "../contexts/productContext";
+import BetaContext from "../contexts/betaContext";
 
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
@@ -54,6 +55,7 @@ function AppWrapper({
   snippetValue,
   wordValue,
   productValue,
+  betaValue,
 }) {
   const [messages, setMessages] = useState([]);
   const messageValue = { messages, setMessages };
@@ -286,48 +288,51 @@ function AppWrapper({
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ClientConfigContext.Provider value={clientConfigValue}>
-          <ClientInterfacesContext.Provider value={clientInterfacesValue}>
-            <I18nContext.Provider value={i18nValue}>
-              <SnippetContext.Provider value={snippetValue}>
-                <WordContext.Provider value={wordValue}>
-                  <TypographyContext.Provider value={typographyValue}>
-                    <AuthContext.Provider value={authValue}>
-                      <CurrentProjectContext.Provider
-                        value={currentProjectValue}
-                      >
-                        <BcvContext.Provider value={bcvValue}>
-                          <MessagesContext.Provider value={messageValue}>
-                            <DebugContext.Provider value={debugValue}>
-                              <ProductContext.Provider value={productValue}>
-                                <NetContext.Provider value={netValue}>
-                                  <Box
-                                    sx={{
-                                      height: "100vh",
-                                      overflow: "hidden",
-                                    }}
-                                  >
-                                    {!i18nValue ||
-                                    !i18nValue.i18n ||
-                                    Object.keys(i18nValue.i18n).length === 0 ? (
-                                      <PlaceHolder />
-                                    ) : (
-                                      children
-                                    )}
-                                  </Box>
-                                </NetContext.Provider>
-                              </ProductContext.Provider>
-                            </DebugContext.Provider>
-                          </MessagesContext.Provider>
-                        </BcvContext.Provider>
-                      </CurrentProjectContext.Provider>
-                    </AuthContext.Provider>
-                  </TypographyContext.Provider>
-                </WordContext.Provider>
-              </SnippetContext.Provider>
-            </I18nContext.Provider>
-          </ClientInterfacesContext.Provider>
-        </ClientConfigContext.Provider>
+        <BetaContext.Provider value={betaValue}>
+          <ClientConfigContext.Provider value={clientConfigValue}>
+            <ClientInterfacesContext.Provider value={clientInterfacesValue}>
+              <I18nContext.Provider value={i18nValue}>
+                <SnippetContext.Provider value={snippetValue}>
+                  <WordContext.Provider value={wordValue}>
+                    <TypographyContext.Provider value={typographyValue}>
+                      <AuthContext.Provider value={authValue}>
+                        <CurrentProjectContext.Provider
+                          value={currentProjectValue}
+                        >
+                          <BcvContext.Provider value={bcvValue}>
+                            <MessagesContext.Provider value={messageValue}>
+                              <DebugContext.Provider value={debugValue}>
+                                <ProductContext.Provider value={productValue}>
+                                  <NetContext.Provider value={netValue}>
+                                    <Box
+                                      sx={{
+                                        height: "100vh",
+                                        overflow: "hidden",
+                                      }}
+                                    >
+                                      {!i18nValue ||
+                                      !i18nValue.i18n ||
+                                      Object.keys(i18nValue.i18n).length ===
+                                        0 ? (
+                                        <PlaceHolder />
+                                      ) : (
+                                        children
+                                      )}
+                                    </Box>
+                                  </NetContext.Provider>
+                                </ProductContext.Provider>
+                              </DebugContext.Provider>
+                            </MessagesContext.Provider>
+                          </BcvContext.Provider>
+                        </CurrentProjectContext.Provider>
+                      </AuthContext.Provider>
+                    </TypographyContext.Provider>
+                  </WordContext.Provider>
+                </SnippetContext.Provider>
+              </I18nContext.Provider>
+            </ClientInterfacesContext.Provider>
+          </ClientConfigContext.Provider>
+        </BetaContext.Provider>
       </ThemeProvider>
     </CacheProvider>
   );

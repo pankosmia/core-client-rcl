@@ -9,6 +9,7 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 import AppWrapper from "./AppWrapper";
 import dcopy from "deep-copy";
 import { getJson } from "pankosmia-lib/http";
+
 function Spa({ children }) {
   const [enableNet, _setEnableNet] = useState(false);
   const enabledRef = useRef(enableNet);
@@ -22,6 +23,14 @@ function Spa({ children }) {
     debugRef.current = nv;
     _setDebug(nv);
   };
+
+  const [beta, _setBeta] = useState(false);
+  const betaRef = useRef(beta);
+  const setBeta = (nv) => {
+    betaRef.current = nv;
+    _setBeta(nv);
+  };
+
   const [auth, _setAuth] = useState({});
   const authRef = useRef(auth);
   const setAuth = (nv) => {
@@ -225,6 +234,10 @@ function Spa({ children }) {
       if (debugStatus !== debugRef.current) {
         setDebug(debugStatus);
       }
+      const betaStatus = statusBits[5] === "enabled";
+      if (betaStatus !== betaRef.current) {
+        setBeta(betaStatus);
+      }
     }
   };
 
@@ -388,6 +401,7 @@ function Spa({ children }) {
 
   const netValue = { enableNet, setEnableNet, enabledRef };
   const debugValue = { debug, setDebug, debugRef };
+  const betaValue = { beta, setBeta, betaRef };
   const bcvValue = { systemBcv, setSystemBcv, bcvRef };
   const authValue = { auth, setAuth, authRef };
   const i18nValue = { i18n, setI18n, i18nRef };
@@ -450,6 +464,7 @@ function Spa({ children }) {
         snippetValue={snippetValue}
         wordValue={wordValue}
         productValue={productValue}
+        betaValue={betaValue}
       >
         {children}
       </AppWrapper>
