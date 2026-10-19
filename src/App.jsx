@@ -19,13 +19,13 @@ import {
   PanAssetInstallDialogDemo,
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
+  PanMenuWrapperDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
 import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
-import PanMenuWrapperDemo from "./componentDemos/V1.0/PanMenuWrapperDemo";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
