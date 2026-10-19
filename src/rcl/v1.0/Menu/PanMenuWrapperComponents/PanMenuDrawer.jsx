@@ -12,6 +12,7 @@ export function PanMenuDrawer({ isOpen, setIsOpen, theme, children }) {
         sx: {
           width: "100%",
           boxSizing: "border-box",
+          overflow: "hidden",
         },
       }}
     >

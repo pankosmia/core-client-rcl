@@ -6,7 +6,7 @@ export function PanMenuItem({ icon = null, label, onClick }) {
       {icon ? (
         <ListItemIcon>{icon}</ListItemIcon>
       ) : (
-        <Box sx={{ width: "24px", height: "24px" }} />
+        <Box sx={{ width: "36px", height: "24px" }} />
       )}
       <ListItemText>{label}</ListItemText>
     </MenuItem>
