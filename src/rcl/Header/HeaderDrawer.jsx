@@ -31,7 +31,6 @@ function HeaderDrawer({ currentId }) {
   const [menuItems, setMenuItems] = useState([]);
 
   const theme = useTheme();
-  console.log(theme);
   const { i18nRef } = useContext(i18nContext);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
