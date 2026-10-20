@@ -8,15 +8,20 @@ import {
   ListItemText,
   ListItem,
   Switch,
+  Typography,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState, useRef, useContext } from "react";
 import { getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
+
 import netContext from "../contexts/netContext";
 import debugContext from "../contexts/debugContext";
 import i18nContext from "../contexts/i18nContext";
 import productContext from "../contexts/productContext";
+import BetaContext from "../contexts/betaContext";
+
 function HeaderDrawer({ currentId }) {
   // eslint-disable-next-line no-unused-vars
   const [drawerWidth, setDrawerWidth] = useState("auto");
@@ -25,10 +30,13 @@ function HeaderDrawer({ currentId }) {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
 
+  const theme = useTheme();
+  console.log(theme);
   const { i18nRef } = useContext(i18nContext);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
   const { productRef } = useContext(productContext);
+  const { betaRef } = useContext(BetaContext);
 
   useEffect(() => {
     const doFetch = async () => {
@@ -44,16 +52,14 @@ function HeaderDrawer({ currentId }) {
     };
     doFetch().then();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debugRef.current]);
-  const toggleDebug = (ev) => {
-    getJson(`/api/debug/${debugRef.current ? "disable" : "enable"}`).then(
-      () => {
-        ev.stopPropagation();
-        ev.preventDefault();
-      },
-    );
-  };
+  }, [betaRef.current, debugRef.current]);
 
+  const toggleBeta = (ev) => {
+    getJson(`/api/beta/${betaRef.current ? "disable" : "enable"}`).then(() => {
+      ev.stopPropagation();
+      ev.preventDefault();
+    });
+  };
   useEffect(() => {
     let timeoutId;
     if (drawerIsOpen && !widthLocked) {
@@ -143,17 +149,28 @@ function HeaderDrawer({ currentId }) {
                 />
               </ListItemButton>
             </ListItem>
-            <ListItemButton onClick={toggleDebug}>
+            <ListItemButton onClick={toggleBeta}>
               <ListItemText
                 primary={doI18n(`components:header:beta_mode`, i18nRef.current)}
               />
               <Switch
                 edge="end"
-                onChange={toggleDebug}
-                checked={debugRef.current}
+                onChange={toggleBeta}
+                checked={betaRef.current}
               />
             </ListItemButton>
           </List>
+          {debugRef.current && (
+            <Typography
+              sx={{
+                width: "100%",
+                textAlign: "center",
+                color: theme.palette.text.secondary,
+              }}
+            >
+              {doI18n(`components:header:debug_mode_active`, i18nRef.current)}
+            </Typography>
+          )}
         </Box>
       </Drawer>
     </Box>

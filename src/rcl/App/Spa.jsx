@@ -30,7 +30,6 @@ function Spa({ children }) {
     betaRef.current = nv;
     _setBeta(nv);
   };
-
   const [auth, _setAuth] = useState({});
   const authRef = useRef(auth);
   const setAuth = (nv) => {
@@ -225,7 +224,7 @@ function Spa({ children }) {
 
   const statusHandler = (ev) => {
     const statusBits = ev.data.split("--");
-    if (statusBits.length === 4) {
+    if (statusBits.length === 6) {
       const netStatus = statusBits[1] === "enabled";
       if (netStatus !== enabledRef.current) {
         setEnableNet(netStatus);
@@ -333,16 +332,16 @@ function Spa({ children }) {
     }
   };
 
-  const miscHandler = (ev) => {
-    const dataBits = ev.data.split("--");
-    if (dataBits.length === 4) {
-      enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
-        variant: dataBits[0],
-        anchorOrigin: { vertical: "bottom", horizontal: "left" },
-        persist: dataBits[0] === "error",
-      });
-    }
-  };
+  // const miscHandler = (ev) => {
+  //   const dataBits = ev.data.split("--");
+  //   if (dataBits.length === 4) {
+  //     enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
+  //       variant: dataBits[0],
+  //       anchorOrigin: { vertical: "bottom", horizontal: "left" },
+  //       persist: dataBits[0] === "error",
+  //     });
+  //   }
+  // };
 
   const alignmentHandler = () => {
     doFetchAlignment().then();
@@ -419,7 +418,6 @@ function Spa({ children }) {
   const snippetValue = { snippet, setSnippet, snippetRef };
   const wordValue = { word, setWord, wordRef };
   const clientConfigValue = { clientConfig, setClientConfig, clientConfigRef };
-  debugRef.current && console.log("Rerender Spa");
   const productValue = { product, setProduct, productRef };
 
   const CustomSnackbarContent = styled(MaterialDesignContent)(() => ({
