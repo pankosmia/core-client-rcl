@@ -87,8 +87,7 @@ export default function PanAdvancedDialog({
       {requiredFieldsLabel && (
         <Box
           sx={{
-            paddingTop: "20px",
-            paddingBottom: "16px",
+            py: 2,
             px: 3,
           }}
         >
@@ -97,7 +96,12 @@ export default function PanAdvancedDialog({
           </Typography>
         </Box>
       )}
-      <DialogContent sx={{ paddingTop: requiredFieldsLabel ? "0px" : "20px" }}>
+      <DialogContent
+        sx={{
+          paddingBottom: 2,
+          paddingTop: requiredFieldsLabel ? "0px" : "16px !important",
+        }}
+      >
         {children}
       </DialogContent>
       {!downSm && <Divider />}

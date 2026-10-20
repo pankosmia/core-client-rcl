@@ -9,6 +9,7 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 import AppWrapper from "./AppWrapper";
 import dcopy from "deep-copy";
 import { getJson } from "pankosmia-lib/http";
+
 function Spa({ children }) {
   const [enableNet, _setEnableNet] = useState(false);
   const enabledRef = useRef(enableNet);
@@ -21,6 +22,13 @@ function Spa({ children }) {
   const setDebug = (nv) => {
     debugRef.current = nv;
     _setDebug(nv);
+  };
+
+  const [beta, _setBeta] = useState(false);
+  const betaRef = useRef(beta);
+  const setBeta = (nv) => {
+    betaRef.current = nv;
+    _setBeta(nv);
   };
   const [auth, _setAuth] = useState({});
   const authRef = useRef(auth);
@@ -216,7 +224,7 @@ function Spa({ children }) {
 
   const statusHandler = (ev) => {
     const statusBits = ev.data.split("--");
-    if (statusBits.length === 4) {
+    if (statusBits.length === 6) {
       const netStatus = statusBits[1] === "enabled";
       if (netStatus !== enabledRef.current) {
         setEnableNet(netStatus);
@@ -224,6 +232,10 @@ function Spa({ children }) {
       const debugStatus = statusBits[3] === "enabled";
       if (debugStatus !== debugRef.current) {
         setDebug(debugStatus);
+      }
+      const betaStatus = statusBits[5] === "enabled";
+      if (betaStatus !== betaRef.current) {
+        setBeta(betaStatus);
       }
     }
   };
@@ -320,16 +332,16 @@ function Spa({ children }) {
     }
   };
 
-  const miscHandler = (ev) => {
-    const dataBits = ev.data.split("--");
-    if (dataBits.length === 4) {
-      enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
-        variant: dataBits[0],
-        anchorOrigin: { vertical: "bottom", horizontal: "left" },
-        persist: dataBits[0] === "error",
-      });
-    }
-  };
+  // const miscHandler = (ev) => {
+  //   const dataBits = ev.data.split("--");
+  //   if (dataBits.length === 4) {
+  //     enqueueSnackbar(`${dataBits[2]} => ${dataBits[3]}`, {
+  //       variant: dataBits[0],
+  //       anchorOrigin: { vertical: "bottom", horizontal: "left" },
+  //       persist: dataBits[0] === "error",
+  //     });
+  //   }
+  // };
 
   const alignmentHandler = () => {
     doFetchAlignment().then();
@@ -388,6 +400,7 @@ function Spa({ children }) {
 
   const netValue = { enableNet, setEnableNet, enabledRef };
   const debugValue = { debug, setDebug, debugRef };
+  const betaValue = { beta, setBeta, betaRef };
   const bcvValue = { systemBcv, setSystemBcv, bcvRef };
   const authValue = { auth, setAuth, authRef };
   const i18nValue = { i18n, setI18n, i18nRef };
@@ -405,7 +418,6 @@ function Spa({ children }) {
   const snippetValue = { snippet, setSnippet, snippetRef };
   const wordValue = { word, setWord, wordRef };
   const clientConfigValue = { clientConfig, setClientConfig, clientConfigRef };
-  debugRef.current && console.log("Rerender Spa");
   const productValue = { product, setProduct, productRef };
 
   const CustomSnackbarContent = styled(MaterialDesignContent)(() => ({
@@ -450,6 +462,7 @@ function Spa({ children }) {
         snippetValue={snippetValue}
         wordValue={wordValue}
         productValue={productValue}
+        betaValue={betaValue}
       >
         {children}
       </AppWrapper>

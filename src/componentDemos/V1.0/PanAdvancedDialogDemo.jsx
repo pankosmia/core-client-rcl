@@ -35,7 +35,7 @@ export default function PanAdvancedDialogDemo() {
           <PanAdvancedDialog
             titleLabel="A Pointless Dialog"
             isOpen={!!openDialog1}
-            requiredFieldsLabel={true}
+            requiredFieldsLabel={false}
             closeFn={() => setOpenDialog1(false)}
             actionsButtonArray={PanDialogActionsArray({
               actionLabel: "Do it!",

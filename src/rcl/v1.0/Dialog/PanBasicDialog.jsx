@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogActions,
+  Divider,
 } from "@mui/material";
 
 import { doI18n } from "pankosmia-lib/i18n";
@@ -60,10 +61,11 @@ export default function PanBasicDialog({
           {titleLabel}
         </Typography>
       </DialogTitle>
+      {dividers && <Divider />}
       {requiredFieldsLabel && (
         <Box
           sx={{
-            paddingTop: "20px",
+            paddingTop: dividers ? "16px" : "0px",
             paddingBottom: "16px",
             px: 3,
           }}
@@ -74,11 +76,14 @@ export default function PanBasicDialog({
         </Box>
       )}
       <DialogContent
-        dividers={dividers}
-        sx={{ paddingTop: requiredFieldsLabel ? "0px" : "20px" }}
+        sx={{
+          paddingTop: requiredFieldsLabel ? "0px" : "16px",
+          paddingBottom: 2,
+        }}
       >
         {children}
       </DialogContent>
+      {dividers && <Divider />}
       <DialogActions>
         {actionsButtonArray && actionsButtonArray.map((b) => b)}
       </DialogActions>
