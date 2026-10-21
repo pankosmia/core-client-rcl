@@ -18,7 +18,6 @@ export default function PanAdvancedDialogDemo() {
   const { typographyRef } = useContext(TypographyContext);
   const test = [
     1, 2, 3, 4, 5, 6, 7, 8, 89, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-    8, 8, 8, 8, 10, 11, 23, 4, 5, 7, 34, 5, 6, 7, 8, 9,
   ];
   return (
     <>
@@ -35,7 +34,7 @@ export default function PanAdvancedDialogDemo() {
           <PanAdvancedDialog
             titleLabel="A Pointless Dialog"
             isOpen={!!openDialog1}
-            requiredFieldsLabel={false}
+            requiredFieldsLabel={true}
             closeFn={() => setOpenDialog1(false)}
             actionsButtonArray={PanDialogActionsArray({
               actionLabel: "Do it!",
