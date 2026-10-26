@@ -135,7 +135,7 @@ function HeaderDrawer({ currentId }) {
                 </ListItem>
               ),
             )}
-            {debugRef.current && (
+            {debugRef.current && menuItemsDebug.length > 0 && (
               <>
                 <ListSubheader>
                   {doI18n(`components:header:debug_mode`, i18nRef.current)}
