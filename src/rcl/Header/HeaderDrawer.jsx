@@ -10,6 +10,7 @@ import {
   Switch,
   Typography,
   useTheme,
+  ListSubheader,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState, useRef, useContext } from "react";
@@ -29,6 +30,7 @@ function HeaderDrawer({ currentId }) {
   const measurementRef = useRef(null);
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
+  const [menuItemsDebug, setMenuItemsDebug] = useState([]);
 
   const theme = useTheme();
   const { i18nRef } = useContext(i18nContext);
@@ -42,10 +44,10 @@ function HeaderDrawer({ currentId }) {
       const fetched = await getJson("/api/list-clients", debugRef.current);
       if (fetched.ok) {
         setMenuItems(
-          fetched.json.filter(
-            (i) =>
-              !i.exclude_from_menu && (debugRef.current || !i.requires.debug),
-          ),
+          fetched.json.filter((i) => !i.exclude_from_menu && !i.requires.debug),
+        );
+        setMenuItemsDebug(
+          fetched.json.filter((i) => !i.exclude_from_menu && i.requires.debug),
         );
       }
     };
@@ -132,6 +134,30 @@ function HeaderDrawer({ currentId }) {
                   </ListItemButton>
                 </ListItem>
               ),
+            )}
+            {debugRef.current && (
+              <>
+                <ListSubheader>
+                  {doI18n(`components:header:debug_mode`, i18nRef.current)}
+                </ListSubheader>
+                {menuItemsDebug.map((mi, n) => (
+                  <ListItem key={n} disablePadding>
+                    <ListItemButton
+                      disabled={mi.requires.net && !netEnabled.current}
+                      onClick={() => {
+                        window.location.href = mi.url;
+                      }}
+                    >
+                      <ListItemText
+                        primary={doI18n(
+                          `pages:${mi.id}:title`,
+                          i18nRef.current,
+                        )}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </>
             )}
           </List>
           <Box sx={{ flexGrow: 1 }} />
