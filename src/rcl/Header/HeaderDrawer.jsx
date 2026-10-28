@@ -90,15 +90,20 @@ function HeaderDrawer({ currentId }) {
       <Drawer
         open={drawerIsOpen}
         onClose={() => setDrawerIsOpen(false)}
-        sx={{ width: "100%", height: "100%", overflow: "hidden" }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            overflow: "hidden",
+          },
+        }}
       >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             minWidth: "16rem",
-            overflow: "hidden",
-            minHeight: isAndroid ? "calc(100vh - 60px)" : "100vh",
+            height: isAndroid ? "calc(100vh - 60px)" : "100vh",
+            overflowY: "auto",
+            overflowX: "hidden",
             m: 0,
             p: 0,
             paddingTop: androidPadding,
