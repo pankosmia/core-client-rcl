@@ -34,6 +34,18 @@ export default function PanAdvancedDialog({
       fullScreen={downSm}
       open={isOpen}
       sx={{ overflow: "hidden" }}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter") return;
+        // Don't trigger on Enter inside a textarea
+        const primaryAction = actionsButtonArray?.[1];
+        if (
+          primaryAction?.props?.actionFn &&
+          !primaryAction.props?.isDisabled
+        ) {
+          event.preventDefault();
+          primaryAction.props.actionFn();
+        }
+      }}
       slotProps={{
         sx: {
           overflow: "hidden !important",

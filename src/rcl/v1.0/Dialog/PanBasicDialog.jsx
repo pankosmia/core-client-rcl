@@ -43,6 +43,18 @@ export default function PanBasicDialog({
           },
         },
       }}
+      onKeyDown={(event) => {
+        if (event.key !== "Enter") return;
+        // Don't trigger on Enter inside a textarea
+        const primaryAction = actionsButtonArray?.[1];
+        if (
+          primaryAction?.props?.actionFn &&
+          !primaryAction.props?.isDisabled
+        ) {
+          event.preventDefault();
+          primaryAction.props.actionFn();
+        }
+      }}
       maxWidth="sm"
       fullWidth={false}
     >
