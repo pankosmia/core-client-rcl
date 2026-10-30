@@ -1,73 +1,101 @@
-import { useState, useContext } from "react";
-import PanAdvancedDialog from "../../rcl/v1.0/Dialog/PanAdvancedDialog";
+import { useContext, useState } from "react";
 import {
   Button,
-  DialogContent,
   DialogContentText,
   Grid,
-  Box,
+  TextField,
   Typography,
 } from "@mui/material";
+
+import PanAdvancedDialog from "../../rcl/v1.0/Dialog/PanAdvancedDialog";
 import TypographyContext from "../../rcl/contexts/typographyContext";
-import { postEmptyJson } from "pankosmia-lib/http";
-import PanDialogActions from "../../rcl/PanDialogActions";
 import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
+import { postEmptyJson } from "pankosmia-lib/http";
 
 export default function PanAdvancedDialogDemo() {
-  const [openDialog1, setOpenDialog1] = useState(null);
+  const [openDialog1, setOpenDialog1] = useState(false);
+  const [actionCount, setActionCount] = useState(0);
+
   const { typographyRef } = useContext(TypographyContext);
-  const test = [
-    1, 2, 3, 4, 5, 6, 7, 8, 89, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-  ];
+
+  const handleAction = () => {
+    setActionCount((count) => count + 1);
+    console.log("button pressed");
+  };
+
+  const test = Array.from({ length: 30 }, (_, index) => index + 1);
+
   return (
-    <>
-      <Grid container spacing={8}>
-        <Grid size={4}>
+    <Grid container spacing={8}>
+      <Grid size={4}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setOpenDialog1(true);
+          }}
+        >
+          Test PanAdvancedDialog
+        </Button>
+
+        <PanAdvancedDialog
+          titleLabel="A Pointless Dialog"
+          isOpen={openDialog1}
+          requiredFieldsLabel
+          closeFn={() => setOpenDialog1(false)}
+          actionsButtonArray={PanDialogActionsArray({
+            actionLabel: "Do it!",
+            closeFn: () => setOpenDialog1(false),
+            closeLabel: "Don't do it!",
+            closeOnAction: false,
+            actionFn: handleAction,
+          })}
+        >
+          <DialogContentText sx={{ mb: 2 }}>
+            Press <strong>Enter</strong> anywhere in this dialog to execute
+            <strong> Do it!</strong>.
+          </DialogContentText>
+
+          <Typography sx={{ mb: 2 }}>
+            Action count: <strong>{actionCount}</strong>
+          </Typography>
+
           <Button
-            variant="contained"
-            onClick={(event) => {
-              setOpenDialog1(event.target);
+            sx={{ mr: 1 }}
+            onClick={() => {
+              postEmptyJson(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
+              );
             }}
           >
-            Test PanAdvancedDialog
+            RTL
           </Button>
-          <PanAdvancedDialog
-            titleLabel="A Pointless Dialog"
-            isOpen={!!openDialog1}
-            requiredFieldsLabel={true}
-            closeFn={() => setOpenDialog1(false)}
-            actionsButtonArray={PanDialogActionsArray({
-              actionLabel: "Do it!",
-              closeFn: () => setOpenDialog1(false),
-              closeLabel: "Don't do it!",
-              closeOnAction: false,
-            })}
+
+          <Button
+            onClick={() => {
+              postEmptyJson(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
+              );
+            }}
           >
-            <Button
-              onClick={() => {
-                postEmptyJson(
-                  `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
-                );
-              }}
-            >
-              rtl
-            </Button>
-            <Button
-              onClick={() => {
-                postEmptyJson(
-                  `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
-                );
-              }}
-            >
-              ltr
-            </Button>
-            {test.map((e) => (
-              <Typography>{e}</Typography>
-            ))}
-            x
-          </PanAdvancedDialog>
-        </Grid>
+            LTR
+          </Button>
+
+          <TextField fullWidth label="Test input" sx={{ mt: 3, mb: 3 }} />
+
+          <TextField
+            fullWidth
+            multiline
+            minRows={4}
+            label="Textarea"
+            placeholder="Enter should NOT submit from here"
+            sx={{ mb: 3 }}
+          />
+
+          {test.map((value) => (
+            <Typography key={value}>{value}</Typography>
+          ))}
+        </PanAdvancedDialog>
       </Grid>
-    </>
+    </Grid>
   );
 }
