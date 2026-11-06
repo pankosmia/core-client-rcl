@@ -298,7 +298,7 @@ export default function PanDownload({
           `${params.row.abbreviation} ${doI18n(
             "pages:core-remote-resources:failed",
             i18nRef.current,
-          )} : ${fetchResponse.error} (${fetchResponse.status})`,
+          )} : ${fetchResponse.error.reason} (${fetchResponse.status})`,
           { variant: "error" },
         );
         setIsDownloading((isDownloadingCurrent) => ({

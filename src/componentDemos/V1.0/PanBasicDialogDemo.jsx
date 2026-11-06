@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 import TypographyContext from "../../rcl/contexts/typographyContext";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
 import PanBasicDialog from "../../rcl/v1.0/Dialog/PanBasicDialog";
 
@@ -61,7 +61,7 @@ export default function PanBasicDialogDemo() {
             <Box>
               <Button
                 onClick={() => {
-                  postEmptyJson(
+                  postEmpty(
                     `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
                   );
                 }}
@@ -71,7 +71,7 @@ export default function PanBasicDialogDemo() {
 
               <Button
                 onClick={() => {
-                  postEmptyJson(
+                  postEmpty(
                     `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
                   );
                 }}

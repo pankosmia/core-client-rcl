@@ -16,7 +16,7 @@ import { PanDownload, PanDialog, PanDialogActions } from "../rcl";
 import netContext from "../rcl/contexts/netContext";
 import debugContext from "../rcl/contexts/debugContext";
 import PropsPanel from "./PropsPanel";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n"; // assuming doI18n is exported here
 import I18nContext from "../rcl/contexts/i18nContext";
 import { CorporateFare, Login } from "@mui/icons-material";
@@ -162,7 +162,7 @@ export default function PanDownloadDemo() {
       if (postType === "clone") fetchUrl += "?branch=main";
     }
 
-    let response = await postEmptyJson(fetchUrl, debugRef.current);
+    let response = await postEmpty(fetchUrl, debugRef.current);
 
     return response;
   }

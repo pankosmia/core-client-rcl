@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
-import { getJson, postEmptyJson } from "pankosmia-lib/http";
+import { getJson, postEmpty } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import InternetWarningDialog from "./InternetWarningDialog";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -22,7 +22,7 @@ export default function InternetSwitch({
   const [nameProduct, setNameProduct] = useState("");
 
   const disableInternet = () => {
-    postEmptyJson("/api/net/disable", debug);
+    postEmpty("/api/net/disable", debug);
   };
 
   const handleInternetToggleClick = (event, newAlignment) => {
