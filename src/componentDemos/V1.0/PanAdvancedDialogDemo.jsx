@@ -10,7 +10,7 @@ import {
 import PanAdvancedDialog from "../../rcl/v1.0/Dialog/PanAdvancedDialog";
 import TypographyContext from "../../rcl/contexts/typographyContext";
 import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 
 export default function PanAdvancedDialogDemo() {
   const [openDialog1, setOpenDialog1] = useState(false);
@@ -62,7 +62,7 @@ export default function PanAdvancedDialogDemo() {
           <Button
             sx={{ mr: 1 }}
             onClick={() => {
-              postEmptyJson(
+              postEmpty(
                 `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
               );
             }}
@@ -72,7 +72,7 @@ export default function PanAdvancedDialogDemo() {
 
           <Button
             onClick={() => {
-              postEmptyJson(
+              postEmpty(
                 `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
               );
             }}

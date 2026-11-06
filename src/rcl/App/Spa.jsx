@@ -124,7 +124,7 @@ function Spa({ children }) {
     if (i18nResponse.ok) {
       setI18n(i18nResponse.json);
     } else {
-      enqueueSnackbar(`Could not load i18n: ${i18nResponse.error}`, {
+      enqueueSnackbar(`Could not load i18n: ${i18nResponse.error.reason}`, {
         variant: "error",
         anchorOrigin: { vertical: "bottom", horizontal: "left" },
         persist: true,
@@ -140,11 +140,14 @@ function Spa({ children }) {
     if (typoResponse.ok) {
       setTypography(typoResponse.json);
     } else {
-      enqueueSnackbar(`Could not load typography: ${typoResponse.error}`, {
-        variant: "error",
-        anchorOrigin: { vertical: "bottom", horizontal: "left" },
-        persist: true,
-      });
+      enqueueSnackbar(
+        `Could not load typography: ${typoResponse.error.reason}`,
+        {
+          variant: "error",
+          anchorOrigin: { vertical: "bottom", horizontal: "left" },
+          persist: true,
+        },
+      );
     }
   };
 
@@ -154,7 +157,7 @@ function Spa({ children }) {
       setProduct(productResponse.json);
     } else {
       enqueueSnackbar(
-        `Could not load version for product: ${productResponse.error}`,
+        `Could not load version for product: ${productResponse.error.reason}`,
         {
           variant: "error",
           anchorOrigin: { vertical: "bottom", horizontal: "left" },
@@ -180,11 +183,14 @@ function Spa({ children }) {
         setWord(newWord);
       }
     } else {
-      enqueueSnackbar(`Could not load alignment: ${alignmentResponse.error}`, {
-        variant: "error",
-        anchorOrigin: { vertical: "bottom", horizontal: "left" },
-        persist: true,
-      });
+      enqueueSnackbar(
+        `Could not load alignment: ${alignmentResponse.error.reason}`,
+        {
+          variant: "error",
+          anchorOrigin: { vertical: "bottom", horizontal: "left" },
+          persist: true,
+        },
+      );
     }
   };
 
@@ -212,7 +218,7 @@ function Spa({ children }) {
           verseNum: serverOb.verse,
         });
       } else {
-        enqueueSnackbar(`Could not load bcv: ${bcvResponse.error}`, {
+        enqueueSnackbar(`Could not load bcv: ${bcvResponse.error.reason}`, {
           variant: "error",
           anchorOrigin: { vertical: "bottom", horizontal: "left" },
           persist: true,

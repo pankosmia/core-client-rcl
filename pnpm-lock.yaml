@@ -41,8 +41,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       pankosmia-lib:
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: 0.0.5
+        version: 0.0.5
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
@@ -3886,11 +3886,12 @@ packages:
       }
     engines: { node: ">=10" }
 
-  pankosmia-lib@0.0.3:
+  pankosmia-lib@0.0.5:
     resolution:
       {
-        integrity: sha512-aOANGTQvag5anAadz7Jn52wQYhJiDlEDPT6pRBXzEf9JecKyvW1sQL82wTFdeRU8PRJghIl1oMW9AhFBocPr9g==,
+        integrity: sha512-1CU5spmmdG/63JTWcuKs08d+4Nv+VciEy9YwUPoK8SI2QvFKkZXgUF2aCP5udk1hGWsFo+9yZgluAuRJUnimoQ==,
       }
+    engines: { node: ">=24", pnpm: 11.20.0 }
 
   parent-module@1.0.1:
     resolution:
@@ -7308,7 +7309,7 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
-  pankosmia-lib@0.0.3: {}
+  pankosmia-lib@0.0.5: {}
 
   parent-module@1.0.1:
     dependencies:

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import { doI18n } from "pankosmia-lib/i18n";
-import { postEmptyJson } from "pankosmia-lib/http";
+import { postEmpty } from "pankosmia-lib/http";
 import debugContext from "./contexts/debugContext";
 import i18nContext from "./contexts/i18nContext";
 import netContext from "./contexts/netContext";
@@ -53,7 +53,7 @@ export default function InternetWarningDialog({
   };
 
   const enableInternet = () => {
-    postEmptyJson("/api/net/enable", debugRef.current);
+    postEmpty("/api/net/enable", debugRef.current);
   };
 
   return (
