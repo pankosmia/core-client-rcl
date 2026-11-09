@@ -15,7 +15,7 @@ import PanCopyrightDemo from "./PanCopyrightDemo";
 import PanAssetInstallDialogDemo from "./PanAssetInstallDialogDemo";
 import PanAdvancedDialogDemo from "./V1.0/Dialog/PanAdvancedDialogDemo";
 import PanBasicDialogDemo from "./V1.0/Dialog/PanBasicDialogDemo";
-import PanMenuWrapperDemo from "./V1.0/PanMenuWrapperDemo";
+import PanMenuWrapperDemo from "./V1.0/Menu/PanMenuWrapperDemo";
 import AppBarDemo from "./V1.0/AppBar/AppBarDemo";
 
 export {

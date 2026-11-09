@@ -44,6 +44,7 @@ import PanDialogActionsArray from "./v1.0/Dialog/PanDialogActionsArray";
 import PanMenuWrapper from "./v1.0/Menu/PanMenuWrapper";
 import BasiqueAppBar from "./v1.0/AppBar/BasiqueAppBar";
 import WrapperAppBar from "./v1.0/AppBar/WrapperAppBar";
+import AdvancedAppBar from "./v1.0/AppBar/AdvancedAppBar";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -91,4 +92,5 @@ export {
   PanMenuWrapper,
   BasiqueAppBar,
   WrapperAppBar,
+  AdvancedAppBar,
 };

@@ -1,5 +1,6 @@
 import BasiqueAppBar from "../../../rcl/v1.0/AppBar/BasiqueAppBar";
 import WrapperAppBar from "../../../rcl/v1.0/AppBar/WrapperAppBar";
+import AdvancedAppBar from "../../../rcl/v1.0/AppBar/AdvancedAppBar";
 import { Box, Typography } from "@mui/material";
 export default function BasiqueAppBarDemo() {
   return (
@@ -13,6 +14,8 @@ export default function BasiqueAppBarDemo() {
       <WrapperAppBar />
       <Typography>BasiqueAppBar</Typography>
       <BasiqueAppBar titleKey={"BasiqueAppBar"} />
+      <Typography>AdvancedAppBar</Typography>
+      <AdvancedAppBar />
     </Box>
   );
 }
