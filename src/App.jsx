@@ -34,6 +34,7 @@ function App() {
   );
 
   const [tab, setTab] = useState(0);
+  const [v1Tab, setV1Tab] = useState(0);
 
   const handleWindowResize = useCallback(() => {
     setMaxWindowHeight(window.innerHeight - 64);
@@ -134,18 +135,37 @@ function App() {
       {/* 1.0 */}
       {tab === 1 && (
         <>
-          <Demo title="PanAdvancedDialog">
-            <PanAdvancedDialogDemo />
-          </Demo>
-          <Demo title="PanBasicDialog">
-            <PanBasicDialogDemo />
-          </Demo>
-          <Demo title="PanMenuWrapper">
-            <PanMenuWrapperDemo />
-          </Demo>
-          <Demo title="Basique AppBar">
-            <BasiqueAppBarDemo />
-          </Demo>
+          <Tabs
+            value={v1Tab}
+            onChange={(event, newValue) => setV1Tab(newValue)}
+          >
+            <Tab label="Dialog" />
+            <Tab label="Menu" />
+            <Tab label="AppBar" />
+          </Tabs>
+
+          {v1Tab === 0 && (
+            <>
+              <Demo title="PanAdvancedDialog">
+                <PanAdvancedDialogDemo />
+              </Demo>
+              <Demo title="PanBasicDialog">
+                <PanBasicDialogDemo />
+              </Demo>
+            </>
+          )}
+
+          {v1Tab === 1 && (
+            <Demo title="PanMenuWrapper">
+              <PanMenuWrapperDemo />
+            </Demo>
+          )}
+
+          {v1Tab === 2 && (
+            <Demo title="Basique AppBar">
+              <BasiqueAppBarDemo />
+            </Demo>
+          )}
         </>
       )}
     </Box>
