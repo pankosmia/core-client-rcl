@@ -20,6 +20,7 @@ import {
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
   PanMenuWrapperDemo,
+  BasiqueAppBarDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
@@ -141,6 +142,9 @@ function App() {
           </Demo>
           <Demo title="PanMenuWrapper">
             <PanMenuWrapperDemo />
+          </Demo>
+          <Demo title="Basique AppBar">
+            <BasiqueAppBarDemo />
           </Demo>
         </>
       )}
