@@ -20,7 +20,7 @@ import {
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
   PanMenuWrapperDemo,
-  BasiqueAppBarDemo,
+  AppBarDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
@@ -162,8 +162,8 @@ function App() {
           )}
 
           {v1Tab === 2 && (
-            <Demo title="Basique AppBar">
-              <BasiqueAppBarDemo />
+            <Demo title="AppBar">
+              <AppBarDemo />
             </Demo>
           )}
         </>
