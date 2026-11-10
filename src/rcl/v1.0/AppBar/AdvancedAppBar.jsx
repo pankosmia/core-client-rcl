@@ -22,8 +22,10 @@ import LibraryBooksOutlinedIcon from "@mui/icons-material/LibraryBooksOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import netContext from "../../../rcl/contexts/netContext";
 import debugContext from "../../../rcl/contexts/debugContext";
+import i18nContext from "../../../rcl/contexts/i18nContext";
 import InternetWarningDialog from "../../InternetWarningDialog";
 import { postEmpty } from "pankosmia-lib/http";
+import { doI18n } from "pankosmia-lib/i18n";
 
 export default function AdvancedAppBar({ navigation }) {
   const theme = useTheme();
@@ -33,6 +35,7 @@ export default function AdvancedAppBar({ navigation }) {
   const [menuOpenMoreVert, setMenuOpenMoreVert] = useState(false);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
+  const { i18nRef } = useContext(i18nContext);
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const downsm = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -100,27 +103,37 @@ export default function AdvancedAppBar({ navigation }) {
           {downsm && (
             <MenuItem>
               <ListItemIcon>{<IconSetting />}</ListItemIcon>
-              <ListItemText>Setting</ListItemText>
+              <ListItemText>
+                {doI18n("components:header:setting", i18nRef.current)}
+              </ListItemText>
             </MenuItem>
           )}
           <MenuItem onClick={toggleInternet}>
             <ListItemIcon>
               {enabledRef.current ? <Check fontSize="small" /> : null}
             </ListItemIcon>
-            <ListItemText>Online mode</ListItemText>
+            <ListItemText>
+              {doI18n("components:header:online_mode", i18nRef.current)}
+            </ListItemText>
           </MenuItem>
           <Divider />
           <MenuItem>
             <ListItemIcon>{<EditOutlinedIcon />}</ListItemIcon>
-            <ListItemText>My projects</ListItemText>
+            <ListItemText>
+              {doI18n("library:pankosmia-rcl:my_project", i18nRef.current)}
+            </ListItemText>
           </MenuItem>
           <MenuItem>
             <ListItemIcon>{<PictureAsPdfOutlinedIcon />}</ListItemIcon>
-            <ListItemText>PDF Publisher</ListItemText>
+            <ListItemText>
+              {doI18n("library:pankosmia-rcl:pdf_publisher", i18nRef.current)}
+            </ListItemText>
           </MenuItem>
           <MenuItem>
             <ListItemIcon>{<LibraryBooksOutlinedIcon />}</ListItemIcon>
-            <ListItemText>Content Manager</ListItemText>
+            <ListItemText>
+              {doI18n("library:pankosmia-rcl:content_manager", i18nRef.current)}
+            </ListItemText>
           </MenuItem>
         </PanMenuWrapper>
         <InternetWarningDialog
