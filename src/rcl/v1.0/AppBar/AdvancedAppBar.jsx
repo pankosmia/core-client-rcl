@@ -4,10 +4,10 @@ import IconSetting from "./Icons/IconSetting";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import WrapperAppBar from "./WrapperAppBar";
 
-export default function AdvancedAppBar({ children }) {
+export default function AdvancedAppBar({ navigation }) {
   return (
     <WrapperAppBar>
-      {children}
+      {navigation}
       <Box
         sx={{
           display: "flex",
