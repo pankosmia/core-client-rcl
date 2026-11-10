@@ -1,6 +1,7 @@
 import { IconButton, Box } from "@mui/material";
 import IconLayout from "./Icons/IconLayout";
 import IconSetting from "./Icons/IconSetting";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import WrapperAppBar from "./WrapperAppBar";
 
 export default function AdvancedAppBar({ children }) {
@@ -22,7 +23,7 @@ export default function AdvancedAppBar({ children }) {
           <IconSetting />
         </IconButton>
         <IconButton>
-          {/* Add icon or content for the IconButton here */}
+          <MoreVertOutlinedIcon />
         </IconButton>
       </Box>
     </WrapperAppBar>
