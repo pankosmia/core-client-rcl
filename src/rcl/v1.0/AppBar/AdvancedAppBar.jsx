@@ -35,6 +35,7 @@ export default function AdvancedAppBar({ navigation }) {
   const [menuOpenLayout, setMenuOpenLayout] = useState(false);
   const [menuOpenMoreVert, setMenuOpenMoreVert] = useState(false);
   const [nameProduct, setNameProduct] = useState("");
+  const [listClients, setListClients] = useState([]);
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(i18nContext);
@@ -63,6 +64,19 @@ export default function AdvancedAppBar({ navigation }) {
       .then((data) => setNameProduct(data.product_name))
       .catch((err) => console.error("Error :", err));
   }, []);
+  useEffect(() => {
+    getJson("/api/list-clients")
+      .then((res) => res.json)
+      .then((data) => setListClients(data))
+      .catch((err) => console.error("Error :", err));
+  }, []);
+  const goToClient = (clientId) => {
+    const client = listClients.find((c) => c.id === clientId);
+    if (client) {
+      setMenuOpenMoreVert(false);
+      window.location.href = client.url;
+    }
+  };
   return (
     <WrapperAppBar>
       {navigation}
@@ -91,7 +105,9 @@ export default function AdvancedAppBar({ navigation }) {
         >
           <MenuItem>
             <ListItemIcon>{<AddOutlinedIcon />}</ListItemIcon>
-            <ListItemText>Add to workspace</ListItemText>
+            <ListItemText>
+              {doI18n("library:pankosmia-rcl:add_workspace", i18nRef.current)}
+            </ListItemText>
           </MenuItem>
         </PanMenuWrapper>
         {!downsm && (
@@ -133,24 +149,35 @@ export default function AdvancedAppBar({ navigation }) {
             </ListItemIcon>
           </MenuItem>
           <Divider />
-          <MenuItem>
-            <ListItemIcon>{<EditOutlinedIcon />}</ListItemIcon>
-            <ListItemText>
-              {doI18n("library:pankosmia-rcl:my_project", i18nRef.current)}
-            </ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>{<PictureAsPdfOutlinedIcon />}</ListItemIcon>
-            <ListItemText>
-              {doI18n("library:pankosmia-rcl:pdf_publisher", i18nRef.current)}
-            </ListItemText>
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>{<LibraryBooksOutlinedIcon />}</ListItemIcon>
-            <ListItemText>
-              {doI18n("library:pankosmia-rcl:content_manager", i18nRef.current)}
-            </ListItemText>
-          </MenuItem>
+          {listClients.some((client) => client.id === "core-dashboard") && (
+            <MenuItem onClick={() => goToClient("core-dashboard")}>
+              <ListItemIcon>{<EditOutlinedIcon />}</ListItemIcon>
+              <ListItemText>
+                {doI18n("library:pankosmia-rcl:my_project", i18nRef.current)}
+              </ListItemText>
+            </MenuItem>
+          )}
+          {listClients.some(
+            (client) => client.id === "core-client_pdf_publisher",
+          ) && (
+            <MenuItem onClick={() => goToClient("core-client_pdf_publisher")}>
+              <ListItemIcon>{<PictureAsPdfOutlinedIcon />}</ListItemIcon>
+              <ListItemText>
+                {doI18n("library:pankosmia-rcl:pdf_publisher", i18nRef.current)}
+              </ListItemText>
+            </MenuItem>
+          )}
+          {listClients.some((client) => client.id === "content") && (
+            <MenuItem onClick={() => goToClient("content")}>
+              <ListItemIcon>{<LibraryBooksOutlinedIcon />}</ListItemIcon>
+              <ListItemText>
+                {doI18n(
+                  "library:pankosmia-rcl:content_manager",
+                  i18nRef.current,
+                )}
+              </ListItemText>
+            </MenuItem>
+          )}
         </PanMenuWrapper>
         <InternetWarningDialog
           internetDialogOpen={internetDialogOpen}
