@@ -103,12 +103,16 @@ export default function AdvancedAppBar({ navigation }) {
           setIsOpen={setMenuOpenLayout}
           isOpen={menuOpenLayout}
         >
-          <MenuItem>
-            <ListItemIcon>{<AddOutlinedIcon />}</ListItemIcon>
-            <ListItemText>
-              {doI18n("library:pankosmia-rcl:add_workspace", i18nRef.current)}
-            </ListItemText>
-          </MenuItem>
+          {listClients.some(
+            (client) => client.id === "core-local-workspace",
+          ) && (
+            <MenuItem onClick={() => goToClient("core-local-workspace")}>
+              <ListItemIcon>{<AddOutlinedIcon />}</ListItemIcon>
+              <ListItemText>
+                {doI18n("library:pankosmia-rcl:add_workspace", i18nRef.current)}
+              </ListItemText>
+            </MenuItem>
+          )}
         </PanMenuWrapper>
         {!downsm && (
           <IconButton color="inherit">
