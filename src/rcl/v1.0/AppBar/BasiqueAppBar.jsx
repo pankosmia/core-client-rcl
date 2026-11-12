@@ -1,13 +1,8 @@
 import IconButton from "@mui/material/IconButton";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
-import { Typography, Box, Toolbar } from "@mui/material";
-import TypographyContext from "../../../rcl/contexts/typographyContext";
-import { useContext } from "react";
+import { Typography } from "@mui/material";
 import WrapperAppBar from "./WrapperAppBar";
 export default function BasiqueAppBar({ titleKey }) {
-  const { typographyRef } = useContext(TypographyContext);
-
   return (
     <WrapperAppBar>
       <IconButton
@@ -16,11 +11,12 @@ export default function BasiqueAppBar({ titleKey }) {
         color="inherit"
         onClick={() => window.history.back()}
       >
-        {typographyRef.current.direction === "rtl" ? (
-          <ArrowForwardOutlinedIcon />
-        ) : (
-          <ArrowBackOutlinedIcon />
-        )}
+        <ArrowBackOutlinedIcon
+          sx={{
+            transform: (theme) =>
+              theme.direction === "rtl" ? "scaleX(-1)" : "none",
+          }}
+        />
       </IconButton>
       <Typography variant="h6">{titleKey}</Typography>
     </WrapperAppBar>

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Button } from "@mui/material";
+import { postEmpty } from "pankosmia-lib/http";
 
 import {
   PanDownloadDemo,
@@ -27,6 +28,7 @@ import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
 import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
+import TypographyContext from "./rcl/contexts/typographyContext";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
@@ -49,6 +51,7 @@ function App() {
   }, [handleWindowResize]);
 
   const { product } = useContext(ProductContext);
+  const { typographyRef } = useContext(TypographyContext);
 
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
@@ -135,6 +138,26 @@ function App() {
       {/* 1.0 */}
       {tab === 1 && (
         <>
+          <Button
+            sx={{ mr: 1 }}
+            onClick={() => {
+              postEmpty(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
+              );
+            }}
+          >
+            RTL
+          </Button>
+
+          <Button
+            onClick={() => {
+              postEmpty(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
+              );
+            }}
+          >
+            LTR
+          </Button>
           <Tabs
             value={v1Tab}
             onChange={(event, newValue) => setV1Tab(newValue)}

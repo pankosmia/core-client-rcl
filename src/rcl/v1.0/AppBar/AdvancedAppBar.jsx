@@ -9,7 +9,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import IconLayout from "./Icons/IconLayout";
 import IconSetting from "./Icons/IconSetting";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
@@ -24,8 +24,9 @@ import netContext from "../../../rcl/contexts/netContext";
 import debugContext from "../../../rcl/contexts/debugContext";
 import i18nContext from "../../../rcl/contexts/i18nContext";
 import InternetWarningDialog from "../../InternetWarningDialog";
-import { postEmpty } from "pankosmia-lib/http";
+import { postEmpty, getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
+import ButtonInfo from "../../ButtonInfo";
 
 export default function AdvancedAppBar({ navigation }) {
   const theme = useTheme();
@@ -33,6 +34,7 @@ export default function AdvancedAppBar({ navigation }) {
   const [menuMoreVert, setMenuMoreVert] = useState(null);
   const [menuOpenLayout, setMenuOpenLayout] = useState(false);
   const [menuOpenMoreVert, setMenuOpenMoreVert] = useState(false);
+  const [nameProduct, setNameProduct] = useState("");
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(i18nContext);
@@ -55,7 +57,12 @@ export default function AdvancedAppBar({ navigation }) {
       setInternetDialogOpen(true);
     }
   };
-
+  useEffect(() => {
+    getJson("/api/version")
+      .then((res) => res.json)
+      .then((data) => setNameProduct(data.product_name))
+      .catch((err) => console.error("Error :", err));
+  }, []);
   return (
     <WrapperAppBar>
       {navigation}
@@ -104,17 +111,26 @@ export default function AdvancedAppBar({ navigation }) {
             <MenuItem>
               <ListItemIcon>{<IconSetting />}</ListItemIcon>
               <ListItemText>
-                {doI18n("components:header:setting", i18nRef.current)}
+                {doI18n("library:pankosmia-rcl:setting", i18nRef.current)}
               </ListItemText>
             </MenuItem>
           )}
-          <MenuItem onClick={toggleInternet}>
+          <MenuItem onClick={toggleInternet} selected={enabledRef.current}>
             <ListItemIcon>
               {enabledRef.current ? <Check fontSize="small" /> : null}
             </ListItemIcon>
             <ListItemText>
-              {doI18n("components:header:online_mode", i18nRef.current)}
+              {doI18n("library:pankosmia-rcl:online_mode", i18nRef.current)}
             </ListItemText>
+            <ListItemIcon>
+              <ButtonInfo
+                color="primary"
+                title={doI18n(
+                  "components:header:tooltip_offline_mode",
+                  i18nRef.current,
+                ).replace("{1}", nameProduct)}
+              />
+            </ListItemIcon>
           </MenuItem>
           <Divider />
           <MenuItem>
