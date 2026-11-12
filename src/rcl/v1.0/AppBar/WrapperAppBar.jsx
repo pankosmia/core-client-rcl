@@ -3,10 +3,11 @@ import { AppBar, Toolbar, Box, useTheme, useMediaQuery } from "@mui/material";
 export default function WrapperAppBar({ children }) {
   const theme = useTheme();
   const denseLg = useMediaQuery(theme.breakpoints.down("lg"));
+  const downsm = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <AppBar position="static">
       <Toolbar
-        sx={{ px: { xs: 2, sm: 3 } }}
+        sx={{ px: downsm ? 2 : 3 }}
         variant={denseLg ? "dense" : "regular"}
       >
         <Box
