@@ -4,7 +4,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 export default function IconInfo({ tooltipLabel }) {
   return (
     <Tooltip title={tooltipLabel}>
-      <IconButton disableRipple sx={{ color: "white" }}>
+      <IconButton disableRipple sx={{ color: "inherit" }}>
         <HelpOutlineOutlinedIcon />
       </IconButton>
     </Tooltip>

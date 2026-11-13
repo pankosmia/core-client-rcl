@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PanMenuWrapper from "../../rcl/v1.0/Menu/PanMenuWrapper";
+import PanMenuWrapper from "../../../rcl/v1.0/Menu/PanMenuWrapper";
 import {
   Button,
   ListItemText,

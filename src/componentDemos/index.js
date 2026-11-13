@@ -13,9 +13,11 @@ import ButtonInfoDemo from "./ButtonInfoDemo";
 import ExternalLinkDemo from "./ExternalLinkDemo";
 import PanCopyrightDemo from "./PanCopyrightDemo";
 import PanAssetInstallDialogDemo from "./PanAssetInstallDialogDemo";
-import PanAdvancedDialogDemo from "./V1.0/PanAdvancedDialogDemo";
-import PanBasicDialogDemo from "./V1.0/PanBasicDialogDemo";
-import PanMenuWrapperDemo from "./V1.0/PanMenuWrapperDemo";
+import PanAdvancedDialogDemo from "./V1.0/Dialog/PanAdvancedDialogDemo";
+import PanBasicDialogDemo from "./V1.0/Dialog/PanBasicDialogDemo";
+import PanMenuWrapperDemo from "./V1.0/Menu/PanMenuWrapperDemo";
+import AppBarDemo from "./V1.0/AppBar/AppBarDemo";
+import PanFullPageLayoutDemo from "./V1.0/FullPageLayout/PanFullPageLayoutDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -35,4 +37,6 @@ export {
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
   PanMenuWrapperDemo,
+  AppBarDemo,
+  PanFullPageLayoutDemo,
 };

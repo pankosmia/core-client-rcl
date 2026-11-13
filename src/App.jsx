@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, useContext } from "react";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Button } from "@mui/material";
+import { postEmpty } from "pankosmia-lib/http";
 
 import {
   PanDownloadDemo,
@@ -20,19 +21,23 @@ import {
   PanAdvancedDialogDemo,
   PanBasicDialogDemo,
   PanMenuWrapperDemo,
+  AppBarDemo,
+  PanFullPageLayoutDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
 import Demo from "./demoHelpers/Demo";
 import ProductContext from "./rcl/contexts/productContext";
 import SectionDialogTitleDemo from "./componentDemos/SectionDialogTitleDemo";
+import TypographyContext from "./rcl/contexts/typographyContext";
 
 function App() {
   const [maxWindowHeight, setMaxWindowHeight] = useState(
     window.innerHeight - 64,
   );
 
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(1);
+  const [v1Tab, setV1Tab] = useState(2);
 
   const handleWindowResize = useCallback(() => {
     setMaxWindowHeight(window.innerHeight - 64);
@@ -47,6 +52,7 @@ function App() {
   }, [handleWindowResize]);
 
   const { product } = useContext(ProductContext);
+  const { typographyRef } = useContext(TypographyContext);
 
   return (
     <Box sx={{ maxHeight: maxWindowHeight }}>
@@ -133,15 +139,63 @@ function App() {
       {/* 1.0 */}
       {tab === 1 && (
         <>
-          <Demo title="PanAdvancedDialog">
-            <PanAdvancedDialogDemo />
-          </Demo>
-          <Demo title="PanBasicDialog">
-            <PanBasicDialogDemo />
-          </Demo>
-          <Demo title="PanMenuWrapper">
-            <PanMenuWrapperDemo />
-          </Demo>
+          <Button
+            sx={{ mr: 1 }}
+            onClick={() => {
+              postEmpty(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/rtl`,
+              );
+            }}
+          >
+            RTL
+          </Button>
+
+          <Button
+            onClick={() => {
+              postEmpty(
+                `/api/settings/typography/${typographyRef.current.font_set}/${typographyRef.current.size}/ltr`,
+              );
+            }}
+          >
+            LTR
+          </Button>
+          <Tabs
+            value={v1Tab}
+            onChange={(event, newValue) => setV1Tab(newValue)}
+          >
+            <Tab label="Dialog" />
+            <Tab label="Menu" />
+            <Tab label="AppBar" />
+            <Tab label="FullPageLayout" />
+          </Tabs>
+
+          {v1Tab === 0 && (
+            <>
+              <Demo title="PanAdvancedDialog">
+                <PanAdvancedDialogDemo />
+              </Demo>
+              <Demo title="PanBasicDialog">
+                <PanBasicDialogDemo />
+              </Demo>
+            </>
+          )}
+
+          {v1Tab === 1 && (
+            <Demo title="PanMenuWrapper">
+              <PanMenuWrapperDemo />
+            </Demo>
+          )}
+
+          {v1Tab === 2 && (
+            <Demo title="AppBar">
+              <AppBarDemo />
+            </Demo>
+          )}
+          {v1Tab === 3 && (
+            <Demo title="FullPageLayout">
+              <PanFullPageLayoutDemo />
+            </Demo>
+          )}
         </>
       )}
     </Box>
