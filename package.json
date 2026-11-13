@@ -1,6 +1,6 @@
 {
   "name": "pankosmia-rcl",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "private": false,
   "homepage": "/clients/core-client-rcl",
   "main": "exported-rcl/pankosmia-rcl.umd.js",
@@ -29,6 +29,7 @@
     "prop-types": "^15.8.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.5",
     "stylis": "^4.4.0",
     "stylis-plugin-rtl": "^2.1.1"
   },
