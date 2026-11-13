@@ -27,6 +27,7 @@ import InternetWarningDialog from "../../InternetWarningDialog";
 import { postEmpty, getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import ButtonInfo from "../../ButtonInfo";
+import AdvancedAppBarMenuDebug from "./AdvancedAppbarMenu/AdvancedAppBarMenuDebug";
 
 export default function AdvancedAppBar({ navigation }) {
   const theme = useTheme();
@@ -115,7 +116,10 @@ export default function AdvancedAppBar({ navigation }) {
           )}
         </PanMenuWrapper>
         {!downsm && (
-          <IconButton color="inherit">
+          <IconButton
+            onClick={() => goToClient("core-settings")}
+            color="inherit"
+          >
             <IconSetting />
           </IconButton>
         )}
@@ -128,7 +132,7 @@ export default function AdvancedAppBar({ navigation }) {
           isOpen={menuOpenMoreVert}
         >
           {downsm && (
-            <MenuItem>
+            <MenuItem onClick={() => goToClient("core-settings")}>
               <ListItemIcon>{<IconSetting />}</ListItemIcon>
               <ListItemText>
                 {doI18n("library:pankosmia-rcl:setting", i18nRef.current)}
@@ -182,6 +186,11 @@ export default function AdvancedAppBar({ navigation }) {
               </ListItemText>
             </MenuItem>
           )}
+          <AdvancedAppBarMenuDebug
+            listClients={listClients}
+            debugRef={debugRef}
+            i18nRef={i18nRef}
+          />
         </PanMenuWrapper>
         <InternetWarningDialog
           internetDialogOpen={internetDialogOpen}
