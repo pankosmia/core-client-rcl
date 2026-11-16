@@ -8,10 +8,10 @@ import {
   TextField,
 } from "@mui/material";
 
-import TypographyContext from "../../rcl/contexts/typographyContext";
+import TypographyContext from "../../../rcl/contexts/typographyContext";
 import { postEmpty } from "pankosmia-lib/http";
-import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
-import PanBasicDialog from "../../rcl/v1.0/Dialog/PanBasicDialog";
+import PanDialogActionsArray from "../../../rcl/v1.0/Dialog/PanDialogActionsArray";
+import PanBasicDialog from "../../../rcl/v1.0/Dialog/PanBasicDialog";
 
 export default function PanBasicDialogDemo() {
   const [openDialog1, setOpenDialog1] = useState(false);

@@ -9,12 +9,9 @@ import {
   DialogTitle,
   DialogActions,
   IconButton,
-  DialogContentText,
   Divider,
 } from "@mui/material";
 
-import TypographyContext from "../../contexts/typographyContext";
-import PanDialogActions from "../../PanDialogActions";
 import CloseIcon from "@mui/icons-material/Close";
 import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../../contexts/i18nContext";

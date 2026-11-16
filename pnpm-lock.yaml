@@ -52,6 +52,9 @@ importers:
       react-dom:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
+      react-router-dom:
+        specifier: ^7.18.5
+        version: 7.18.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       stylis:
         specifier: ^4.4.0
         version: 4.4.0
@@ -2592,6 +2595,13 @@ packages:
         integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==,
       }
 
+  cookie@1.1.1:
+    resolution:
+      {
+        integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==,
+      }
+    engines: { node: ">=18" }
+
   core-js-compat@3.50.0:
     resolution:
       {
@@ -4036,6 +4046,29 @@ packages:
       }
     engines: { node: ">=0.10.0" }
 
+  react-router-dom@7.18.5:
+    resolution:
+      {
+        integrity: sha512-9HcfDMU6JJ/fp6gJZYGwNE6RknVGS4kBjH1HkNw959mCJi70TVwdipQWv2FEol9uGpi+SZTFtVpJPtEQfayeOw==,
+      }
+    engines: { node: ">=20.0.0" }
+    peerDependencies:
+      react: ">=18"
+      react-dom: ">=18"
+
+  react-router@7.18.5:
+    resolution:
+      {
+        integrity: sha512-dTgvcXDOrLPrlLHrcZAqWveiK1hMSqN+rGAJzegP8HtmNkfRxOoshGWBNX3ZJ0cZjOHkRdlUJtaIhZMLLyGyPw==,
+      }
+    engines: { node: ">=20.0.0" }
+    peerDependencies:
+      react: ">=18"
+      react-dom: ">=18"
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   react-transition-group@4.4.5:
     resolution:
       {
@@ -4192,6 +4225,12 @@ packages:
       }
     engines: { node: ">=10" }
     hasBin: true
+
+  set-cookie-parser@2.7.3:
+    resolution:
+      {
+        integrity: sha512-irZHtTqurLna57KQG/s+fzOwv/J6XSH4cs8M/vsrY3uCaQ3S6+QJguAH0WdN47SXlk82voMZ4naWMQf8fdEoIg==,
+      }
 
   set-function-length@1.2.2:
     resolution:
@@ -6348,6 +6387,8 @@ snapshots:
 
   convert-source-map@2.0.0: {}
 
+  cookie@1.1.1: {}
+
   core-js-compat@3.50.0:
     dependencies:
       browserslist: 4.28.8
@@ -7371,6 +7412,20 @@ snapshots:
 
   react-refresh@0.17.0: {}
 
+  react-router-dom@7.18.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+      react-router: 7.18.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+
+  react-router@7.18.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      cookie: 1.1.1
+      react: 19.2.8
+      set-cookie-parser: 2.7.3
+    optionalDependencies:
+      react-dom: 19.2.8(react@19.2.8)
+
   react-transition-group@4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
       "@babel/runtime": 7.29.7
@@ -7507,6 +7562,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.8.5: {}
+
+  set-cookie-parser@2.7.3: {}
 
   set-function-length@1.2.2:
     dependencies:

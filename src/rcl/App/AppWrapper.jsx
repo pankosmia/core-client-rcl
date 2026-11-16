@@ -243,7 +243,7 @@ function AppWrapper({
 
     setTheme(newTheme);
   }, [themeSpec, fontFamily, typographyValue?.typography?.direction]);
-
+  console.log(theme);
   const cache = useMemo(() => {
     if (!theme) {
       return null;

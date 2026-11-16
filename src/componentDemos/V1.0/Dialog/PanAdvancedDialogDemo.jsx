@@ -7,9 +7,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import PanAdvancedDialog from "../../rcl/v1.0/Dialog/PanAdvancedDialog";
-import TypographyContext from "../../rcl/contexts/typographyContext";
-import PanDialogActionsArray from "../../rcl/v1.0/Dialog/PanDialogActionsArray";
+import PanAdvancedDialog from "../../../rcl/v1.0/Dialog/PanAdvancedDialog";
+import TypographyContext from "../../../rcl/contexts/typographyContext";
+import PanDialogActionsArray from "../../../rcl/v1.0/Dialog/PanDialogActionsArray";
 import { postEmpty } from "pankosmia-lib/http";
 
 export default function PanAdvancedDialogDemo() {
