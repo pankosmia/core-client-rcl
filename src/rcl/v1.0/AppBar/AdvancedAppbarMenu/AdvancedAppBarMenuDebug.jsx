@@ -25,9 +25,11 @@ export default function AdvancedAppBarMenuDebug({
 
   return (
     <>
-      <ListSubheader>
-        {doI18n(`components:header:debug_mode`, i18nRef.current)}
-      </ListSubheader>
+      {menuItemsDebug.length > 0 && (
+        <ListSubheader>
+          {doI18n(`components:header:debug_mode`, i18nRef.current)}
+        </ListSubheader>
+      )}
       {menuItemsDebug.map((mi, n) => (
         <MenuItem
           inset
