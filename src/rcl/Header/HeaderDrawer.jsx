@@ -32,6 +32,7 @@ function HeaderDrawer({ currentId }) {
   const [menuItems, setMenuItems] = useState([]);
   const [menuItemsDebug, setMenuItemsDebug] = useState([]);
   const [menuItemsBeta, setMenuItemsBeta] = useState([]);
+  console.log("🚀 ~ HeaderDrawer ~ menuItemsBeta:", menuItemsBeta);
 
   const theme = useTheme();
   const { i18nRef } = useContext(i18nContext);
