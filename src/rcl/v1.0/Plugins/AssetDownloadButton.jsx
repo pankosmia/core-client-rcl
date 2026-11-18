@@ -148,107 +148,105 @@ export default function AssetDownloadButton({ asset }) {
 
   return (
     <>
-      <Stack sx={{ maxWidth: 200 }}>
-        <Tooltip
-          title={
-            !isElectron ||
-            (!enabledRef.current &&
+      <Tooltip
+        title={
+          !isElectron ||
+          (!enabledRef.current &&
+            doI18n(
+              "library:pankosmia-rcl:tooltip_offline_mode",
+              i18nRef.current,
+            ))
+        }
+      >
+        <span>
+          <Button
+            variant="contained"
+            startIcon={
+              status === "complete" ? (
+                <CheckCircleIcon />
+              ) : status === "error" ? (
+                <ErrorIcon />
+              ) : (
+                <DownloadIcon />
+              )
+            }
+            onClick={() => handleInstall(asset)}
+            disabled={
+              status === "checking" ||
+              status === "downloading" ||
+              status === "complete" ||
+              !isElectron ||
+              !enabledRef.current
+            }
+            color={
+              status === "complete"
+                ? "success"
+                : status === "error"
+                  ? "error"
+                  : "primary"
+            }
+            title={
+              !isElectron
+                ? doI18n(
+                    "library:pankosmia-rcl:download_unavailable_tip",
+                    i18nRef.current,
+                  )
+                : doI18n("library:pankosmia-rcl:download", i18nRef.current)
+            }
+          >
+            {status === "checking" &&
+              !isElectron &&
               doI18n(
-                "library:pankosmia-rcl:tooltip_offline_mode",
+                "library:pankosmia-rcl:download_unavailable",
                 i18nRef.current,
-              ))
-          }
-        >
-          <span>
-            <Button
-              variant="contained"
-              startIcon={
-                status === "complete" ? (
-                  <CheckCircleIcon />
-                ) : status === "error" ? (
-                  <ErrorIcon />
-                ) : (
-                  <DownloadIcon />
-                )
-              }
-              onClick={() => handleInstall(asset)}
-              disabled={
-                status === "checking" ||
-                status === "downloading" ||
-                status === "complete" ||
-                !isElectron ||
-                !enabledRef.current
-              }
-              color={
-                status === "complete"
-                  ? "success"
-                  : status === "error"
-                    ? "error"
-                    : "primary"
-              }
-              title={
-                !isElectron
-                  ? doI18n(
-                      "library:pankosmia-rcl:download_unavailable_tip",
-                      i18nRef.current,
-                    )
-                  : doI18n("library:pankosmia-rcl:download", i18nRef.current)
-              }
-            >
-              {status === "checking" &&
-                !isElectron &&
-                doI18n(
-                  "library:pankosmia-rcl:download_unavailable",
-                  i18nRef.current,
-                )}
-              {status === "checking" &&
-                isElectron &&
-                doI18n(
-                  "library:pankosmia-rcl:download_checking",
-                  i18nRef.current,
-                )}
-              {status === "idle" &&
-                doI18n("library:pankosmia-rcl:download", i18nRef.current)}
-              {status === "downloading" &&
-                doI18n(
+              )}
+            {status === "checking" &&
+              isElectron &&
+              doI18n(
+                "library:pankosmia-rcl:download_checking",
+                i18nRef.current,
+              )}
+            {status === "idle" &&
+              doI18n("library:pankosmia-rcl:download", i18nRef.current)}
+            {status === "downloading" &&
+              doI18n(
+                "library:pankosmia-rcl:download_downloading",
+                i18nRef.current,
+              )}
+            {status === "complete" &&
+              doI18n(
+                "library:pankosmia-rcl:download_installed",
+                i18nRef.current,
+              )}
+            {status === "error" &&
+              doI18n("library:pankosmia-rcl:download_retry", i18nRef.current)}
+          </Button>
+        </span>
+      </Tooltip>
+
+      {status === "downloading" && (
+        <>
+          <LinearProgress
+            variant={hasProgress ? "determinate" : "indeterminate"}
+            value={hasProgress ? progress : undefined}
+          />
+          <Typography variant="body2" color="text.secondary">
+            {hasProgress
+              ? `${Math.round(progress)}% ${doI18n("library:pankosmia-rcl:download_percent_complete", i18nRef.current)}`
+              : doI18n(
                   "library:pankosmia-rcl:download_downloading",
                   i18nRef.current,
                 )}
-              {status === "complete" &&
-                doI18n(
-                  "library:pankosmia-rcl:download_installed",
-                  i18nRef.current,
-                )}
-              {status === "error" &&
-                doI18n("library:pankosmia-rcl:download_retry", i18nRef.current)}
-            </Button>
-          </span>
-        </Tooltip>
-
-        {status === "downloading" && (
-          <>
-            <LinearProgress
-              variant={hasProgress ? "determinate" : "indeterminate"}
-              value={hasProgress ? progress : undefined}
-            />
-            <Typography variant="body2" color="text.secondary">
-              {hasProgress
-                ? `${Math.round(progress)}% ${doI18n("library:pankosmia-rcl:download_percent_complete", i18nRef.current)}`
-                : doI18n(
-                    "library:pankosmia-rcl:download_downloading",
-                    i18nRef.current,
-                  )}
-            </Typography>
-          </>
-        )}
-
-        {status === "error" && (
-          <Typography variant="body2" color="error">
-            {doI18n("library:pankosmia-rcl:download_failed", i18nRef.current)}
-            {errorMessage ? `: ${errorMessage}` : ""}.
           </Typography>
-        )}
-      </Stack>
+        </>
+      )}
+
+      {status === "error" && (
+        <Typography variant="body2" color="error">
+          {doI18n("library:pankosmia-rcl:download_failed", i18nRef.current)}
+          {errorMessage ? `: ${errorMessage}` : ""}.
+        </Typography>
+      )}
     </>
   );
 }
