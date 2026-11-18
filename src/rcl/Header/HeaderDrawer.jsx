@@ -31,6 +31,7 @@ function HeaderDrawer({ currentId }) {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   const [menuItemsDebug, setMenuItemsDebug] = useState([]);
+  const [menuItemsBeta, setMenuItemsBeta] = useState([]);
 
   const theme = useTheme();
   const { i18nRef } = useContext(i18nContext);
@@ -44,10 +45,16 @@ function HeaderDrawer({ currentId }) {
       const fetched = await getJson("/api/list-clients", debugRef.current);
       if (fetched.ok) {
         setMenuItems(
-          fetched.json.filter((i) => !i.exclude_from_menu && !i.requires.debug),
+          fetched.json.filter(
+            (i) =>
+              !i.exclude_from_menu && !i.requires.debug && !i.requires.beta,
+          ),
         );
         setMenuItemsDebug(
           fetched.json.filter((i) => !i.exclude_from_menu && i.requires.debug),
+        );
+        setMenuItemsBeta(
+          fetched.json.filter((i) => !i.exclude_from_menu && i.requires.beta),
         );
       }
     };
@@ -140,6 +147,42 @@ function HeaderDrawer({ currentId }) {
                 </ListItem>
               ),
             )}
+            {betaRef.current && menuItemsBeta.length > 0 && (
+              <>
+                {menuItemsBeta.map((mi, n) => (
+                  <ListItem key={n} disablePadding>
+                    <ListItemButton
+                      disabled={mi.requires.net && !netEnabled.current}
+                      onClick={() => {
+                        window.location.href = mi.url;
+                      }}
+                    >
+                      <ListItemText
+                        primary={
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <span>
+                              {doI18n(`pages:${mi.id}:title`, i18nRef.current)}
+                            </span>
+                            <Box
+                              component="span"
+                              sx={{ fontSize: "1em", opacity: 0.7 }}
+                            >
+                              β
+                            </Box>
+                          </Box>
+                        }
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </>
+            )}
             {debugRef.current && menuItemsDebug.length > 0 && (
               <>
                 <ListSubheader>
@@ -179,16 +222,21 @@ function HeaderDrawer({ currentId }) {
                 />
               </ListItemButton>
             </ListItem>
-            <ListItemButton onClick={toggleBeta}>
-              <ListItemText
-                primary={doI18n(`components:header:beta_mode`, i18nRef.current)}
-              />
-              <Switch
-                edge="end"
-                onChange={toggleBeta}
-                checked={betaRef.current}
-              />
-            </ListItemButton>
+            {menuItemsBeta.length > 0 && (
+              <ListItemButton onClick={toggleBeta}>
+                <ListItemText
+                  primary={doI18n(
+                    `components:header:beta_mode`,
+                    i18nRef.current,
+                  )}
+                />
+                <Switch
+                  edge="end"
+                  onChange={toggleBeta}
+                  checked={betaRef.current}
+                />
+              </ListItemButton>
+            )}
           </List>
           {debugRef.current && (
             <Typography
