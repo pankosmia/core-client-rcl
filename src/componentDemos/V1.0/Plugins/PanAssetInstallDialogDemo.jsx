@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 
-import AssetDownloadDialog from "../rcl/tools/AssetDownloadDialog";
-import AssetDownloadButton from "../rcl/tools/AssetDownloadButton";
+import AssetDownloadDialog from "../../../rcl/v1.0/Plugins/AssetDownloadDialog";
+import AssetDownloadButton from "../../../rcl/v1.0/Plugins/AssetDownloadButton";
 
 export default function PanAssetInstallDialogDemo() {
   const [openFirefoxDialog, setOpenFirefoxDialog] = useState(false);
@@ -10,7 +10,7 @@ export default function PanAssetInstallDialogDemo() {
 
   return (
     <Box>
-      <Typography variant="h5" sx={{ mb: 3 }}>
+      <Typography  sx={{ mb: 3 }}>
         PanFirefoxInstallDialog / AssetDownloadButton
       </Typography>
 

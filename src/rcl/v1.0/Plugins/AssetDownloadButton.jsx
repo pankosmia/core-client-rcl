@@ -10,8 +10,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckOutlined";
 import ErrorIcon from "@mui/icons-material/ErrorOutlined";
 import DownloadIcon from "@mui/icons-material/SaveAltOutlined";
 import { doI18n } from "pankosmia-lib/i18n";
-import I18nContext from "../contexts/i18nContext";
-import NetContext from "../contexts/netContext";
+import I18nContext from "../../contexts/i18nContext";
+import NetContext from "../../contexts/netContext";
 
 export default function AssetDownloadButton({ asset }) {
   const { i18nRef } = useContext(I18nContext);
