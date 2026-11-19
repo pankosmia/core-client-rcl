@@ -37,7 +37,7 @@ function App() {
   );
 
   const [tab, setTab] = useState(1);
-  const [v1Tab, setV1Tab] = useState(2);
+  const [v1Tab, setV1Tab] = useState(4);
 
   const handleWindowResize = useCallback(() => {
     setMaxWindowHeight(window.innerHeight - 64);

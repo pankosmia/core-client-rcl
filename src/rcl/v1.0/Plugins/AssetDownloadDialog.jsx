@@ -49,7 +49,7 @@ export default function AssetDownloadDialog({
             {doI18n(`library:pankosmia-rcl:need_ffmpeg`, i18nRef.current)}
           </Typography>
         )}
-        <AssetDownloadButton asset={asset} />
+        <AssetDownloadButton asset={asset} closeDialog={() => setOpen(false)} />
       </Stack>
     </PanBasicDialog>
   );

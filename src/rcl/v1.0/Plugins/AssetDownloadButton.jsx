@@ -13,7 +13,7 @@ import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../../contexts/i18nContext";
 import NetContext from "../../contexts/netContext";
 
-export default function AssetDownloadButton({ asset }) {
+export default function AssetDownloadButton({ asset, closeDialog }) {
   const { i18nRef } = useContext(I18nContext);
   const { enabledRef } = useContext(NetContext);
   const [installed, setInstalled] = useState(false);
@@ -158,8 +158,9 @@ export default function AssetDownloadButton({ asset }) {
             ))
         }
       >
-        <span>
+        <span style={{ alignSelf: "center" }}>
           <Button
+            size="medium"
             variant="contained"
             startIcon={
               status === "complete" ? (
@@ -177,13 +178,6 @@ export default function AssetDownloadButton({ asset }) {
               status === "complete" ||
               !isElectron ||
               !enabledRef.current
-            }
-            color={
-              status === "complete"
-                ? "success"
-                : status === "error"
-                  ? "error"
-                  : "primary"
             }
             title={
               !isElectron
@@ -230,7 +224,7 @@ export default function AssetDownloadButton({ asset }) {
             variant={hasProgress ? "determinate" : "indeterminate"}
             value={hasProgress ? progress : undefined}
           />
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2">
             {hasProgress
               ? `${Math.round(progress)}% ${doI18n("library:pankosmia-rcl:download_percent_complete", i18nRef.current)}`
               : doI18n(
