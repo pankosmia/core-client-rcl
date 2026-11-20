@@ -30,7 +30,7 @@ import { postEmpty, getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import ButtonInfo from "../../ButtonInfo";
 import AdvancedAppBarMenuDebug from "./AdvancedAppbarMenu/AdvancedAppBarMenuDebug";
-import AdvancedAppbarMenuBeta from "./AdvancedAppbarMenu/AdvancedAppbarMenuBeta";
+import AdvancedAppBarMenuBeta from "./AdvancedAppbarMenu/AdvancedAppBarMenuBeta";
 export default function AdvancedAppBar({ navigation }) {
   const theme = useTheme();
   const [menuLayout, setMenuLayout] = useState(null);
@@ -189,8 +189,7 @@ export default function AdvancedAppBar({ navigation }) {
               </ListItemText>
             </MenuItem>
           )}
-          <AdvancedAppbarMenuBeta
-            listClients={listClients}
+          <AdvancedAppBarMenuBeta
             i18nRef={i18nRef}
             betaRef={betaRef}
             debugRef={debugRef}

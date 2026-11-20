@@ -45,7 +45,8 @@ import PanMenuWrapper from "./v1.0/Menu/PanMenuWrapper";
 import BasiqueAppBar from "./v1.0/AppBar/BasiqueAppBar";
 import WrapperAppBar from "./v1.0/AppBar/WrapperAppBar";
 import AdvancedAppBar from "./v1.0/AppBar/AdvancedAppBar";
-
+import AdvancedAppBarMenuDebug from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAppBarMenuDebug";
+import AdvancedAppBarMenuBeta from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAppBarMenuBeta";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -94,4 +95,6 @@ export {
   BasiqueAppBar,
   WrapperAppBar,
   AdvancedAppBar,
+  AdvancedAppBarMenuDebug,
+  AdvancedAppBarMenuBeta,
 };
