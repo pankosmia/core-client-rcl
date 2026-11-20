@@ -11,16 +11,14 @@ import {
   Typography,
 } from "@mui/material";
 import { getJson } from "pankosmia-lib/http";
-export default function AdvancedAppbarMenuBeta({
-  listClients,
+
+export default function AdvancedAppBarMenuBeta({
   i18nRef,
   betaRef,
   debugRef,
-  netEnabled,
 }) {
   const [menuItemsBeta, setMenuItemsBeta] = useState([]);
-
-  useEffect(() => {
+ useEffect(() => {
     const doFetch = async () => {
       const fetched = await getJson("/api/list-clients", debugRef.current);
       if (fetched.ok) {
