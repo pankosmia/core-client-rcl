@@ -30,9 +30,11 @@ export default function PanLanguagePicker({
   const [resourcesBurrito, setResourcesBurrito] = useState(false);
   const [burritoSelected, setBurritoSelected] = useState("");
   const [localRepos, setLocalRepos] = useState([]);
+  const [nameEdited, setNameEdited] = useState(false);
   const [contentBcpList, setContentBcpList] = useState({});
   const [firstOpen, setFirstOpen] = useState(true);
   const regexLangCode = /^x-[a-z]{3}$/;
+  const nameFromCode = (code) => code.replace(/^x-/, "X ");
 
   useEffect(() => {
     if (open) {
@@ -72,8 +74,8 @@ export default function PanLanguagePicker({
           });
         } else {
           setCurrentLanguage({
-            language_code: `x-${currentLanguage.language_code}`,
-            language_name: `x-${currentLanguage.language_code}`.toUpperCase(),
+            language_code: `${currentLanguage.language_code}`,
+            language_name: `${currentLanguage.language_name}`,
           });
           setLanguageOption("customLanguage");
         }
@@ -115,6 +117,7 @@ export default function PanLanguagePicker({
           value={languageOption}
           onChange={(event) => {
             setLanguageOption(event.target.value);
+            setNameEdited(false);
             setCurrentLanguage({ language_code: "", language_name: "" });
           }}
           aria-labelledby="demo-radio-buttons-group-label"
@@ -316,13 +319,25 @@ export default function PanLanguagePicker({
               required
               sx={{ width: "100%" }}
               label={doI18n("library:pankosmia-rcl:lang_name", i18nRef.current)}
-              value={currentLanguage ? currentLanguage.language_name : null}
+              value={currentLanguage?.language_name ?? ""}
               onChange={(event) => {
                 const value = event.target.value;
+                setNameEdited(value !== "");
                 setCurrentLanguage({
                   ...currentLanguage,
                   language_name: value,
                 });
+              }}
+              onBlur={() => {
+                if (!currentLanguage?.language_name) {
+                  setNameEdited(false);
+                  setCurrentLanguage({
+                    ...currentLanguage,
+                    language_name: nameFromCode(
+                      currentLanguage?.language_code ?? "",
+                    ),
+                  });
+                }
               }}
             />
           </Grid>
@@ -344,6 +359,7 @@ export default function PanLanguagePicker({
                 setCurrentLanguage({
                   ...currentLanguage,
                   language_code: value,
+                  ...(nameEdited ? {} : { language_name: nameFromCode(value) }),
                 });
                 setErrorLangCode(
                   value.length > 0 && !regexLangCode.test(value),
