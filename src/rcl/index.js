@@ -17,6 +17,7 @@ import authContext from "./contexts/authContext";
 import bcvContext from "./contexts/bcvContext";
 import currentProjectContext from "./contexts/currentProjectContext";
 import debugContext from "./contexts/debugContext";
+import betaContext from "./contexts/betaContext";
 import i18nContext from "./contexts/i18nContext";
 import languagesContext from "./contexts/languagesContext";
 import messagesContext from "./contexts/messagesContext";
@@ -58,6 +59,7 @@ export {
   messagesContext,
   netContext,
   productContext,
+  betaContext,
   typographyContext,
   AppbarHamburger,
   InternetSwitch,
