@@ -63,8 +63,6 @@ export default function AssetDownloadButton({ asset, actionButtonPlugin }) {
     const removeProgress = window.electronAPI[api.onProgress]((percent) => {
       if (typeof percent === "number" && !Number.isNaN(percent)) {
         setProgress(Math.max(0, Math.min(100, percent)));
-        if (percent >= 100) {
-        }
       }
     });
     const removeComplete = window.electronAPI[api.onComplete](
@@ -74,7 +72,7 @@ export default function AssetDownloadButton({ asset, actionButtonPlugin }) {
         if (success) {
           setProgress(100);
           setTimeout(() => {
-            actionButtonPlugin();
+            actionButtonPlugin?.();
           }, 1000);
         }
       },
