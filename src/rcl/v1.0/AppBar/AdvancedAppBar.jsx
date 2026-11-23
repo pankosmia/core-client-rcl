@@ -8,7 +8,9 @@ import {
   Divider,
   useTheme,
   useMediaQuery,
+  Switch,
 } from "@mui/material";
+import betaContext from "../../../rcl/contexts/betaContext";
 import { useState, useContext, useEffect } from "react";
 import IconLayout from "./Icons/IconLayout";
 import IconSetting from "./Icons/IconSetting";
@@ -28,7 +30,7 @@ import { postEmpty, getJson } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 import ButtonInfo from "../../ButtonInfo";
 import AdvancedAppBarMenuDebug from "./AdvancedAppbarMenu/AdvancedAppBarMenuDebug";
-
+import AdvancedAppBarMenuBeta from "./AdvancedAppbarMenu/AdvancedAppBarMenuBeta";
 export default function AdvancedAppBar({ navigation }) {
   const theme = useTheme();
   const [menuLayout, setMenuLayout] = useState(null);
@@ -40,6 +42,7 @@ export default function AdvancedAppBar({ navigation }) {
   const { enabledRef } = useContext(netContext);
   const { debugRef } = useContext(debugContext);
   const { i18nRef } = useContext(i18nContext);
+  const { betaRef } = useContext(betaContext);
   const [internetDialogOpen, setInternetDialogOpen] = useState(false);
   const downsm = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -186,6 +189,11 @@ export default function AdvancedAppBar({ navigation }) {
               </ListItemText>
             </MenuItem>
           )}
+          <AdvancedAppBarMenuBeta
+            i18nRef={i18nRef}
+            betaRef={betaRef}
+            debugRef={debugRef}
+          />
           <AdvancedAppBarMenuDebug
             listClients={listClients}
             debugRef={debugRef}

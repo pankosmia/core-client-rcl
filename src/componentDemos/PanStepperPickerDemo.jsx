@@ -11,7 +11,7 @@ import {
 import { PanDialog } from "../rcl";
 import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../rcl/contexts/i18nContext";
-import { useRef } from "react";
+import { PanLanguagePicker } from "../rcl";
 export default function PanStepperPickerDemo() {
   const { i18nRef } = useContext(I18nContext);
   const [pointlessInput, setPointlessInput] = useState(false);
@@ -20,6 +20,11 @@ export default function PanStepperPickerDemo() {
   const handleCreate = () => {
     setPointlessInput(false);
   };
+  const [currentLanguage, setCurrentLanguage] = useState({
+    language_code: "",
+    language_name: "",
+  });
+  const [languageIsValid, setLanguageIsValid] = useState(true);
 
   const renderStepContent = (step) => {
     switch (step) {
@@ -47,20 +52,11 @@ export default function PanStepperPickerDemo() {
         return (
           <>
             Step 2
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={pointlessInput}
-                    onChange={() => setPointlessInput(!pointlessInput)}
-                    slotProps={{
-                      input: { "aria-label": "pointless-dialog-input" },
-                    }}
-                  />
-                }
-                label="Pointless required input"
-              />
-            </FormGroup>
+            <PanLanguagePicker
+              currentLanguage={currentLanguage}
+              setCurrentLanguage={setCurrentLanguage}
+              setIsValid={setLanguageIsValid}
+            />
           </>
         );
       case 2:
@@ -93,7 +89,12 @@ export default function PanStepperPickerDemo() {
       case 0:
         return pointlessInput === true;
       case 1:
-        return pointlessInput === true;
+        return (
+          currentLanguage?.language_code?.trim().length > 0 &&
+          currentLanguage?.language_name?.trim().length > 0 &&
+          languageIsValid === true
+        );
+
       case 2:
         return pointlessInput === true;
       default:
@@ -114,7 +115,7 @@ export default function PanStepperPickerDemo() {
         secondaryActionKey="library:pankosmia-rcl:back_button"
         isLeftStepperButtonDisabled
         /* primaryAction={() => console.log("Primary action test")}
-      secondaryAction={() => console.log("Secondary action test")} */
+    secondaryAction={() => console.log("Secondary action test")} */
       />
       <Box sx={{ flex: 1 }}>
         <Button onClick={() => setOpenDialoguePanDownload(true)}>

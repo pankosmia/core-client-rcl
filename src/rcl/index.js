@@ -17,6 +17,7 @@ import authContext from "./contexts/authContext";
 import bcvContext from "./contexts/bcvContext";
 import currentProjectContext from "./contexts/currentProjectContext";
 import debugContext from "./contexts/debugContext";
+import betaContext from "./contexts/betaContext";
 import i18nContext from "./contexts/i18nContext";
 import languagesContext from "./contexts/languagesContext";
 import messagesContext from "./contexts/messagesContext";
@@ -45,6 +46,8 @@ import PanMenuWrapper from "./v1.0/Menu/PanMenuWrapper";
 import BasiqueAppBar from "./v1.0/AppBar/BasiqueAppBar";
 import WrapperAppBar from "./v1.0/AppBar/WrapperAppBar";
 import AdvancedAppBar from "./v1.0/AppBar/AdvancedAppBar";
+import AdvancedAppBarMenuDebug from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAppBarMenuDebug";
+import AdvancedAppBarMenuBeta from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAppBarMenuBeta";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -57,6 +60,7 @@ export {
   messagesContext,
   netContext,
   productContext,
+  betaContext,
   typographyContext,
   AppbarHamburger,
   InternetSwitch,
@@ -93,4 +97,6 @@ export {
   BasiqueAppBar,
   WrapperAppBar,
   AdvancedAppBar,
+  AdvancedAppBarMenuDebug,
+  AdvancedAppBarMenuBeta,
 };
