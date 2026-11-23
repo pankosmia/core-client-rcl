@@ -12,8 +12,8 @@ import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../../contexts/i18nContext";
 import { useContext } from "react";
 export default function AssetDownloadDialog({
-  open,
-  onClose,
+  isOpen,
+  closeFn,
   asset,
   actionButtonPlugin,
 }) {
@@ -25,10 +25,10 @@ export default function AssetDownloadDialog({
         `library:pankosmia-rcl:Firefox_not_installed`,
         i18nRef.current,
       )}
-      isOpen={open}
-      closeFn={() => onClose()}
+      isOpen={isOpen}
+      closeFn={() => closeFn()}
       actionsButtonArray={PanDialogActionsArray({
-        closeFn: () => onClose(),
+        closeFn: () => closeFn(),
         closeLabel: doI18n(`library:pankosmia-rcl:cancel`, i18nRef.current),
         onlyCloseButton: true,
       })}

@@ -34,13 +34,13 @@ export default function PanAssetInstallDialogDemo() {
           </Button>
         </Box>
         <AssetDownloadDialog
-          open={openFirefoxDialog}
-          onClose={handleClose}
+          isOpen={openFirefoxDialog}
+          closeFn={handleClose}
           asset={"firefox"}
         />
         <AssetDownloadDialog
-          open={openFfmpegDialog}
-          onClose={handleClose}
+          isOpen={openFfmpegDialog}
+          closeFn={handleClose}
           asset={"ffmpeg"}
           actionButtonPlugin={actionButtonPlugin}
         />

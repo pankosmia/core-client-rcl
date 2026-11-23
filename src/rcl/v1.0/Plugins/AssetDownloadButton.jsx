@@ -71,9 +71,11 @@ export default function AssetDownloadButton({ asset, actionButtonPlugin }) {
         setErrorMessage(success ? null : message || null);
         if (success) {
           setProgress(100);
-          setTimeout(() => {
-            actionButtonPlugin?.();
-          }, 1000);
+          if (actionButtonPlugin) {
+            setTimeout(() => {
+              actionButtonPlugin?.();
+            }, 1000);
+          }
         }
       },
     );
