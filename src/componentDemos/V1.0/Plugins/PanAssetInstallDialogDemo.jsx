@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 
-import AssetDownloadDialog from "../rcl/tools/AssetDownloadDialog";
-import AssetDownloadButton from "../rcl/tools/AssetDownloadButton";
+import AssetDownloadDialog from "../../../rcl/v1.0/Plugins/AssetDownloadDialog";
+import AssetDownloadButton from "../../../rcl/v1.0/Plugins/AssetDownloadButton";
 
 export default function PanAssetInstallDialogDemo() {
   const [openFirefoxDialog, setOpenFirefoxDialog] = useState(false);
-  const [openFfmpegxDialog, setOpenFfmpegDialog] = useState(false);
+  const [openFfmpegDialog, setOpenFfmpegDialog] = useState(false);
 
+  const handleClose = () => {
+    setOpenFirefoxDialog(false);
+    setOpenFfmpegDialog(false);
+  };
+
+  const actionButtonPlugin = () => setOpenFfmpegDialog(false);
   return (
     <Box>
-      <Typography variant="h5" sx={{ mb: 3 }}>
+      <Typography sx={{ mb: 3 }}>
         PanFirefoxInstallDialog / AssetDownloadButton
       </Typography>
 
@@ -28,16 +34,15 @@ export default function PanAssetInstallDialogDemo() {
           </Button>
         </Box>
         <AssetDownloadDialog
-          open={openFirefoxDialog}
-          setOpen={setOpenFirefoxDialog}
-          handleClose={() => setOpenFirefoxDialog(false)}
+          isOpen={openFirefoxDialog}
+          closeFn={handleClose}
           asset={"firefox"}
         />
         <AssetDownloadDialog
-          open={openFfmpegxDialog}
-          setOpen={setOpenFfmpegDialog}
-          handleClose={() => setOpenFfmpegDialog(false)}
+          isOpen={openFfmpegDialog}
+          closeFn={handleClose}
           asset={"ffmpeg"}
+          actionButtonPlugin={actionButtonPlugin}
         />
         {/* Test direct du AssetDownloadButton */}
         <Box>
