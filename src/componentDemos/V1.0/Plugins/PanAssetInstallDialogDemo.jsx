@@ -6,11 +6,17 @@ import AssetDownloadButton from "../../../rcl/v1.0/Plugins/AssetDownloadButton";
 
 export default function PanAssetInstallDialogDemo() {
   const [openFirefoxDialog, setOpenFirefoxDialog] = useState(false);
-  const [openFfmpegxDialog, setOpenFfmpegDialog] = useState(false);
+  const [openFfmpegDialog, setOpenFfmpegDialog] = useState(false);
 
+  const handleClose = () => {
+    setOpenFirefoxDialog(false);
+    setOpenFfmpegDialog(false);
+  };
+
+  const actionButtonPlugin = () => setOpenFfmpegDialog(false);
   return (
     <Box>
-      <Typography  sx={{ mb: 3 }}>
+      <Typography sx={{ mb: 3 }}>
         PanFirefoxInstallDialog / AssetDownloadButton
       </Typography>
 
@@ -29,15 +35,14 @@ export default function PanAssetInstallDialogDemo() {
         </Box>
         <AssetDownloadDialog
           open={openFirefoxDialog}
-          setOpen={setOpenFirefoxDialog}
-          handleClose={() => setOpenFirefoxDialog(false)}
+          onClose={handleClose}
           asset={"firefox"}
         />
         <AssetDownloadDialog
-          open={openFfmpegxDialog}
-          setOpen={setOpenFfmpegDialog}
-          handleClose={() => setOpenFfmpegDialog(false)}
+          open={openFfmpegDialog}
+          onClose={handleClose}
           asset={"ffmpeg"}
+          actionButtonPlugin={actionButtonPlugin}
         />
         {/* Test direct du AssetDownloadButton */}
         <Box>

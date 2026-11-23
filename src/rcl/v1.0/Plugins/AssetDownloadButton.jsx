@@ -1,11 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import {
-  Button,
-  LinearProgress,
-  Typography,
-  Stack,
-  Tooltip,
-} from "@mui/material";
+import { Button, LinearProgress, Typography, Tooltip } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckOutlined";
 import ErrorIcon from "@mui/icons-material/ErrorOutlined";
 import DownloadIcon from "@mui/icons-material/SaveAltOutlined";
@@ -13,135 +7,92 @@ import { doI18n } from "pankosmia-lib/i18n";
 import I18nContext from "../../contexts/i18nContext";
 import NetContext from "../../contexts/netContext";
 
-export default function AssetDownloadButton({ asset, closeDialog }) {
+const LABEL_KEYS = {
+  unavailable: "download_unavailable",
+  checking: "download_checking",
+  idle: "download",
+  downloading: "download_downloading",
+  complete: "download_installed",
+  error: "download_retry",
+};
+
+// Names of the window.electronAPI methods for each asset
+const ASSET_API = {
+  ffmpeg: {
+    check: "checkFfmpegInstalled",
+    onProgress: "onFfmpegDownloadProgress",
+    onComplete: "onFfmpegDownloadComplete",
+    download: "downloadFfmpeg",
+  },
+  firefox: {
+    check: "checkFirefoxInstalled",
+    onProgress: "onDownloadProgress",
+    onComplete: "onDownloadComplete",
+    download: "downloadFirefox",
+  },
+};
+
+export default function AssetDownloadButton({ asset, actionButtonPlugin }) {
   const { i18nRef } = useContext(I18nContext);
   const { enabledRef } = useContext(NetContext);
-  const [installed, setInstalled] = useState(false);
-  const [status, setStatus] = useState("checking"); // checking | idle | downloading | complete | error | unavailable
+  const [status, setStatus] = useState("checking"); // checking | idle | downloading | complete | error
   const [progress, setProgress] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isElectron, setIsElectron] = useState(false);
+  const isElectron = !!window.electronAPI;
+  const api = ASSET_API[asset];
 
   useEffect(() => {
-    if (!window.electronAPI) {
-      setIsElectron(false);
+    if (!isElectron || !api) {
       return;
-    } else {
-      setIsElectron(true);
     }
-
     let cancelled = false;
-
-    switch (asset) {
-      case "ffmpeg":
-        window.electronAPI.checkFfmpegInstalled().then((installed) => {
-          if (!cancelled) {
-            setInstalled(installed);
-            setStatus(installed ? "complete" : "idle");
-          }
-        });
-        break;
-      case "firefox":
-        window.electronAPI.checkFirefoxInstalled().then((installed) => {
-          if (!cancelled) {
-            setInstalled(installed);
-            setStatus(installed ? "complete" : "idle");
-          }
-        });
-        break;
-      default:
-        return;
-    }
-
+    window.electronAPI[api.check]().then((installed) => {
+      if (!cancelled) {
+        setStatus(installed ? "complete" : "idle");
+      }
+    });
     return () => {
       cancelled = true;
     };
-  }, [setInstalled, asset]);
+  }, [asset]);
 
   useEffect(() => {
-    if (!window.electronAPI) {
+    if (!isElectron || !api) {
       return;
     }
-
-    switch (asset) {
-      case "ffmpeg":
-        const removeProgressFfmpeg =
-          window.electronAPI.onFfmpegDownloadProgress((percent) => {
-            if (typeof percent === "number" && !Number.isNaN(percent)) {
-              setProgress(Math.max(0, Math.min(100, percent)));
-            }
-          });
-
-        const removeCompleteFfmpeg =
-          window.electronAPI.onFfmpegDownloadComplete(
-            (success, errorMessage) => {
-              setStatus(success ? "complete" : "error");
-              setInstalled(!!success);
-
-              if (success) {
-                setProgress(100);
-                setErrorMessage(null);
-              } else {
-                setErrorMessage(errorMessage || null);
-              }
-            },
-          );
-
-        return () => {
-          removeProgressFfmpeg();
-          removeCompleteFfmpeg();
-        };
-        break;
-      case "firefox":
-        const removeProgressFirefox = window.electronAPI.onDownloadProgress(
-          (percent, downloadedBytes, totalBytes) => {
-            console.log(
-              "onDownloadProgress",
-              percent,
-              downloadedBytes,
-              totalBytes,
-            );
-            if (typeof percent === "number" && !Number.isNaN(percent)) {
-              setProgress(Math.max(0, Math.min(100, percent)));
-            }
-          },
-        );
-        const removeCompleteFirefox = window.electronAPI.onDownloadComplete(
-          (success, errorMessage) => {
-            setStatus(success ? "complete" : "error");
-            setInstalled(!!success);
-          },
-        );
-        return () => {
-          removeProgressFirefox();
-          removeCompleteFirefox();
-        };
-        break;
-      default:
-        console.error("Invalid asset", asset);
-        return;
-    }
-  }, [setInstalled, asset]);
+    const removeProgress = window.electronAPI[api.onProgress]((percent) => {
+      if (typeof percent === "number" && !Number.isNaN(percent)) {
+        setProgress(Math.max(0, Math.min(100, percent)));
+        if (percent >= 100) {
+        }
+      }
+    });
+    const removeComplete = window.electronAPI[api.onComplete](
+      (success, message) => {
+        setStatus(success ? "complete" : "error");
+        setErrorMessage(success ? null : message || null);
+        if (success) {
+          setProgress(100);
+          setTimeout(() => {
+            actionButtonPlugin();
+          }, 1000);
+        }
+      },
+    );
+    return () => {
+      removeProgress();
+      removeComplete();
+    };
+  }, [asset]);
 
   const handleInstall = () => {
-    if (!window.electronAPI || !asset) {
+    if (!isElectron || !api) {
       return;
     }
     setStatus("downloading");
     setProgress(null);
     setErrorMessage(null);
-
-    switch (asset) {
-      case "ffmpeg":
-        window.electronAPI.downloadFfmpeg();
-        break;
-      case "firefox":
-        window.electronAPI.downloadFirefox();
-        break;
-      default:
-        console.error("Invalid asset", asset);
-        return;
-    }
+    window.electronAPI[api.download]();
   };
 
   const hasProgress = typeof progress === "number";
@@ -171,7 +122,7 @@ export default function AssetDownloadButton({ asset, closeDialog }) {
                 <DownloadIcon />
               )
             }
-            onClick={() => handleInstall(asset)}
+            onClick={handleInstall}
             disabled={
               status === "checking" ||
               status === "downloading" ||
@@ -188,32 +139,10 @@ export default function AssetDownloadButton({ asset, closeDialog }) {
                 : doI18n("library:pankosmia-rcl:download", i18nRef.current)
             }
           >
-            {status === "checking" &&
-              !isElectron &&
-              doI18n(
-                "library:pankosmia-rcl:download_unavailable",
-                i18nRef.current,
-              )}
-            {status === "checking" &&
-              isElectron &&
-              doI18n(
-                "library:pankosmia-rcl:download_checking",
-                i18nRef.current,
-              )}
-            {status === "idle" &&
-              doI18n("library:pankosmia-rcl:download", i18nRef.current)}
-            {status === "downloading" &&
-              doI18n(
-                "library:pankosmia-rcl:download_downloading",
-                i18nRef.current,
-              )}
-            {status === "complete" &&
-              doI18n(
-                "library:pankosmia-rcl:download_installed",
-                i18nRef.current,
-              )}
-            {status === "error" &&
-              doI18n("library:pankosmia-rcl:download_retry", i18nRef.current)}
+            {doI18n(
+              `library:pankosmia-rcl:${LABEL_KEYS[status === "checking" && !isElectron ? "unavailable" : status]}`,
+              i18nRef.current,
+            )}
           </Button>
         </span>
       </Tooltip>

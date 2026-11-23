@@ -13,9 +13,9 @@ import I18nContext from "../../contexts/i18nContext";
 import { useContext } from "react";
 export default function AssetDownloadDialog({
   open,
-  setOpen,
-  handleClose,
+  onClose,
   asset,
+  actionButtonPlugin,
 }) {
   const { i18nRef } = useContext(I18nContext);
 
@@ -26,9 +26,9 @@ export default function AssetDownloadDialog({
         i18nRef.current,
       )}
       isOpen={open}
-      closeFn={() => setOpen(false)}
+      closeFn={() => onClose()}
       actionsButtonArray={PanDialogActionsArray({
-        closeFn: () => handleClose(),
+        closeFn: () => onClose(),
         closeLabel: doI18n(`library:pankosmia-rcl:cancel`, i18nRef.current),
         onlyCloseButton: true,
       })}
@@ -49,7 +49,10 @@ export default function AssetDownloadDialog({
             {doI18n(`library:pankosmia-rcl:need_ffmpeg`, i18nRef.current)}
           </Typography>
         )}
-        <AssetDownloadButton asset={asset} closeDialog={() => setOpen(false)} />
+        <AssetDownloadButton
+          asset={asset}
+          actionButtonPlugin={actionButtonPlugin}
+        />
       </Stack>
     </PanBasicDialog>
   );
