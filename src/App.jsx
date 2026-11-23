@@ -23,6 +23,7 @@ import {
   PanMenuWrapperDemo,
   AppBarDemo,
   PanFullPageLayoutDemo,
+  PanListTableDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
@@ -167,6 +168,7 @@ function App() {
             <Tab label="Menu" />
             <Tab label="AppBar" />
             <Tab label="FullPageLayout" />
+            <Tab label="PanListTable" />
           </Tabs>
 
           {v1Tab === 0 && (
@@ -194,6 +196,11 @@ function App() {
           {v1Tab === 3 && (
             <Demo title="FullPageLayout">
               <PanFullPageLayoutDemo />
+            </Demo>
+          )}
+          {v1Tab === 4 && (
+            <Demo title="PanListTable">
+              <PanListTableDemo />
             </Demo>
           )}
         </>
