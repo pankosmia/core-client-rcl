@@ -12,7 +12,7 @@ import PanStepperPickerDemo from "./PanStepperPickerDemo";
 import ButtonInfoDemo from "./ButtonInfoDemo";
 import ExternalLinkDemo from "./ExternalLinkDemo";
 import PanCopyrightDemo from "./PanCopyrightDemo";
-import PanAssetInstallDialogDemo from "./PanAssetInstallDialogDemo";
+import PanAssetInstallDialogDemo from "./V1.0/Plugins/PanAssetInstallDialogDemo";
 import PanAdvancedDialogDemo from "./V1.0/Dialog/PanAdvancedDialogDemo";
 import PanBasicDialogDemo from "./V1.0/Dialog/PanBasicDialogDemo";
 import PanMenuWrapperDemo from "./V1.0/Menu/PanMenuWrapperDemo";

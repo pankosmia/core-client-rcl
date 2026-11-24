@@ -38,7 +38,7 @@ function App() {
   );
 
   const [tab, setTab] = useState(1);
-  const [v1Tab, setV1Tab] = useState(2);
+  const [v1Tab, setV1Tab] = useState(4);
 
   const handleWindowResize = useCallback(() => {
     setMaxWindowHeight(window.innerHeight - 64);
@@ -129,10 +129,6 @@ function App() {
             <Demo title="Section Dialog Title">
               <SectionDialogTitleDemo />
             </Demo>
-
-            <Demo>
-              <PanAssetInstallDialogDemo />
-            </Demo>
           </Demos>
         </>
       )}
@@ -169,6 +165,7 @@ function App() {
             <Tab label="AppBar" />
             <Tab label="FullPageLayout" />
             <Tab label="PanListTable" />
+            <Tab label="Plugins" />
           </Tabs>
 
           {v1Tab === 0 && (
@@ -201,6 +198,11 @@ function App() {
           {v1Tab === 4 && (
             <Demo title="PanListTable">
               <PanListTableDemo />
+            </Demo>
+          )}
+          {v1Tab === 5 && (
+            <Demo title="Plugins">
+              <PanAssetInstallDialogDemo />
             </Demo>
           )}
         </>
