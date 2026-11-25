@@ -19,6 +19,7 @@ import PanMenuWrapperDemo from "./V1.0/Menu/PanMenuWrapperDemo";
 import AppBarDemo from "./V1.0/AppBar/AppBarDemo";
 import PanFullPageLayoutDemo from "./V1.0/FullPageLayout/PanFullPageLayoutDemo";
 import PanListTableDemo from "./V1.0/TableList/PanTableListDemo";
+import CreationComponentsDemo from "./V1.0/CreationComponents/CreationComponentsDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -41,4 +42,5 @@ export {
   AppBarDemo,
   PanFullPageLayoutDemo,
   PanListTableDemo,
+  CreationComponentsDemo,
 };

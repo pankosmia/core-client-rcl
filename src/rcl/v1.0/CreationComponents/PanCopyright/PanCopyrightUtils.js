@@ -1,0 +1,150 @@
+export const COPYRIGHT_OPTIONS = [
+  "unspecified",
+  "public-domain",
+  "free",
+  "builder",
+];
+
+export const COPYRIGHT_LICENSES = [
+  { value: "CC BY", versioned: true },
+  { value: "CC BY-SA", versioned: true },
+  { value: "CC BY-NC", versioned: true },
+  { value: "CC BY-NC-SA", versioned: true },
+  { value: "CC BY-ND", versioned: true },
+  { value: "CC BY-NC-ND", versioned: true },
+  { value: "All rights reserved", versioned: false },
+];
+
+export const COPYRIGHT_VERSIONS = ["4.0", "3.0", "2.5", "2.0", "1.0"];
+
+export const EMPTY_COPYRIGHT = {
+  free_text: "", // sans le ©, il est ajouté automatiquement
+  author_name: "",
+  year: "", // "2025" ou "2023/2025"
+  license: "", // volontairement vide : la licence ne s'improvise pas
+  version: "4.0",
+  order: "holder_first", // "holder_first" | "year_first"
+};
+
+const YEAR = String.raw`\d{4}(?:\/\d{4})?`;
+
+/* ---------- State -> string ---------- */
+export function buildCopyrightString(option, c) {
+  switch (option) {
+    case "unspecified":
+      return "Unspecified";
+
+    case "public-domain":
+      return "Public Domain";
+
+    case "free": {
+      const text = c?.free_text?.trim();
+      return text ? `© ${text}` : "";
+    }
+
+    case "builder": {
+      const holder = c.author_name.trim();
+      const license = COPYRIGHT_LICENSES.find((l) => l.value === c.license);
+      if (!holder || !c.year || !license) return "";
+
+      const licenseText = license.versioned
+        ? `${license.value} ${c.version}`
+        : license.value;
+      const who =
+        c.order === "year_first"
+          ? `${c.year} ${holder}`
+          : `${holder} ${c.year}`;
+
+      return `© ${who}, ${licenseText}`;
+    }
+
+    default:
+      return "";
+  }
+}
+
+// Vrai quand on a une chaîne finale exploitable
+export const isCopyrightValid = (option, c) =>
+  buildCopyrightString(option, c) !== "";
+
+/* ---------- string -> state ---------- */
+export function parseCopyright(raw, { editMode = false } = {}) {
+  const text = (raw ?? "").trim();
+  const base = { ...EMPTY_COPYRIGHT };
+
+  // Unspecified, "?", empty, "%%COPYRIGHT%%"
+  if (
+    !text ||
+    text === "?" ||
+    /^unspecified$/i.test(text) ||
+    /^%%.*%%$/.test(text)
+  ) {
+    return { optionCopyright: "unspecified", copyright: base };
+  }
+
+  // Public domain, CC0
+  if (/public domain|cc0/i.test(text)) {
+    return { optionCopyright: "public-domain", copyright: base };
+  }
+
+  // Builder detection is skipped in edit mode:
+  // an existing value always goes to free format, untouched.
+  const idx = editMode ? -1 : text.lastIndexOf(",");
+  if (idx !== -1) {
+    const head = text
+      .slice(0, idx)
+      .replace(/^(copyright\s*)?©\s*/i, "")
+      .trim();
+    const tail = text.slice(idx + 1).trim();
+
+    const ccMatch = tail.match(/^(CC BY(?:-NC)?(?:-SA|-ND)?)\s+(\d\.\d)$/i);
+    const arMatch = /^all rights reserved$/i.test(tail);
+
+    const license = ccMatch
+      ? ccMatch[1].toUpperCase()
+      : arMatch
+        ? "All rights reserved"
+        : null;
+    const knownLicense = COPYRIGHT_LICENSES.some((l) => l.value === license);
+
+    if (knownLicense) {
+      const version = ccMatch ? ccMatch[2] : base.version;
+      const yearFirst = head.match(new RegExp(`^(${YEAR})\\s+(.+)$`));
+      const holderFirst = head.match(new RegExp(`^(.+?)\\s+(${YEAR})$`));
+
+      if (holderFirst) {
+        return {
+          optionCopyright: "builder",
+          copyright: {
+            ...base,
+            author_name: holderFirst[1].trim(),
+            year: holderFirst[2],
+            license,
+            version,
+            order: "holder_first",
+          },
+        };
+      }
+      if (yearFirst) {
+        return {
+          optionCopyright: "builder",
+          copyright: {
+            ...base,
+            author_name: yearFirst[2].trim(),
+            year: yearFirst[1],
+            license,
+            version,
+            order: "year_first",
+          },
+        };
+      }
+    }
+  }
+
+  // Tout le reste -> format libre (on retire le © de début, il est ré-ajouté)
+  const free_text = text.replace(/^(copyright\s*)?©\s*/i, "").trim();
+  if (!free_text) {
+    return { optionCopyright: "unspecified", copyright: base };
+  }
+  return { optionCopyright: "free", copyright: { ...base, free_text } };
+}
