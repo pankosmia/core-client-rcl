@@ -24,6 +24,7 @@ import {
   AppBarDemo,
   PanFullPageLayoutDemo,
   PanListTableDemo,
+  CreationComponentsDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
@@ -38,7 +39,7 @@ function App() {
   );
 
   const [tab, setTab] = useState(1);
-  const [v1Tab, setV1Tab] = useState(4);
+  const [v1Tab, setV1Tab] = useState(6);
 
   const handleWindowResize = useCallback(() => {
     setMaxWindowHeight(window.innerHeight - 64);
@@ -166,6 +167,7 @@ function App() {
             <Tab label="FullPageLayout" />
             <Tab label="PanListTable" />
             <Tab label="Plugins" />
+            <Tab label="Creations Components" />
           </Tabs>
 
           {v1Tab === 0 && (
@@ -203,6 +205,11 @@ function App() {
           {v1Tab === 5 && (
             <Demo title="Plugins">
               <PanAssetInstallDialogDemo />
+            </Demo>
+          )}
+          {v1Tab === 6 && (
+            <Demo title="Creations Components">
+              <CreationComponentsDemo />
             </Demo>
           )}
         </>

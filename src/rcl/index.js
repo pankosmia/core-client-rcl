@@ -23,7 +23,6 @@ import languagesContext from "./contexts/languagesContext";
 import messagesContext from "./contexts/messagesContext";
 import netContext from "./contexts/netContext";
 import typographyContext from "./contexts/typographyContext";
-import PanLanguagePicker from "./PanLanguagePicker";
 import PanVersificationPicker from "./PanVersificationPicker";
 import PanBookPicker from "./PanBookPicker";
 import PanStepperPicker from "./PanStepperPicker";
@@ -35,7 +34,6 @@ import snippetContext from "./contexts/snippetContext";
 import productContext from "./contexts/productContext";
 import ScrollableBody from "./ScrollableBody";
 import ExternalLink from "./ExternalLink";
-import PanCopyright from "./PanCopyright";
 import SectionDialogTitle from "./SectionDialogTitle";
 import AssetDownloadButton from "./v1.0/Plugins/AssetDownloadButton";
 import AssetDownloadDialog from "./v1.0/Plugins/AssetDownloadDialog";
@@ -50,6 +48,11 @@ import AdvancedAppBarMenuDebug from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAp
 import AdvancedAppBarMenuBeta from "./v1.0/AppBar/AdvancedAppbarMenu/AdvancedAppBarMenuBeta";
 import PanListTable from "./v1.0/ListTable/PanListTable";
 import PanPillTypography from "./v1.0/ListTable/PanPillTypography";
+import PanCopyright from "./v1.0/CreationComponents/PanCopyright/PanCopyright";
+import PanCopyrightWrapper from "./v1.0/CreationComponents/PanCopyright/PanCopyrightWrapper";
+import PanLanguagePicker from "./v1.0/CreationComponents/PanLanguagePicker/PanLanguagePicker";
+import PanLanguagePickerWrapper from "./v1.0/CreationComponents/PanLanguagePicker/PanLanguagePickerWrapper";
+import { parseCopyright } from "./v1.0/CreationComponents/PanCopyright/PanCopyrightUtils";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -103,4 +106,7 @@ export {
   AdvancedAppBarMenuBeta,
   PanListTable,
   PanPillTypography,
+  PanLanguagePickerWrapper,
+  PanCopyrightWrapper,
+  parseCopyright,
 };

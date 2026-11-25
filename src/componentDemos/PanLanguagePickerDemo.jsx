@@ -9,10 +9,7 @@ export default function PanLanguagePickerDemo() {
   });
   // eslint-disable-next-line no-unused-vars
   const [_languageIsValid, setLanguageIsValid] = useState(false);
-
   const [testValue, setTestValue] = useState("");
-
-  // 👇 changing this forces a hard reload
   const [pickerKey, setPickerKey] = useState(0);
 
   const reloadPicker = () => {
