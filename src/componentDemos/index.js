@@ -18,6 +18,7 @@ import PanBasicDialogDemo from "./V1.0/Dialog/PanBasicDialogDemo";
 import PanMenuWrapperDemo from "./V1.0/Menu/PanMenuWrapperDemo";
 import AppBarDemo from "./V1.0/AppBar/AppBarDemo";
 import PanFullPageLayoutDemo from "./V1.0/FullPageLayout/PanFullPageLayoutDemo";
+import PanListTableDemo from "./V1.0/TableList/PanTableListDemo";
 export {
   InternetSwitchDemo,
   AppbarHamburgerDemo,
@@ -39,4 +40,5 @@ export {
   PanMenuWrapperDemo,
   AppBarDemo,
   PanFullPageLayoutDemo,
+  PanListTableDemo,
 };

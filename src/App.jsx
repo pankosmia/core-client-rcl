@@ -23,6 +23,7 @@ import {
   PanMenuWrapperDemo,
   AppBarDemo,
   PanFullPageLayoutDemo,
+  PanListTableDemo,
 } from "./componentDemos";
 
 import Demos from "./demoHelpers/Demos";
@@ -163,6 +164,7 @@ function App() {
             <Tab label="Menu" />
             <Tab label="AppBar" />
             <Tab label="FullPageLayout" />
+            <Tab label="PanListTable" />
             <Tab label="Plugins" />
           </Tabs>
 
@@ -194,6 +196,11 @@ function App() {
             </Demo>
           )}
           {v1Tab === 4 && (
+            <Demo title="PanListTable">
+              <PanListTableDemo />
+            </Demo>
+          )}
+          {v1Tab === 5 && (
             <Demo title="Plugins">
               <PanAssetInstallDialogDemo />
             </Demo>
