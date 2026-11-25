@@ -62,7 +62,9 @@ export default function PanListTable({ list }) {
                 overflow: "hidden",
               }}
             >
-              <Typography sx={{ flexShrink: 0 }}>{e.abbreviation}</Typography>
+              <Typography sx={{ flexShrink: 0, fontWeight: "bold" }}>
+                {e.abbreviation.toUpperCase()}
+              </Typography>
 
               <Box
                 sx={{
