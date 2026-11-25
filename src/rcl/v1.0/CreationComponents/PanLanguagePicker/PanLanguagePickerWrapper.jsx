@@ -14,45 +14,39 @@ export default function PanLanguagePickerWrapper({
   const { i18nRef } = useContext(I18nContext);
   const { panGapContentMedium, panGapContentSmall } = useResponsiveVariables();
 
+  const rows = [
+    {
+      label: "library:pankosmia-rcl:language",
+      value: currentLanguage.language_name,
+    },
+    {
+      label: "library:pankosmia-rcl:lang_code",
+      value: currentLanguage.language_code,
+    },
+    {
+      label: "library:pankosmia-rcl:script_direction",
+      value: currentLanguage.script_direction,
+    },
+  ];
+
   return readOnly ? (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: panGapContentMedium,
+        display: "grid",
+        gridTemplateColumns: "max-content 1fr",
+        alignItems: "center",
+        columnGap: panGapContentMedium,
+        rowGap: panGapContentSmall,
       }}
     >
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "120px 1fr",
-          alignItems: "center",
-          gap: panGapContentSmall,
-        }}
-      >
-        <Typography variant="h6">
-          {doI18n("library:pankosmia-rcl:language", i18nRef.current)}
-        </Typography>
-
-        <Typography sx={{ color: "text.secondary" }} variant="body">
-          {currentLanguage.language_name}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "120px 1fr",
-          alignItems: "center",
-          gap: panGapContentSmall,
-        }}
-      >
-        <Typography variant="h6">
-          {doI18n("library:pankosmia-rcl:lang_code", i18nRef.current)}
-        </Typography>
-        <Typography sx={{ color: "text.secondary" }} variant="body">
-          {currentLanguage.language_code}
-        </Typography>
-      </Box>
+      {rows.map(({ label, value }) => (
+        <Box key={label} sx={{ display: "contents" }}>
+          <Typography variant="h6">{doI18n(label, i18nRef.current)}</Typography>
+          <Typography sx={{ color: "text.secondary" }} variant="body1">
+            {value}
+          </Typography>
+        </Box>
+      ))}
     </Box>
   ) : (
     <PanLanguagePicker
