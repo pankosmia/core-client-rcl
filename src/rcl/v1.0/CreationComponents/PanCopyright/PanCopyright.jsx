@@ -174,16 +174,17 @@ export default function PanCopyright({
       <Box
         sx={{
           mt: 2,
-          p: 1.5,
-          border: 1,
-          borderColor: "divider",
-          borderRadius: 1,
+          px: 2, // 16px left/right
+          py: 1, // 8px top/bottom
+          borderRadius: "4px",
+          backgroundColor: "grey.200",
         }}
       >
         <Typography variant="caption" color="text.secondary">
           {t("preview")}
         </Typography>
         <Typography
+          variant="body1"
           sx={{ fontStyle: preview ? "normal" : "italic" }}
           color={preview ? "text.primary" : "text.disabled"}
         >

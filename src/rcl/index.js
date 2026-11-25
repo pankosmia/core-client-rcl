@@ -52,7 +52,10 @@ import PanCopyright from "./v1.0/CreationComponents/PanCopyright/PanCopyright";
 import PanCopyrightWrapper from "./v1.0/CreationComponents/PanCopyright/PanCopyrightWrapper";
 import PanLanguagePicker from "./v1.0/CreationComponents/PanLanguagePicker/PanLanguagePicker";
 import PanLanguagePickerWrapper from "./v1.0/CreationComponents/PanLanguagePicker/PanLanguagePickerWrapper";
-import { parseCopyright } from "./v1.0/CreationComponents/PanCopyright/PanCopyrightUtils";
+import {
+  parseCopyright,
+  buildCopyrightString,
+} from "./v1.0/CreationComponents/PanCopyright/PanCopyrightUtils";
 export {
   AssetDownloadButton,
   AssetDownloadDialog,
@@ -109,4 +112,5 @@ export {
   PanLanguagePickerWrapper,
   PanCopyrightWrapper,
   parseCopyright,
+  buildCopyrightString,
 };
