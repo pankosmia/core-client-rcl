@@ -12,6 +12,7 @@ export default function CreationComponentsDemo() {
   const [currentLanguage, setCurrentLanguage] = useState({
     language_code: testJson["_local_/_local_/fr_psle"].language_code,
     language_name: testJson["_local_/_local_/fr_psle"].language_name,
+    script_direction: testJson["_local_/_local_/fr_psle"].script_direction,
   });
 
   const [_languageIsValid, setLanguageIsValid] = useState(false);

@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -68,11 +69,13 @@ export default function PanLanguagePicker({
       if (currentLanguage.language_code) {
         if (contentBcpList[currentLanguage.language_code]) {
           setCurrentLanguage({
+            ...currentLanguage,
             language_code: currentLanguage.language_code,
             language_name: contentBcpList[currentLanguage.language_code].en,
           });
         } else {
           setCurrentLanguage({
+            ...currentLanguage,
             language_code: `${currentLanguage.language_code}`,
             language_name: `${currentLanguage.language_name}`,
           });
@@ -92,6 +95,9 @@ export default function PanLanguagePicker({
             ...currentLanguage,
             language_code: data.language_code,
             language_name: data.language_name,
+            script_direction: ["ltr", "rtl"].includes(data.script_direction)
+              ? data.script_direction
+              : currentLanguage?.script_direction,
           }),
         )
         .catch((err) => console.error("Error :", err));
@@ -106,9 +112,15 @@ export default function PanLanguagePicker({
   );
 
   return (
-    <>
+    <Box sx={{ width: "100%" }}>
       <FormControl>
-        <FormLabel id="demo-radio-buttons-group-label">
+        <FormLabel
+          sx={{
+            color: "text.secondary",
+            "&.Mui-focused": { color: "text.secondary" },
+          }}
+          id="demo-radio-buttons-group-label"
+        >
           {doI18n("library:pankosmia-rcl:choose_language", i18nRef.current)}
         </FormLabel>
         <RadioGroup
@@ -117,7 +129,11 @@ export default function PanLanguagePicker({
           onChange={(event) => {
             setLanguageOption(event.target.value);
             setNameEdited(false);
-            setCurrentLanguage({ language_code: "", language_name: "" });
+            setCurrentLanguage({
+              language_code: "",
+              language_name: "",
+              script_direction: currentLanguage?.script_direction,
+            });
           }}
           aria-labelledby="demo-radio-buttons-group-label"
           name="radio-buttons-group"
@@ -166,6 +182,7 @@ export default function PanLanguagePicker({
                 value={currentLanguage.language_code ?? null}
                 setValue={(option) =>
                   setCurrentLanguage({
+                    ...currentLanguage,
                     language_code: option,
                     language_name: contentBcpList[option]?.en ?? "",
                   })
@@ -368,6 +385,40 @@ export default function PanLanguagePicker({
           </Grid>
         </Grid>
       )}
-    </>
+      <FormControl sx={{ mt: 2 }}>
+        <FormLabel
+          sx={{
+            color: "text.secondary",
+            "&.Mui-focused": { color: "text.secondary" },
+          }}
+          id="script-direction-label"
+        >
+          {doI18n("library:pankosmia-rcl:script_direction", i18nRef.current)}
+        </FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="script-direction-label"
+          name="script-direction-group"
+          value={currentLanguage?.script_direction === "rtl" ? "rtl" : "ltr"}
+          onChange={(event) =>
+            setCurrentLanguage({
+              ...currentLanguage,
+              script_direction: event.target.value,
+            })
+          }
+        >
+          <FormControlLabel
+            value="ltr"
+            control={<Radio />}
+            label={doI18n("library:pankosmia-rcl:ltr", i18nRef.current)}
+          />
+          <FormControlLabel
+            value="rtl"
+            control={<Radio />}
+            label={doI18n("library:pankosmia-rcl:rtl", i18nRef.current)}
+          />
+        </RadioGroup>
+      </FormControl>
+    </Box>
   );
 }
