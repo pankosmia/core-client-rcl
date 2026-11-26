@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState, useRef, useContext } from "react";
-import { getJson } from "pankosmia-lib/http";
+import { getJson, postEmpty } from "pankosmia-lib/http";
 import { doI18n } from "pankosmia-lib/i18n";
 
 import netContext from "../contexts/netContext";
@@ -63,10 +63,12 @@ function HeaderDrawer({ currentId }) {
   }, [betaRef.current, debugRef.current]);
 
   const toggleBeta = (ev) => {
-    getJson(`/api/beta/${betaRef.current ? "disable" : "enable"}`).then(() => {
-      ev.stopPropagation();
-      ev.preventDefault();
-    });
+    postEmpty(`/api/beta/${betaRef.current ? "disable" : "enable"}`).then(
+      () => {
+        ev.stopPropagation();
+        ev.preventDefault();
+      },
+    );
   };
   useEffect(() => {
     let timeoutId;

@@ -140,7 +140,7 @@ export default function CreationComponentsDemo() {
               copyright={copyright}
               setCopyright={setCopyright}
               readOnly={isReadOnly}
-              editMode={true}
+              editMode={false}
             />
           </Grid>
         </Grid>
