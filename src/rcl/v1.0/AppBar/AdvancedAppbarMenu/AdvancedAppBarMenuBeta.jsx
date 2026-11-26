@@ -10,15 +10,11 @@ import {
   ListItemIcon,
   Typography,
 } from "@mui/material";
-import { getJson } from "pankosmia-lib/http";
+import { getJson, postEmpty } from "pankosmia-lib/http";
 
-export default function AdvancedAppBarMenuBeta({
-  i18nRef,
-  betaRef,
-  debugRef,
-}) {
+export default function AdvancedAppBarMenuBeta({ i18nRef, betaRef, debugRef }) {
   const [menuItemsBeta, setMenuItemsBeta] = useState([]);
- useEffect(() => {
+  useEffect(() => {
     const doFetch = async () => {
       const fetched = await getJson("/api/list-clients", debugRef.current);
       if (fetched.ok) {
@@ -31,10 +27,12 @@ export default function AdvancedAppBarMenuBeta({
   }, [betaRef.current, debugRef.current]);
 
   const toggleBeta = (ev) => {
-    getJson(`/api/beta/${betaRef.current ? "disable" : "enable"}`).then(() => {
-      ev.stopPropagation();
-      ev.preventDefault();
-    });
+    postEmpty(`/api/beta/${betaRef.current ? "disable" : "enable"}`).then(
+      () => {
+        ev.stopPropagation();
+        ev.preventDefault();
+      },
+    );
   };
   return (
     <>
