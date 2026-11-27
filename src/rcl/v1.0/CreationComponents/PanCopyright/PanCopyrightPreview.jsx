@@ -8,7 +8,11 @@ export default function PanCopyrightPreview({ optionCopyright, copyright }) {
   const { i18nRef } = useContext(I18nContext);
   const t = (key) => doI18n(`library:pankosmia-rcl:${key}`, i18nRef.current);
 
-  const preview = buildCopyrightString(optionCopyright, copyright);
+  const built = buildCopyrightString(optionCopyright, copyright, t);
+  // These two options are stored as plain ids, so translate them for display
+  const preview = ["unspecified", "public-domain"].includes(optionCopyright)
+    ? t(built)
+    : built;
 
   return (
     <Box

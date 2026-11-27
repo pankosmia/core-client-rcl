@@ -59,7 +59,7 @@ export default function PanCopyrightBuilderDialog({
     if (!isCopyrightValid("builder", builder)) return;
 
     // The free-format field already shows a © adornment, so strip a leading one
-    const result = buildCopyrightString("builder", builder).replace(
+    const result = buildCopyrightString("builder", builder, t).replace(
       /^©\s*/,
       "",
     );
@@ -127,7 +127,7 @@ export default function PanCopyrightBuilderDialog({
             {noneItem}
             {COPYRIGHT_LICENSES.map((l) => (
               <MenuItem key={l.value} value={l.value}>
-                {l.value}
+                {l.i18nKey ? t(l.value) : l.value}
               </MenuItem>
             ))}
           </TextField>

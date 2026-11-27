@@ -12,7 +12,7 @@ export const COPYRIGHT_LICENSES = [
   { value: "CC BY-NC-SA", versioned: true },
   { value: "CC BY-ND", versioned: true },
   { value: "CC BY-NC-ND", versioned: true },
-  { value: "All rights reserved", versioned: false },
+  { value: "all_rights_reserved", versioned: false, i18nKey: true },
 ];
 
 export const COPYRIGHT_VERSIONS = ["4.0", "3.0", "2.5", "2.0", "1.0"];
@@ -29,13 +29,13 @@ export const YEAR_REGEX = /^\d{4}(-\d{4})?$/;
 
 const YEAR = String.raw`\d{4}(?:-\d{4})?`;
 /* ---------- State -> string ---------- */
-export function buildCopyrightString(option, c) {
+export function buildCopyrightString(option, c, t = (key) => key) {
   switch (option) {
     case "unspecified":
-      return "Unspecified";
+      return "unspecified";
 
     case "public-domain":
-      return "Public Domain";
+      return "public_domain";
 
     case "free": {
       const text = c?.free_text?.trim();
@@ -52,10 +52,11 @@ export function buildCopyrightString(option, c) {
       // A versioned licence needs its version, otherwise the string is incomplete
       if (license?.versioned && !c.version) return "";
 
+      const licenseName = license?.i18nKey ? t(license.value) : license?.value;
       const licenseText = license
         ? license.versioned
-          ? `${license.value} ${c.version}`
-          : license.value
+          ? `${licenseName} ${c.version}`
+          : licenseName
         : "";
 
       const who =
