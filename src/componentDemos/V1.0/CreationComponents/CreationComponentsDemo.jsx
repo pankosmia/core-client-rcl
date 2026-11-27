@@ -21,7 +21,7 @@ export default function CreationComponentsDemo() {
   const editMode = true;
 
   const [initialCopyright] = useState(() =>
-    parseCopyright(testJson["_local_/_local_/fr_psle"].copyright, { editMode }),
+    parseCopyright(testJson["_local_/_local_/fr_psle"].copyright),
   );
   const [copyright, setCopyright] = useState(initialCopyright.copyright);
   const [optionCopyright, setOptionCopyright] = useState(
